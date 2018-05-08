@@ -1,5 +1,6 @@
 package com.beeshop.beeshop.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.activity.ShopDetailActivity;
 import com.beeshop.beeshop.adapter.HomeShopAdapter;
+import com.beeshop.beeshop.adapter.OnRecycleItemClickListener;
 import com.scwang.smartrefresh.header.DeliveryHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
@@ -56,6 +59,12 @@ public class HomeFragment extends BaseFragment {
         mHomeShopAdapter = new HomeShopAdapter(getActivity(), mShopList);
         rvHome.setLayoutManager(linearLayoutManager);
         rvHome.setAdapter(mHomeShopAdapter);
+        mHomeShopAdapter.setOnRecycleItemClickListener(new OnRecycleItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                startActivity(new Intent(getActivity(), ShopDetailActivity.class));
+            }
+        });
 
         srlHome.setRefreshHeader(new DeliveryHeader(getActivity()));
         srlHome.setOnRefreshListener(new OnRefreshListener() {

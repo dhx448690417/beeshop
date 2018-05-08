@@ -48,6 +48,9 @@ dependencies {
     // glide 及 圆角配置
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:3.0.1'
+
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.android.support:design:26.1.0'
+
+    implementation 'cn.bingoogolapple:bga-banner:2.2.4@aar'
 }
