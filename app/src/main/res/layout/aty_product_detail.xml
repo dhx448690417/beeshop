@@ -123,16 +123,17 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@color/colorAccent"
                 android:text="联系商家"
                 android:gravity="center"
-                android:textColor="@color/text_color_black"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@color/tab_text_color_selected"
+                android:background="@color/colorPrimary"
                 android:text="立即下单"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
