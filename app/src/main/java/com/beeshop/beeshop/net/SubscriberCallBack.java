@@ -46,7 +46,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResponseEntity<T>
 
     @Override
     public void onNext(ResponseEntity responseEntity) {
-        if (responseEntity.getStatus() == 200 ) {
+        if (responseEntity.getCode() == 200 ) {
             if (responseEntity.getData() != null) { // 有返回业务数据data
                 onSuccess((T) responseEntity.getData());
             } else { // 无返回业务数据data
@@ -67,7 +67,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResponseEntity<T>
         }
         if (!NetworkUtils.isNetworkAvailable(BeeShopApplication.getContext())) {
             ResponseEntity errorBean = new ResponseEntity();
-            errorBean.setStatus(ERROR_CODE_NO_NET);
+            errorBean.setCode(ERROR_CODE_NO_NET);
             errorBean.setMsg("网络未连接");
             onNetFailure(errorBean);
             onFailure(errorBean);
@@ -90,18 +90,18 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResponseEntity<T>
                 throw (Exception) e;
             } catch (SocketTimeoutException e1) {
                 e1.printStackTrace();
-                errorBean.setStatus(ERROR_CODE_NET_CONNECT_EXCEPTION);
+                errorBean.setCode(ERROR_CODE_NET_CONNECT_EXCEPTION);
                 errorBean.setMsg("网络连接异常");
                 onNetFailure(errorBean);
             } catch (SSLHandshakeException e1) {
                 e1.printStackTrace();
-                errorBean.setStatus(ERROR_CODE_NET_CONNECT_EXCEPTION);
+                errorBean.setCode(ERROR_CODE_NET_CONNECT_EXCEPTION);
                 errorBean.setMsg("网络连接异常");
                 onNetFailure(errorBean);
             } catch (Exception e1) {
                 e1.printStackTrace();
                 LogUtil.e("ah   SubscriberCallBack  onError == "+e.getMessage());
-                errorBean.setStatus(ERROR_CODE_OTHER_EXCEPTION);
+                errorBean.setCode(ERROR_CODE_OTHER_EXCEPTION);
                 errorBean.setMsg("服务器异常");
             }
             onFailure(errorBean);
@@ -115,7 +115,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResponseEntity<T>
      */
     private void handleParticularErrorMessage(ResponseEntity errorBean) {
         // 用户登录过期与被挤下线单独处理 无需回调error信息
-        if (errorBean.getStatus() == ERROR_CODE_NO_LOGIN || errorBean.getStatus() == ERROR_CODE_OTHER_LOGIN) {
+        if (errorBean.getCode() == ERROR_CODE_NO_LOGIN || errorBean.getCode() == ERROR_CODE_OTHER_LOGIN) {
             String message = errorBean.getMsg();
             Activity activity = mActivityWeakReference.get();
             ToastUtils.showToast(message);

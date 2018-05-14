@@ -9,16 +9,17 @@ import java.io.Serializable;
  */
 
 public class ResponseEntity<T> implements Serializable {
-    private int status;
+    private int code;
     private String msg;
+    private String time;
     private T data;
 
-    public int getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public String getMsg() {
@@ -27,6 +28,14 @@ public class ResponseEntity<T> implements Serializable {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public T getData() {

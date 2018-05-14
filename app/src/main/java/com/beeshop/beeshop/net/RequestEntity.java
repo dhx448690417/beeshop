@@ -9,47 +9,32 @@ import java.util.List;
  */
 
 public class RequestEntity implements Serializable {
-    /**
-     * id : -75931528
-     * jsonrpc : 2.0
-     * method : loginStatus
-     * params : []
-     */
 
-    private int id;
-    private String jsonrpc;
-    private String method;
-    private List<HashMap<String, Object>> params;
+    private String version ;
+    private String data;
+    private String rsa ;
 
-    public int getId() {
-        return id;
+    public String getVersion() {
+        return version;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
-    public String getJsonrpc() {
-        return jsonrpc;
+    public String getData() {
+        return data;
     }
 
-    public void setJsonrpc(String jsonrpc) {
-        this.jsonrpc = jsonrpc;
+    public void setData(String data) {
+        this.data = data;
     }
 
-    public String getMethod() {
-        return method;
+    public String getRsa() {
+        return rsa;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public List<HashMap<String, Object>> getParams() {
-        return params;
-    }
-
-    public void setParams(List<HashMap<String, Object>> params) {
-        this.params = params;
+    public void setRsa(String rsa) {
+        this.rsa = rsa;
     }
 }

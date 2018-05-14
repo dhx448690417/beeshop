@@ -8,74 +8,87 @@
 
     <include layout="@layout/view_titlebar"></include>
 
-    <ScrollView
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            >
+            <LinearLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_scrollFlags="scroll"
+                >
+                <cn.bingoogolapple.bgabanner.BGABanner
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:banner_transitionEffect="depth" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
+                    android:text="店铺介绍"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_shop_introduce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:text="店铺介绍绍介绍不错店铺介绍介绍不不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="14sp" />
+
+                <View
+                    android:id="@+id/v_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/background_color"></View>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="8dp"
+                        android:text="产品列表"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="20sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/background_color"></View>
+
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_products"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
 
-
-            <cn.bingoogolapple.bgabanner.BGABanner
-                android:id="@+id/banner"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:banner_transitionEffect="depth" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="8dp"
-                android:text="店铺介绍"
-                android:textColor="@color/text_color_black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/tv_shop_introduce"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="8dp"
-                android:ellipsize="end"
-                android:maxLines="4"
-                android:text="店铺介绍绍介绍不错店铺介绍介绍不不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错"
-                android:textColor="@color/text_color_black"
-                android:textSize="14sp" />
-
-            <View
-                android:id="@+id/v_line"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/background_color"></View>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="8dp"
-                android:text="产品列表"
-                android:textColor="@color/text_color_black"
-                android:textSize="20sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/background_color"></View>
-
-            <com.beeshop.beeshop.views.ListViewForScrollView
-                android:id="@+id/lvsv_products"
-                android:divider="@null"
-                android:focusable="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></com.beeshop.beeshop.views.ListViewForScrollView>
-        </LinearLayout>
-    </ScrollView>
+    </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

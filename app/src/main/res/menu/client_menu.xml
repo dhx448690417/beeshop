@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/shop_manage"
+        android:title="店铺管理"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item android:id="@+id/product_manage"
+        android:title="产品管理"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item android:id="@+id/vip_manage"
+        android:title="会员管理"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item android:id="@+id/vip_kind_manage"
+        android:title="会员分类"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+</menu>

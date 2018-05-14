@@ -11,25 +11,23 @@
         android:layout_height="50dp"
         android:background="@color/colorPrimary"
         >
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            />
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="蜂店"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="客户通讯录"
             android:layout_centerInParent="true"
             android:textColor="@color/white"
             android:textSize="22sp"
             />
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/ic_search"
-            />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

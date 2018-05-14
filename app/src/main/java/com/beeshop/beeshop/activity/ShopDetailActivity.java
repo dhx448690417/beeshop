@@ -1,15 +1,16 @@
 package com.beeshop.beeshop.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.AdapterView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
-import com.beeshop.beeshop.adapter.ProductAdapter;
-import com.beeshop.beeshop.views.ListViewForScrollView;
+import com.beeshop.beeshop.adapter.HomeShopAdapter;
+import com.beeshop.beeshop.adapter.OnRecycleItemClickListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -31,11 +32,11 @@ public class ShopDetailActivity extends BaseActivity {
     BGABanner banner;
     @BindView(R.id.tv_shop_introduce)
     TextView tvShopIntroduce;
-    @BindView(R.id.lvsv_products)
-    ListViewForScrollView lvsvProducts;
+    @BindView(R.id.rv_products)
+    RecyclerView rvProducts;
 
     private List<String> mShopList = new ArrayList<>();
-    private ProductAdapter mProductAdapter;
+    private HomeShopAdapter mHomeShopAdapter;
 
 
     @Override
@@ -52,15 +53,15 @@ public class ShopDetailActivity extends BaseActivity {
     private void initView() {
         mShopList.add("sdfsdf");
         mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mProductAdapter = new ProductAdapter(this, mShopList);
-        lvsvProducts.setAdapter(mProductAdapter);
-        lvsvProducts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rvProducts.setLayoutManager(linearLayoutManager);
+        mHomeShopAdapter = new HomeShopAdapter(this, mShopList);
+        rvProducts.setAdapter(mHomeShopAdapter);
+        mHomeShopAdapter.setOnRecycleItemClickListener(new OnRecycleItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            public void onItemClick(int position) {
+                startActivity(new Intent(ShopDetailActivity.this, ProductDetailActivity.class));
             }
         });
 

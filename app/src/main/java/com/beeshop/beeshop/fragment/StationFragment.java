@@ -1,25 +1,19 @@
 package com.beeshop.beeshop.fragment;
 
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.beeshop.beeshop.R;
-import com.beeshop.beeshop.adapter.HomeShopAdapter;
-import com.scwang.smartrefresh.header.DeliveryHeader;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.beeshop.beeshop.utils.ToastUtils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Author : cooper
@@ -29,44 +23,36 @@ import butterknife.BindView;
 
 public class StationFragment extends BaseFragment {
 
-    @BindView(R.id.rv_home)
-    RecyclerView rvHome;
-    @BindView(R.id.srl_home)
-    SmartRefreshLayout srlHome;
 
-    private List<String> mShopList = new ArrayList<>();
-    private HomeShopAdapter mHomeShopAdapter;
+    @BindView(R.id.rl_shop_sort)
+    RelativeLayout rlShopSort;
+    @BindView(R.id.rl_nearby_broadcast)
+    RelativeLayout rlNearbyBroadcast;
+    @BindView(R.id.rl_want_boradcast)
+    RelativeLayout rlWantBoradcast;
 
     @Override
     protected View getRootView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_station, container, false);
     }
 
     @Override
     protected void initView() {
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mHomeShopAdapter = new HomeShopAdapter(getActivity(), mShopList);
-        rvHome.setLayoutManager(linearLayoutManager);
-        rvHome.setAdapter(mHomeShopAdapter);
-
-        srlHome.setRefreshHeader(new DeliveryHeader(getActivity()));
-        srlHome.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                srlHome.finishRefresh(2000);
-            }
-        });
-        srlHome.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                srlHome.finishLoadMore(2000);
-            }
-        });
 
     }
 
+    @OnClick({R.id.rl_shop_sort, R.id.rl_nearby_broadcast, R.id.rl_want_boradcast})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_shop_sort:
+                ToastUtils.showToast("店铺排行");
+                break;
+            case R.id.rl_nearby_broadcast:
+                ToastUtils.showToast("附近广播");
+                break;
+            case R.id.rl_want_boradcast:
+                ToastUtils.showToast("我要广播");
+                break;
+        }
+    }
 }

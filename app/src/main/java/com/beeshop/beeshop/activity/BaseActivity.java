@@ -90,7 +90,6 @@ public class BaseActivity extends AppCompatActivity implements ProgressControlIn
             }
         });
         mScreenHeight = ViewUtil.getScreenWidthAndHeight(this)[1];
-
         if (Build.VERSION.SDK_INT < 20) {
             setSystemBarStatus(R.color.systembar);
         }

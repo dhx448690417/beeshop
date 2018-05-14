@@ -20,6 +20,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Author : Cooper
@@ -37,7 +38,7 @@ public class RetrofitManager {
         LoggerUtil.init();
         mRetrofit = new Retrofit.Builder().client(getOkHttpClient())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .baseUrl(AppConfig.BASE_URL)
                 .build();
     }
@@ -150,7 +151,7 @@ public class RetrofitManager {
         builder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
 //        File httpCacheDirectory = new File(ZhuanBeiApplication.getContext().getExternalCacheDir(), "responses_cache");
 //        builder.cache(new Cache(httpCacheDirectory,10 * 1024 * 1024));
-        builder.addInterceptor(new WuxianInterceptor());
+        builder.addInterceptor(new RequestBasicParamsInterceptor());
         okHttpClient = builder.build();
         return okHttpClient;
     }

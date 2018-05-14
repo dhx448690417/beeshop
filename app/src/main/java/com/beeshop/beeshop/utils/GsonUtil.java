@@ -1,5 +1,6 @@
 package com.beeshop.beeshop.utils;
 
+import com.beeshop.beeshop.net.ResponseEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -10,6 +11,8 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -92,6 +95,16 @@ public class GsonUtil {
         return t;
     }
 
+    /**
+     * 转成ResponseEntity todo 将来解决ResponseEntity<EarningResponseEntity>
+     * @param gsonString
+     * @return
+     */
+    public static ResponseEntity gsonToResponse(String gsonString, Type jsonType) {
+        ResponseEntity response = new Gson().fromJson(gsonString, jsonType);
+        return response;
+    }
+
 
     /**
      * 转成list
@@ -138,6 +151,20 @@ public class GsonUtil {
             }.getType());
         }
         return map;
+    }
+
+    /**
+     * map转成String
+     *
+     * @param params
+     * @return
+     */
+    public static String gsonMapToString(HashMap<String, Object> params) {
+        String paramStr = null;
+        if (gson != null) {
+            paramStr = gson.toJson(params);
+        }
+        return paramStr;
     }
 
 /*    *//**

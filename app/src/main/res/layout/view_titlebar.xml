@@ -10,7 +10,7 @@
         android:id="@+id/ll_titlebar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/white">
+        android:background="@color/colorPrimary">
 
 
         <ImageView
@@ -18,8 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/back"
-            android:paddingLeft="15dp"
+            android:src="@drawable/ic_back"
+            android:paddingLeft="7dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingRight="20dp" />
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textColor="@color/systembar"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:visibility="gone"
             android:layout_marginRight="15dp"
@@ -56,8 +56,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textColor="@color/systembar"
-            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textSize="22sp"
             android:layout_centerInParent="true" />
 
 

@@ -3,6 +3,7 @@ package com.beeshop.beeshop.net;
 
 import java.util.HashMap;
 
+import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -18,9 +19,9 @@ import rx.Observable;
 public interface ApiManager {
 
     // 登录
-//    @FormUrlEncoded
-//    @POST("/api/polaris/login")
-//    Observable<ResponseEntity<UserEntity>> postLogin(@FieldMap HashMap<String, Object> map);
+    @FormUrlEncoded
+    @POST("/test")
+    Observable<String> postLogin(@FieldMap HashMap<String, Object> map);
 //
 //    // 退出登录
 //    @GET("/api/polaris/logout")

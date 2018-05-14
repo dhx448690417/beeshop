@@ -1,10 +1,16 @@
 package com.beeshop.beeshop.fragment;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Author : cooper
@@ -33,17 +41,31 @@ public class ClientFragment extends BaseFragment {
     RecyclerView rvHome;
     @BindView(R.id.srl_home)
     SmartRefreshLayout srlHome;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    Unbinder unbinder;
 
     private List<String> mShopList = new ArrayList<>();
     private HomeShopAdapter mHomeShopAdapter;
 
     @Override
     protected View getRootView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_client, container, false);
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.client_menu,menu);
+    }
+
+
+    @Override
     protected void initView() {
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setHasOptionsMenu(true);
+
         mShopList.add("sdfsdf");
         mShopList.add("sdfsdf");
         mShopList.add("sdfsdf");
@@ -76,4 +98,17 @@ public class ClientFragment extends BaseFragment {
 
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

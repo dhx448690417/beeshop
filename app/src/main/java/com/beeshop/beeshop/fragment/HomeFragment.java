@@ -1,7 +1,6 @@
 package com.beeshop.beeshop.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,18 +15,14 @@ import com.beeshop.beeshop.adapter.HomeShopAdapter;
 import com.beeshop.beeshop.adapter.OnRecycleItemClickListener;
 import com.scwang.smartrefresh.header.DeliveryHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.scwang.smartrefresh.layout.util.SmartUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Author : cooper
