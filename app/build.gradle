@@ -53,4 +53,5 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
 
     implementation 'cn.bingoogolapple:bga-banner:2.2.4@aar'
+    compile 'com.github.kingideayou:tagcloudview:1.0.2'
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sa_shop_types">
+        <item>请选择门店类型</item>
+        <item>理发店</item>
+        <item>五金</item>
+        <item>超市</item>
+        <item>学校</item>
+        <item>饭馆</item>
+        <item>酒店</item>
+        <item>医院</item>
+    </string-array>
+</resources>

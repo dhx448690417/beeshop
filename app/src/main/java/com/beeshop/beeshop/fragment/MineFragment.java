@@ -1,5 +1,6 @@
 package com.beeshop.beeshop.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,6 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.activity.MineSettingActivity;
+import com.beeshop.beeshop.activity.MyToolsActivity;
+import com.beeshop.beeshop.activity.MyVipActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,12 +58,15 @@ public class MineFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_mine_data:
+                startActivity(new Intent(getActivity(), MineSettingActivity.class));
                 break;
             case R.id.rl_my_vip:
+                startActivity(new Intent(getActivity(), MyVipActivity.class));
                 break;
             case R.id.rl_my_broadcast:
                 break;
             case R.id.rl_my_tool:
+                startActivity(new Intent(getActivity(), MyToolsActivity.class));
                 break;
             case R.id.rl_setting:
                 break;

@@ -1,6 +1,7 @@
 package com.beeshop.beeshop.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,10 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.activity.ProductManagerActivity;
+import com.beeshop.beeshop.activity.ShopManagerActivity;
 import com.beeshop.beeshop.adapter.HomeShopAdapter;
 import com.scwang.smartrefresh.header.DeliveryHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -59,6 +63,22 @@ public class ClientFragment extends BaseFragment {
         inflater.inflate(R.menu.client_menu,menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.shop_manage:
+                startActivity(new Intent(getActivity(), ShopManagerActivity.class));
+                break;
+            case R.id.product_manage:
+                startActivity(new Intent(getActivity(), ProductManagerActivity.class));
+                break;
+            case R.id.vip_manage:
+                break;
+            case R.id.vip_kind_manage:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void initView() {
@@ -98,17 +118,5 @@ public class ClientFragment extends BaseFragment {
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }
