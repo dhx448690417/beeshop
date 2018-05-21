@@ -1,6 +1,7 @@
 package com.beeshop.beeshop.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,8 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.activity.SearchShopActivity;
 import com.beeshop.beeshop.activity.ShopDetailActivity;
 import com.beeshop.beeshop.adapter.HomeShopAdapter;
 import com.beeshop.beeshop.adapter.OnRecycleItemClickListener;
@@ -23,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Author : cooper
@@ -36,6 +42,9 @@ public class HomeFragment extends BaseFragment {
     RecyclerView rvHome;
     @BindView(R.id.srl_home)
     SmartRefreshLayout srlHome;
+    @BindView(R.id.iv_search)
+    ImageView ivSearch;
+    Unbinder unbinder;
 
     private List<String> mShopList = new ArrayList<>();
     private HomeShopAdapter mHomeShopAdapter;
@@ -77,4 +86,8 @@ public class HomeFragment extends BaseFragment {
 
     }
 
+    @OnClick(R.id.iv_search)
+    public void onViewClicked() {
+        startActivity(new Intent(getActivity(), SearchShopActivity.class));
+    }
 }

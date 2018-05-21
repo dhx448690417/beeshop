@@ -1,25 +1,24 @@
 package com.beeshop.beeshop.fragment;
 
-import android.support.annotation.NonNull;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
-import com.beeshop.beeshop.adapter.HomeShopAdapter;
-import com.scwang.smartrefresh.header.DeliveryHeader;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.beeshop.beeshop.activity.MineSettingActivity;
+import com.beeshop.beeshop.activity.MyToolsActivity;
+import com.beeshop.beeshop.activity.MyVipActivity;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Author : cooper
@@ -29,47 +28,48 @@ import butterknife.BindView;
 
 public class MineFragment extends BaseFragment {
 
-    @BindView(R.id.rv_home)
-    RecyclerView rvHome;
-    @BindView(R.id.srl_home)
-    SmartRefreshLayout srlHome;
 
-    private List<String> mShopList = new ArrayList<>();
-    private HomeShopAdapter mHomeShopAdapter;
+    @BindView(R.id.rl_mine_data)
+    RelativeLayout rlMineData;
+    @BindView(R.id.tv_user_name)
+    TextView tvUserName;
+    @BindView(R.id.tv_user_phone)
+    TextView tvUserPhone;
+    @BindView(R.id.rl_my_vip)
+    RelativeLayout rlMyVip;
+    @BindView(R.id.rl_my_broadcast)
+    RelativeLayout rlMyBroadcast;
+    @BindView(R.id.rl_my_tool)
+    RelativeLayout rlMyTool;
+    @BindView(R.id.rl_setting)
+    RelativeLayout rlSetting;
 
     @Override
     protected View getRootView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_mine, container, false);
     }
 
     @Override
     protected void initView() {
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mHomeShopAdapter = new HomeShopAdapter(getActivity(), mShopList);
-        rvHome.setLayoutManager(linearLayoutManager);
-        rvHome.setAdapter(mHomeShopAdapter);
-
-        srlHome.setRefreshHeader(new DeliveryHeader(getActivity()));
-        srlHome.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                srlHome.finishRefresh(2000);
-            }
-        });
-        srlHome.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                srlHome.finishLoadMore(2000);
-            }
-        });
 
     }
 
+    @OnClick({R.id.rl_mine_data, R.id.rl_my_vip, R.id.rl_my_broadcast, R.id.rl_my_tool, R.id.rl_setting})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_mine_data:
+                startActivity(new Intent(getActivity(), MineSettingActivity.class));
+                break;
+            case R.id.rl_my_vip:
+                startActivity(new Intent(getActivity(), MyVipActivity.class));
+                break;
+            case R.id.rl_my_broadcast:
+                break;
+            case R.id.rl_my_tool:
+                startActivity(new Intent(getActivity(), MyToolsActivity.class));
+                break;
+            case R.id.rl_setting:
+                break;
+        }
+    }
 }

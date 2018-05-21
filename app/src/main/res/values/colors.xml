@@ -8,12 +8,15 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="grey">#B6B6B6</color>
+    <color name="grey_CFCFCF">#CFCFCF</color>
+    <color name="grey_969696">#969696</color>
     <color name="systembar">#43426D</color>
     <color name="transparent">#00000000</color>
 
 
     <color name="text_color_black">#4C4C4C</color>
     <color name="text_color_gray">#B6B6B6</color>
+    <color name="text_color_red">#CD5555</color>
 
     <color name="tab_text_color_normal">#9B9EA0</color>
     <color name="tab_text_color_selected">#00A963</color>

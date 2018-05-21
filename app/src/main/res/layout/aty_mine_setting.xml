@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/view_titlebar"></include>
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="昵称"
+            android:textColor="@color/text_color_black"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/tishi"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_marginLeft="90dp"
+            android:textColorHint="@color/text_color_gray"
+            android:hint="请输入昵称"
+            android:textSize="16sp"
+            android:text=""
+            android:textColor="@color/text_color_black"
+            />
+        <TextView
+            android:id="@+id/tishi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:text="唯一且不能修改"
+            android:textColor="@color/text_color_red"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/background_color"></View>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/name2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="签名"
+            android:textColor="@color/text_color_black"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_sign_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_marginLeft="90dp"
+            android:textColorHint="@color/text_color_gray"
+            android:hint="请输入签名"
+            android:textSize="16sp"
+            android:text=""
+            android:textColor="@color/text_color_black"
+            />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/background_color"></View>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="新密码"
+            android:textColor="@color/text_color_black"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_marginLeft="90dp"
+            android:textColorHint="@color/text_color_gray"
+            android:hint="请输入签名"
+            android:textSize="16sp"
+            android:text=""
+            android:textColor="@color/text_color_black"
+            />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/background_color"></View>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/background_color"></View>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/identify_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="验证码"
+            android:textColor="@color/text_color_black"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_identify_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_marginLeft="90dp"
+            android:layout_toLeftOf="@+id/iv_identity_code"
+            android:textColorHint="@color/text_color_gray"
+            android:hint="请输入验证码"
+            android:textSize="16sp"
+            android:text=""
+            android:textColor="@color/text_color_black"
+            />
+        
+        <ImageView
+            android:id="@+id/iv_identity_code"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/code"
+            />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/background_color"></View>
+
+    <ImageView
+        android:id="@+id/iv_add_image"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/add_image"
+        />
+    <TextView
+        android:id="@+id/tv_submit"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="提交"
+        android:textColor="@color/text_color_black"
+        android:textSize="18sp"
+        />
+</LinearLayout>

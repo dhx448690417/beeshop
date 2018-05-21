@@ -30,6 +30,33 @@
         <activity
             android:name=".activity.ProductDetailActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.MineSettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.MyVipActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.MyToolsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.SearchShopActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.SearchResultActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ShopManagerActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ProductManagerActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
