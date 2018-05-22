@@ -20,6 +20,7 @@ import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.activity.ProductManagerActivity;
 import com.beeshop.beeshop.activity.ShopManagerActivity;
 import com.beeshop.beeshop.adapter.HomeShopAdapter;
+import com.beeshop.beeshop.model.Shop;
 import com.scwang.smartrefresh.header.DeliveryHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -49,7 +50,7 @@ public class ClientFragment extends BaseFragment {
     Toolbar toolbar;
     Unbinder unbinder;
 
-    private List<String> mShopList = new ArrayList<>();
+    private List<Shop.ListBean> mShopList = new ArrayList<>();
     private HomeShopAdapter mHomeShopAdapter;
 
     @Override
@@ -86,16 +87,13 @@ public class ClientFragment extends BaseFragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
 
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
+        Shop.ListBean listBean = new Shop.ListBean();
+        mShopList.add(listBean);
+        mShopList.add(listBean);
+        mShopList.add(listBean);
+        mShopList.add(listBean);
+        mShopList.add(listBean);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mHomeShopAdapter = new HomeShopAdapter(getActivity(), mShopList);

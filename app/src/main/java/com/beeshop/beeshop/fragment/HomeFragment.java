@@ -12,18 +12,28 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.activity.LoginActivity;
 import com.beeshop.beeshop.activity.RegisterActivity;
 import com.beeshop.beeshop.activity.SearchShopActivity;
 import com.beeshop.beeshop.activity.ShopDetailActivity;
 import com.beeshop.beeshop.adapter.HomeShopAdapter;
 import com.beeshop.beeshop.adapter.OnRecycleItemClickListener;
+import com.beeshop.beeshop.model.Shop;
+import com.beeshop.beeshop.model.UserEntity;
+import com.beeshop.beeshop.net.HttpLoader;
+import com.beeshop.beeshop.net.ResponseEntity;
+import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
+import com.beeshop.beeshop.utils.ToastUtils;
 import com.scwang.smartrefresh.header.DeliveryHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,7 +57,7 @@ public class HomeFragment extends BaseFragment {
     ImageView ivSearch;
     Unbinder unbinder;
 
-    private List<String> mShopList = new ArrayList<>();
+    private List<Shop.ListBean> mShopList = new ArrayList<>();
     private HomeShopAdapter mHomeShopAdapter;
 
     @Override
@@ -57,8 +67,6 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mHomeShopAdapter = new HomeShopAdapter(getActivity(), mShopList);
@@ -72,10 +80,11 @@ public class HomeFragment extends BaseFragment {
         });
 
         srlHome.setRefreshHeader(new DeliveryHeader(getActivity()));
+        srlHome.setRefreshFooter(new ClassicsFooter(getActivity()));
         srlHome.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                srlHome.finishRefresh(2000);
+                getShops();
             }
         });
         srlHome.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -85,10 +94,33 @@ public class HomeFragment extends BaseFragment {
             }
         });
 
+        srlHome.autoRefresh();
     }
 
     @OnClick(R.id.iv_search)
     public void onViewClicked() {
-        startActivity(new Intent(getActivity(), RegisterActivity.class));
+        startActivity(new Intent(getActivity(), SearchShopActivity.class));
+    }
+
+    private void getShops() {
+        HashMap<String, Object> params1 = new HashMap<>();
+        params1.put("token", "");
+//        params1.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
+        HttpLoader.getInstance().getShops(params1, mCompositeSubscription, new SubscriberCallBack<Shop>(){
+
+            @Override
+            protected void onSuccess(Shop response) {
+                super.onSuccess(response);
+                mShopList.clear();
+                mShopList.addAll(response.getList());
+                mHomeShopAdapter.notifyDataSetChanged();
+                srlHome.finishRefresh();
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
     }
 }

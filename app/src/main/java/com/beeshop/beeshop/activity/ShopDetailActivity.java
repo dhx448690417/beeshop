@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.adapter.HomeShopAdapter;
 import com.beeshop.beeshop.adapter.OnRecycleItemClickListener;
+import com.beeshop.beeshop.model.Shop;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -35,7 +36,7 @@ public class ShopDetailActivity extends BaseActivity {
     @BindView(R.id.rv_products)
     RecyclerView rvProducts;
 
-    private List<String> mShopList = new ArrayList<>();
+    private List<Shop.ListBean> mShopList = new ArrayList<>();
     private HomeShopAdapter mHomeShopAdapter;
 
 
@@ -51,8 +52,12 @@ public class ShopDetailActivity extends BaseActivity {
     }
 
     private void initView() {
-        mShopList.add("sdfsdf");
-        mShopList.add("sdfsdf");
+        Shop.ListBean listBean = new Shop.ListBean();
+        mShopList.add(listBean);
+        mShopList.add(listBean);
+        mShopList.add(listBean);
+        mShopList.add(listBean);
+        mShopList.add(listBean);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvProducts.setLayoutManager(linearLayoutManager);

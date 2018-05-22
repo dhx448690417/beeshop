@@ -5,6 +5,9 @@ import android.util.Base64;
 
 
 import com.beeshop.beeshop.config.AppConfig;
+import com.beeshop.beeshop.model.SearchShopEntity;
+import com.beeshop.beeshop.model.Shop;
+import com.beeshop.beeshop.model.ShopCategoryEntity;
 import com.beeshop.beeshop.model.UserEntity;
 import com.beeshop.beeshop.utils.GsonUtil;
 import com.beeshop.beeshop.utils.SharedPreferenceUtil;
@@ -169,6 +172,58 @@ public class HttpLoader {
     }
 
 
+    /**
+     * 我关注的店铺
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getShops(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack<Shop> subscriber) {
+        normalPost(mApiManager.postShops(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<Shop>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<Shop> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<Shop> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<Shop>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
 
+    /**
+     * 我关注的店铺
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getSearchShops(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack<SearchShopEntity> subscriber) {
+        normalPost(mApiManager.postSearchShops(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<SearchShopEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<SearchShopEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<SearchShopEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<SearchShopEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 店铺类型
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getShopCategory(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack<ShopCategoryEntity> subscriber) {
+        normalPost(mApiManager.postShopCategory(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<ShopCategoryEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<ShopCategoryEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<ShopCategoryEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<ShopCategoryEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
 
 }

@@ -6,6 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.beeshop.beeshop.R;
+import com.scwang.smartrefresh.header.DeliveryHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,7 @@ import butterknife.ButterKnife;
 public abstract class BaseListActivity<T> extends BaseActivity {
 
     protected RecyclerView mRvList;
+    protected SmartRefreshLayout mSrlRefresh;
     protected List<T> mList = new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +36,9 @@ public abstract class BaseListActivity<T> extends BaseActivity {
 
     protected void initView() {
         mRvList = this.findViewById(R.id.rv_list);
+        mSrlRefresh = this.findViewById(R.id.srl_refresh);
+        mSrlRefresh.setRefreshHeader(new DeliveryHeader(this));
+        mSrlRefresh.setRefreshFooter(new ClassicsFooter(this));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRvList.setLayoutManager(linearLayoutManager);

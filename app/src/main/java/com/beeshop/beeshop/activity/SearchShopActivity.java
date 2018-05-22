@@ -10,8 +10,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.Shop;
+import com.beeshop.beeshop.model.ShopCategoryEntity;
+import com.beeshop.beeshop.net.HttpLoader;
+import com.beeshop.beeshop.net.ResponseEntity;
+import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,6 +42,8 @@ public class SearchShopActivity extends BaseActivity {
     @BindView(R.id.tag_shop_type)
     TagCloudView tagShopType;
 
+    private List<String> mTags = new ArrayList<>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,21 +51,14 @@ public class SearchShopActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         initView();
+        getShopCategory();
     }
 
     private void initView() {
-        final List<String> tags = new ArrayList<>();
-        tags.add("医院");
-        tags.add("理发店");
-        tags.add("书店");
-        tags.add("学校");
-        tags.add("工商银行");
-        tags.add("流行服装");
-        tagShopType.setTags(tags);
         tagShopType.setOnTagClickListener(new TagCloudView.OnTagClickListener() {
             @Override
             public void onTagClick(int position) {
-                etSearch.setText(tags.get(position));
+                etSearch.setText(mTags.get(position));
             }
         });
     }
@@ -71,5 +73,26 @@ public class SearchShopActivity extends BaseActivity {
                 startActivity(new Intent(this,SearchResultActivity.class));
                 break;
         }
+    }
+
+    private void getShopCategory() {
+        HashMap<String, Object> params1 = new HashMap<>();
+//        params1.put("category", "");
+        HttpLoader.getInstance().getShopCategory(params1, mCompositeSubscription, new SubscriberCallBack<ShopCategoryEntity>(this,this){
+
+            @Override
+            protected void onSuccess(ShopCategoryEntity response) {
+                super.onSuccess(response);
+                for (ShopCategoryEntity.ListBean listBean : response.getList()) {
+                    mTags.add(listBean.getName());
+                }
+                tagShopType.setTags(mTags);
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
     }
 }

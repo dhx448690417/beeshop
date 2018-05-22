@@ -38,5 +38,20 @@ public interface ApiManager {
     @POST("/index/smscode")
     Observable<String> postMessageCode(@FieldMap HashMap<String, Object> map);
 
+    // 我关注的门店
+    @FormUrlEncoded
+    @POST("/shop/concern")
+    Observable<String> postShops(@FieldMap HashMap<String, Object> map);
+
+    // 我搜索的门店
+    @FormUrlEncoded
+    @POST("/shop/shoplist")
+    Observable<String> postSearchShops(@FieldMap HashMap<String, Object> map);
+
+    // 门店类型
+    @FormUrlEncoded
+    @POST("/shop/category")
+    Observable<String> postShopCategory(@FieldMap HashMap<String, Object> map);
+
 
 }
