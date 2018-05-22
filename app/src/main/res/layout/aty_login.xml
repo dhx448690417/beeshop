@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
-        android:paddingRight="15dp">
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
-        android:paddingRight="15dp">
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
-        android:paddingRight="15dp">
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -110,6 +110,7 @@
             android:layout_marginLeft="110dp"
             android:textColorHint="@color/text_color_gray"
             android:hint="请输入密码"
+            android:inputType="textPassword"
             android:textSize="16sp"
             android:text=""
             android:textColor="@color/text_color_black"

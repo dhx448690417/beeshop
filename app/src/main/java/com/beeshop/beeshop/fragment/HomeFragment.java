@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.activity.RegisterActivity;
 import com.beeshop.beeshop.activity.SearchShopActivity;
 import com.beeshop.beeshop.activity.ShopDetailActivity;
 import com.beeshop.beeshop.adapter.HomeShopAdapter;
@@ -88,6 +89,6 @@ public class HomeFragment extends BaseFragment {
 
     @OnClick(R.id.iv_search)
     public void onViewClicked() {
-        startActivity(new Intent(getActivity(), SearchShopActivity.class));
+        startActivity(new Intent(getActivity(), RegisterActivity.class));
     }
 }

@@ -10,14 +10,14 @@ import com.beeshop.beeshop.adapter.BroadcastAdapter;
 /**
  * Author : cooper
  * Time :  2018/5/22 上午11:26
- * Description : 我的广播
+ * Description : 附近的广播
  */
-public class MyBroadcastActivity extends BaseListActivity<String> {
+public class NearbyBroadcastActivity extends BaseListActivity<String> {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitleAndBackPressListener("我的广播");
+        setTitleAndBackPressListener("附近的广播");
     }
 
     @Override

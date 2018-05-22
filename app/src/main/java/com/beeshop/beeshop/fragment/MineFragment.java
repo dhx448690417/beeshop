@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.activity.MineSettingActivity;
+import com.beeshop.beeshop.activity.MyBroadcastActivity;
 import com.beeshop.beeshop.activity.MyToolsActivity;
 import com.beeshop.beeshop.activity.MyVipActivity;
 
@@ -62,8 +63,10 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.rl_my_vip:
                 startActivity(new Intent(getActivity(), MyVipActivity.class));
+                startActivity(new Intent(getActivity(), MyVipActivity.class));
                 break;
             case R.id.rl_my_broadcast:
+                startActivity(new Intent(getActivity(), MyBroadcastActivity.class));
                 break;
             case R.id.rl_my_tool:
                 startActivity(new Intent(getActivity(), MyToolsActivity.class));

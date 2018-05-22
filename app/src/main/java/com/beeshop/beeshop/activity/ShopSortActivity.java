@@ -10,14 +10,14 @@ import com.beeshop.beeshop.adapter.HomeShopAdapter;
 /**
  * Author：cooper
  * Time：  2018/5/20 上午11:38
- * Description：搜索结果
+ * Description：店铺排行
  */
-public class SearchResultActivity extends BaseListActivity<String> {
+public class ShopSortActivity extends BaseListActivity<String> {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitleAndBackPressListener("我的道具");
+        setTitleAndBackPressListener("店铺排行");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.beeshop.beeshop.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.activity.MyBroadcastActivity;
+import com.beeshop.beeshop.activity.NearbyBroadcastActivity;
+import com.beeshop.beeshop.activity.ShopSortActivity;
 import com.beeshop.beeshop.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -45,10 +49,10 @@ public class StationFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_shop_sort:
-                ToastUtils.showToast("店铺排行");
+                startActivity(new Intent(getActivity(), ShopSortActivity.class));
                 break;
             case R.id.rl_nearby_broadcast:
-                ToastUtils.showToast("附近广播");
+                startActivity(new Intent(getActivity(), NearbyBroadcastActivity.class));
                 break;
             case R.id.rl_want_boradcast:
                 ToastUtils.showToast("我要广播");

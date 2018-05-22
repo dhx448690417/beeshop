@@ -5,6 +5,7 @@ import android.util.Base64;
 
 
 import com.beeshop.beeshop.config.AppConfig;
+import com.beeshop.beeshop.model.UserEntity;
 import com.beeshop.beeshop.utils.GsonUtil;
 import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 import com.google.gson.reflect.TypeToken;
@@ -96,18 +97,18 @@ public class HttpLoader {
     }
 
     /**
-     * 我的定期收益信息
+     * 测试
      * @param params
      * @param compositeSubscription
      * @param subscriber
      */
     public void getTest(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack<Test> subscriber) {
-        normalPost(mApiManager.postLogin(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<Test>>() {//将接口返回的String数据，转换为实体类
+        normalPost(mApiManager.postTest(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<Test>>() {//将接口返回的String数据，转换为实体类
             @Override
             public ResponseEntity<Test> call(String s) {
                 String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
                 ResponseEntity<Test> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<Test>>() {}.getType());
-                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(createRequest(params)),GsonUtil.gsonString(response)));
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
                 return response;
             }
         },subscriber);
@@ -119,26 +120,54 @@ public class HttpLoader {
      * @param compositeSubscription
      * @param subscriber
      */
-//    public void getLogin(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<String> subscriber) {
-//        compositeSubscription.add(mApiManager.postLogin(params)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber)
-//        );
-//    }
-//
-//    /**
-//     * 退出登录
-//     * @param compositeSubscription
-//     * @param subscriber
-//     */
-//    public void getLogout(CompositeSubscription compositeSubscription, SubscriberCallBack subscriber) {
-//        compositeSubscription.add(mApiManager.logout(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber)
-//        );
-//    }
+    public void login(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack<UserEntity> subscriber) {
+        normalPost(mApiManager.postLogin(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<UserEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<UserEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<UserEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<UserEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 注册
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void register(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postRegister(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 获取短信验证码
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getMessageCode(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postMessageCode(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
 
 
 

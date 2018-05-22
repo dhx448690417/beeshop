@@ -5,35 +5,38 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 /**
  * Author：cooper
  * Time：  2018/5/19 上午10:49
- * Description：我的工具
+ * Description：广播
  */
-public class MyToolsAdapter extends RvBaseAdapter<String,MyToolsAdapter.MyToolsViewHolder> {
+public class BroadcastAdapter extends RvBaseAdapter<String,BroadcastAdapter.BroadcatViewHolder> {
 
 
-    public MyToolsAdapter(Context mContext, List<String> mList) {
+    public BroadcastAdapter(Context mContext, List<String> mList) {
         super(mContext, mList);
     }
 
     @Override
-    public MyToolsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyToolsViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_my_tool,parent,false));
+    public BroadcatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new BroadcatViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_broadcast,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(MyToolsViewHolder holder, final int position) {
-        holder.tv_tool_name.setText("暗影战斧");
-        holder.tv_tool_state.setText("已过期");
-        holder.rl_tool.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(BroadcatViewHolder holder, final int position) {
+        holder.tv_bc_title.setText("广播标题");
+        holder.tv_bc_content.setText("广播介绍一下");
+        Glide.with(mContext).load("http://img4.imgtn.bdimg.com/it/u=1853292014,942298160&fm=27&gp=0.jpg").into(holder.iv_broadcast_pic);
+        holder.rl_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mItemOnClickListener != null) {
@@ -43,16 +46,18 @@ public class MyToolsAdapter extends RvBaseAdapter<String,MyToolsAdapter.MyToolsV
         });
     }
 
-    class MyToolsViewHolder extends RecyclerView.ViewHolder{
+    class BroadcatViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView tv_tool_name;
-        public TextView tv_tool_state;
-        public RelativeLayout rl_tool;
-        public MyToolsViewHolder(View itemView) {
+        public ImageView iv_broadcast_pic;
+        public TextView tv_bc_title;
+        public TextView tv_bc_content;
+        public RelativeLayout rl_broadcast;
+        public BroadcatViewHolder(View itemView) {
             super(itemView);
-            tv_tool_name = itemView.findViewById(R.id.tv_tool_name);
-            tv_tool_state = itemView.findViewById(R.id.tv_tool_state);
-            rl_tool = itemView.findViewById(R.id.rl_tool);
+            iv_broadcast_pic = itemView.findViewById(R.id.iv_broadcast_pic);
+            tv_bc_title = itemView.findViewById(R.id.tv_bc_title);
+            tv_bc_content = itemView.findViewById(R.id.tv_bc_content);
+            rl_broadcast = itemView.findViewById(R.id.rl_broadcast);
         }
     }
 }

@@ -35,12 +35,12 @@ public class SharedPreferenceUtil extends Observable {
         return context.getSharedPreferences("user", Context.MODE_PRIVATE);
     }
 
-    public static SharedPreferences getPolarisConfig(Context context) {
-        return context.getSharedPreferences("polaris", Context.MODE_PRIVATE);
+    public static SharedPreferences getBeeShopConfig(Context context) {
+        return context.getSharedPreferences("beeshop", Context.MODE_PRIVATE);
     }
 
-    public static SharedPreferences getPolarisCache(Context context) {
-        return context.getSharedPreferences("polaris_cache", Context.MODE_PRIVATE);
+    public static SharedPreferences getBeeShopCache(Context context) {
+        return context.getSharedPreferences("beeshop_cache", Context.MODE_PRIVATE);
     }
 
 
@@ -85,16 +85,16 @@ public class SharedPreferenceUtil extends Observable {
     /**
      * 存储北极星相关数据
      */
-    public static <T> void putPolarisPreferences(String key, T value) {
-        Editor editor = getPolarisConfig(BeeShopApplication.getInstance().getApplicationContext()).edit();
+    public static <T> void putBeeShopPreferences(String key, T value) {
+        Editor editor = getBeeShopConfig(BeeShopApplication.getInstance().getApplicationContext()).edit();
         putValue(key, value, editor);
     }
 
     /**
      * 读取北极星相关数据
      */
-    public static <T> T getPolarisPreferences(String key, T value) {
-        SharedPreferences sharedPreferences = getPolarisConfig(BeeShopApplication.getInstance().getApplicationContext());
+    public static <T> T getBeeShopPreferences(String key, T value) {
+        SharedPreferences sharedPreferences = getBeeShopConfig(BeeShopApplication.getInstance().getApplicationContext());
         return getValue(key, value, sharedPreferences);
     }
 

@@ -6,4 +6,13 @@ package com.beeshop.beeshop.model;
  * Description :
  */
 public class UserEntity {
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

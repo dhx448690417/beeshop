@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,11 +66,13 @@ public class SplashActivity extends BaseActivity {
         launchIv.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-//                if (!TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_ID, ""))) {
-//                } else {
-//                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-//                }
+
+                if (!TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+
+                } else {
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                }
                 finish();
             }
         }, 3000);

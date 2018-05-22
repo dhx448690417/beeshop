@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/white"
+    android:id="@+id/rl_broadcast"
+    >
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/iv_broadcast_pic"
+        android:layout_width="90dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="6dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_head"
+        />
+    <TextView
+        android:id="@+id/tv_bc_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_broadcast_pic"
+        android:layout_alignTop="@+id/iv_broadcast_pic"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:text="广播标题"
+        android:textColor="@color/text_color_black"
+        android:textSize="18sp"
+        />
+    <TextView
+        android:id="@+id/tv_bc_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_broadcast_pic"
+        android:layout_below="@+id/tv_bc_title"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:lines="1"
+        android:text="广播标题"
+        android:textColor="@color/text_color_gray"
+        android:textSize="15sp"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/ic_arrow" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/background_color"></View>
+</RelativeLayout>
