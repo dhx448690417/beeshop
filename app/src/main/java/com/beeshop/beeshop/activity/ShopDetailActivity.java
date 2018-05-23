@@ -125,7 +125,7 @@ public class ShopDetailActivity extends BaseActivity {
 
     private void getShopDetail() {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("token", "");
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
         params.put("id", mShopId);
         HttpLoader.getInstance().getShopDetail(params, mCompositeSubscription, new SubscriberCallBack<ShopDetailEntity>(this, this) {
 
