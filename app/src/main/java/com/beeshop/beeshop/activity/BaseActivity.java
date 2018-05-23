@@ -63,7 +63,7 @@ public class BaseActivity extends AppCompatActivity implements ProgressControlIn
     /**
      * 是否显示进度对话框
      */
-    protected boolean isShowProgressDialog = true;
+    private boolean isShowProgressDialog = true;
 
     protected CompositeSubscription mCompositeSubscription; // 取消接口订阅
 
@@ -190,11 +190,19 @@ public class BaseActivity extends AppCompatActivity implements ProgressControlIn
     }
 
     /**
+     * 是否显示加载框
+     * @param isShow
+     */
+    protected void isShowProgressDialog(boolean isShow) {
+        this.isShowProgressDialog = isShow;
+    }
+
+    /**
      * 显示加载进度dialog
      */
     protected void showProgressDialog() {
         mShowDialogTimes++;
-        if (mProgressDialog != null && !mProgressDialog.isShowing()) {
+        if (isShowProgressDialog && mProgressDialog != null && !mProgressDialog.isShowing()) {
             mProgressDialog.show();
         }
     }
@@ -263,6 +271,17 @@ public class BaseActivity extends AppCompatActivity implements ProgressControlIn
         textView.setTextColor(color);
         textView.setText(content);
         setRightTextClickListener(listener);
+    }
+
+    /**
+     * 设置右上角文字
+     *
+     * @param content
+     */
+    protected void setRightText(String content) {
+        TextView head_center_tv = (TextView) findViewById(R.id.titleBar_right);
+        head_center_tv.setVisibility(View.VISIBLE);
+        head_center_tv.setText(content);
     }
 
 

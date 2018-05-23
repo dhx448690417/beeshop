@@ -19,8 +19,17 @@ import android.view.ViewGroup;
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.activity.ProductManagerActivity;
 import com.beeshop.beeshop.activity.ShopManagerActivity;
+import com.beeshop.beeshop.adapter.ClientChatAdapter;
 import com.beeshop.beeshop.adapter.HomeShopAdapter;
+import com.beeshop.beeshop.model.ClientChatEntity;
+import com.beeshop.beeshop.model.ProductDetailEntity;
 import com.beeshop.beeshop.model.Shop;
+import com.beeshop.beeshop.net.HttpLoader;
+import com.beeshop.beeshop.net.ResponseEntity;
+import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.LogUtil;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
+import com.beeshop.beeshop.utils.ToastUtils;
 import com.scwang.smartrefresh.header.DeliveryHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -28,6 +37,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -50,8 +60,8 @@ public class ClientFragment extends BaseFragment {
     Toolbar toolbar;
     Unbinder unbinder;
 
-    private List<Shop.ListBean> mShopList = new ArrayList<>();
-    private HomeShopAdapter mHomeShopAdapter;
+    private List<ClientChatEntity.ListBean> mChatList = new ArrayList<>();
+    private ClientChatAdapter mClientChatAdapter;
 
     @Override
     protected View getRootView(LayoutInflater inflater, @Nullable ViewGroup container) {
@@ -87,33 +97,46 @@ public class ClientFragment extends BaseFragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
 
-        Shop.ListBean listBean = new Shop.ListBean();
-        mShopList.add(listBean);
-        mShopList.add(listBean);
-        mShopList.add(listBean);
-        mShopList.add(listBean);
-        mShopList.add(listBean);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mHomeShopAdapter = new HomeShopAdapter(getActivity(), mShopList);
+        mClientChatAdapter = new ClientChatAdapter(getActivity(), mChatList);
         rvHome.setLayoutManager(linearLayoutManager);
-        rvHome.setAdapter(mHomeShopAdapter);
+        rvHome.setAdapter(mClientChatAdapter);
 
         srlHome.setRefreshHeader(new DeliveryHeader(getActivity()));
+        srlHome.setEnableLoadMore(false);
         srlHome.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                srlHome.finishRefresh(2000);
+                mChatList.clear();
+                getChat();
             }
         });
-        srlHome.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                srlHome.finishLoadMore(2000);
-            }
-        });
+        srlHome.autoRefresh();
+    }
 
+
+    private void getChat() {
+        HashMap<String, Object> params1 = new HashMap<>();
+        params1.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
+        HttpLoader.getInstance().getChat(params1, mCompositeSubscription, new SubscriberCallBack<ClientChatEntity>() {
+
+            @Override
+            protected void onSuccess(ClientChatEntity response) {
+                super.onSuccess(response);
+                mChatList.addAll(response.getList());
+                mClientChatAdapter.notifyDataSetChanged();
+                srlHome.finishRefresh();
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+                LogUtil.e(errorBean.getMsg());
+            }
+
+        });
     }
 
 

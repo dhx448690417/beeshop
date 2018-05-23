@@ -5,9 +5,12 @@ import android.util.Base64;
 
 
 import com.beeshop.beeshop.config.AppConfig;
+import com.beeshop.beeshop.model.ClientChatEntity;
+import com.beeshop.beeshop.model.ProductDetailEntity;
 import com.beeshop.beeshop.model.SearchShopEntity;
 import com.beeshop.beeshop.model.Shop;
 import com.beeshop.beeshop.model.ShopCategoryEntity;
+import com.beeshop.beeshop.model.ShopDetailEntity;
 import com.beeshop.beeshop.model.UserEntity;
 import com.beeshop.beeshop.utils.GsonUtil;
 import com.beeshop.beeshop.utils.SharedPreferenceUtil;
@@ -220,6 +223,78 @@ public class HttpLoader {
             public ResponseEntity<ShopCategoryEntity> call(String s) {
                 String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
                 ResponseEntity<ShopCategoryEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<ShopCategoryEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 店铺详情
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getShopDetail(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<ShopDetailEntity> subscriber) {
+        normalPost(mApiManager.postShopDetail(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<ShopDetailEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<ShopDetailEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<ShopDetailEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<ShopDetailEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 店铺的关注or取消关注
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void collect(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postCollect(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 产品详情
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getProductInfo(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<ProductDetailEntity> subscriber) {
+        normalPost(mApiManager.postProductInfo(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<ProductDetailEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<ProductDetailEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<ProductDetailEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<ProductDetailEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 客户聊天列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getChat(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<ClientChatEntity> subscriber) {
+        normalPost(mApiManager.postCustomer(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<ClientChatEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<ClientChatEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<ClientChatEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<ClientChatEntity>>() {}.getType());
                 LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
                 return response;
             }

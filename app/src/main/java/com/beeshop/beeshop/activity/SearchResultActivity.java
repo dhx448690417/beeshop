@@ -1,6 +1,7 @@
 package com.beeshop.beeshop.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
@@ -13,6 +14,9 @@ import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.ResponseEntity;
 import com.beeshop.beeshop.net.SubscriberCallBack;
 import com.beeshop.beeshop.utils.ToastUtils;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.HashMap;
 
@@ -24,6 +28,8 @@ import java.util.HashMap;
 public class SearchResultActivity extends BaseListActivity<Shop.ListBean> {
 
     private HomeShopAdapter mSearchShops;
+    private String mCategory;
+    private int mCurrentPage = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,20 +50,44 @@ public class SearchResultActivity extends BaseListActivity<Shop.ListBean> {
     @Override
     protected void initView() {
         super.initView();
+        isShowProgressDialog(true);
         searchShops();
+
+        mSrlRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                isShowProgressDialog(false);
+                mList.clear();
+                mCurrentPage = 1;
+                searchShops();
+            }
+        });
+        mSrlRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                isShowProgressDialog(false);
+
+                searchShops();
+            }
+        });
     }
 
     private void searchShops() {
         HashMap<String, Object> params1 = new HashMap<>();
-//        params1.put("category", "");
+//        params1.put("token", "");
+        params1.put("page", mCurrentPage);
+        params1.put("category", mCategory);
         HttpLoader.getInstance().getSearchShops(params1, mCompositeSubscription, new SubscriberCallBack<SearchShopEntity>(this,this){
 
             @Override
             protected void onSuccess(SearchShopEntity response) {
                 super.onSuccess(response);
-                mList.clear();
+                mCurrentPage++;
                 mList.addAll(response.getList());
                 mSearchShops.notifyDataSetChanged();
+
+                mSrlRefresh.finishRefresh();
+                mSrlRefresh.finishLoadMore();
             }
 
             @Override

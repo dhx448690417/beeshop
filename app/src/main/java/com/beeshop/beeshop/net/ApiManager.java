@@ -53,5 +53,25 @@ public interface ApiManager {
     @POST("/shop/category")
     Observable<String> postShopCategory(@FieldMap HashMap<String, Object> map);
 
+    // 门店详情
+    @FormUrlEncoded
+    @POST("/shop/shophome")
+    Observable<String> postShopDetail(@FieldMap HashMap<String, Object> map);
+
+    // 门店 关注/取消关注
+    @FormUrlEncoded
+    @POST("/shop/setconcern")
+    Observable<String> postCollect(@FieldMap HashMap<String, Object> map);
+
+    // 产品详情
+    @FormUrlEncoded
+    @POST("/shop/productinfo")
+    Observable<String> postProductInfo(@FieldMap HashMap<String, Object> map);
+
+    // 产品详情
+    @FormUrlEncoded
+    @POST("/shop/customer")
+    Observable<String> postCustomer(@FieldMap HashMap<String, Object> map);
+
 
 }
