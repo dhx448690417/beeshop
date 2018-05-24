@@ -1,8 +1,6 @@
 package com.beeshop.beeshop.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,13 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.activity.VipMyMemberActivity;
 import com.beeshop.beeshop.activity.ProductManagerActivity;
 import com.beeshop.beeshop.activity.ShopManagerActivity;
+import com.beeshop.beeshop.activity.VipTypeActivity;
 import com.beeshop.beeshop.adapter.ClientChatAdapter;
-import com.beeshop.beeshop.adapter.HomeShopAdapter;
 import com.beeshop.beeshop.model.ClientChatEntity;
-import com.beeshop.beeshop.model.ProductDetailEntity;
-import com.beeshop.beeshop.model.Shop;
 import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.ResponseEntity;
 import com.beeshop.beeshop.net.SubscriberCallBack;
@@ -33,7 +30,6 @@ import com.beeshop.beeshop.utils.ToastUtils;
 import com.scwang.smartrefresh.header.DeliveryHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -41,7 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
@@ -84,8 +79,10 @@ public class ClientFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), ProductManagerActivity.class));
                 break;
             case R.id.vip_manage:
+                startActivity(new Intent(getActivity(), VipMyMemberActivity.class));
                 break;
             case R.id.vip_kind_manage:
+                startActivity(new Intent(getActivity(), VipTypeActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

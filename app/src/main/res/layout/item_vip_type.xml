@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@color/white"
+    android:id="@+id/rl_vip_type"
+    >
+    <ImageView
+        android:id="@+id/iv_vip_type"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/img_no_url"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/tv_type_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="6dp"
+        android:layout_alignTop="@+id/iv_vip_type"
+        android:text="一级会员"
+        android:textColor="@color/text_color_black"
+        android:textSize="20sp"
+        android:layout_toRightOf="@+id/iv_vip_type"
+        android:layout_marginLeft="10dp"
+        />
+    <TextView
+        android:id="@+id/tv_type_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:text="会员不错"
+        android:textColor="@color/text_color_gray"
+        android:textSize="15sp"
+        android:lines="3"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:layout_toRightOf="@+id/iv_vip_type"
+        android:layout_below="@+id/tv_type_name"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/background_color"
+        android:layout_below="@+id/iv_shop"
+        ></View>
+</RelativeLayout>
