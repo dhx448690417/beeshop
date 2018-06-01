@@ -104,6 +104,12 @@ public class HomeFragment extends BaseFragment {
         startActivity(new Intent(getActivity(), SearchShopActivity.class));
     }
 
+    @Override
+    protected void reFrensh() {
+        super.reFrensh();
+        srlHome.autoRefresh();
+    }
+
     private void getShops() {
         HashMap<String, Object> params1 = new HashMap<>();
         params1.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
@@ -112,15 +118,31 @@ public class HomeFragment extends BaseFragment {
             @Override
             protected void onSuccess(Shop response) {
                 super.onSuccess(response);
-                mShopList.clear();
-                mShopList.addAll(response.getList());
-                mHomeShopAdapter.notifyDataSetChanged();
-                srlHome.finishRefresh();
+                if (response.getList().size() > 0) {
+                    mShopList.clear();
+                    mShopList.addAll(response.getList());
+                    mHomeShopAdapter.notifyDataSetChanged();
+                    hideNoContentView();
+                } else {
+                    showNoContentView();
+                }
             }
 
             @Override
             protected void onFailure(ResponseEntity errorBean) {
                 ToastUtils.showToast(errorBean.getMsg());
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                srlHome.finishRefresh();
+            }
+
+            @Override
+            protected void onNetFailure(ResponseEntity errorBean) {
+                super.onNetFailure(errorBean);
+                showNoNetWork();
             }
         });
     }

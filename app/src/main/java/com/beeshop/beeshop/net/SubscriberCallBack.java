@@ -23,11 +23,13 @@ import rx.Subscriber;
  */
 public abstract class SubscriberCallBack<T> extends Subscriber<ResponseEntity<T>> {
 
-    private final int ERROR_CODE_NO_LOGIN = 401; //用户未登录
+    private final int ERROR_CODE_NO_LOGIN = 210; //用户未登录
     private final int ERROR_CODE_OTHER_LOGIN = 1510; //其他设备登录下线处理
     private final int ERROR_CODE_OTHER_EXCEPTION = 1000; //其他异常
     private final int ERROR_CODE_NO_NET = 1001; //网络未连接
     private final int ERROR_CODE_NET_CONNECT_EXCEPTION = 1002; //网络连接异常
+
+    private final int ERROR_CODE_NO_SHOP = 410; // 没有开店
 
     private ProgressControlInterface mProgressControlInterface;
     private WeakReference<Activity> mActivityWeakReference;

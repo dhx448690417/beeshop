@@ -72,6 +72,12 @@ public class SearchResultActivity extends BaseListActivity<Shop.ListBean> {
         });
     }
 
+    @Override
+    protected void reFrensh() {
+        super.reFrensh();
+        searchShops();
+    }
+
     private void searchShops() {
         HashMap<String, Object> params1 = new HashMap<>();
 //        params1.put("token", "");
@@ -82,10 +88,21 @@ public class SearchResultActivity extends BaseListActivity<Shop.ListBean> {
             @Override
             protected void onSuccess(SearchShopEntity response) {
                 super.onSuccess(response);
-                mCurrentPage++;
-                mList.addAll(response.getList());
-                mSearchShops.notifyDataSetChanged();
 
+                if (response.getList().size() > 0) {
+                    mCurrentPage++;
+                    mList.addAll(response.getList());
+                    mSearchShops.notifyDataSetChanged();
+                    hideNoContentView();
+                } else {
+                    showNoContentView();
+                }
+
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
                 mSrlRefresh.finishRefresh();
                 mSrlRefresh.finishLoadMore();
             }
@@ -93,6 +110,12 @@ public class SearchResultActivity extends BaseListActivity<Shop.ListBean> {
             @Override
             protected void onFailure(ResponseEntity errorBean) {
                 ToastUtils.showToast(errorBean.getMsg());
+            }
+
+            @Override
+            protected void onNetFailure(ResponseEntity errorBean) {
+                super.onNetFailure(errorBean);
+                showNoNetWork();
             }
         });
     }

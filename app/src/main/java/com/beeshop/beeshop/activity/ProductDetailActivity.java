@@ -91,7 +91,7 @@ public class ProductDetailActivity extends BaseActivity {
         imageList.add("http://img2.imgtn.bdimg.com/it/u=2232213457,2695021481&fm=27&gp=0.jpg");
         imageList.add("http://img0.imgtn.bdimg.com/it/u=412350416,2059446610&fm=27&gp=0.jpg");
         imageList.add("http://img3.imgtn.bdimg.com/it/u=2645597901,3299484952&fm=27&gp=0.jpg");
-        imageList.add("http://img2.imgtn.bdimg.com/it/u=3373321088,605628612&fm=27&gp=0.jpg");
+        imageList.add("http://img2.imgtn.bdimg.com/it/u=97747901,3204014835&fm=27&gp=0.jpg");
 
         banner.setData(imageList, null);
 

@@ -1,11 +1,13 @@
 package com.beeshop.beeshop.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.adapter.ItemOnClickListener;
 import com.beeshop.beeshop.adapter.MyVipAdapter;
 
 import java.util.ArrayList;
@@ -49,5 +51,13 @@ public class MyVipActivity extends BaseActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvMyVip.setLayoutManager(linearLayoutManager);
         rvMyVip.setAdapter(myVipAdapter);
+
+        myVipAdapter.setmItemOnClickListener(new ItemOnClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(MyVipActivity.this, MyVipDetailActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

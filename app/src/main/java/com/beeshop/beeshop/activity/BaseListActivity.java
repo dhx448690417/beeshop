@@ -37,8 +37,10 @@ public abstract class BaseListActivity<T> extends BaseActivity {
     protected void initView() {
         mRvList = this.findViewById(R.id.rv_list);
         mSrlRefresh = this.findViewById(R.id.srl_refresh);
-        mSrlRefresh.setRefreshHeader(new DeliveryHeader(this));
-        mSrlRefresh.setRefreshFooter(new ClassicsFooter(this));
+        if (mSrlRefresh != null) {
+            mSrlRefresh.setRefreshHeader(new DeliveryHeader(this));
+            mSrlRefresh.setRefreshFooter(new ClassicsFooter(this));
+        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRvList.setLayoutManager(linearLayoutManager);

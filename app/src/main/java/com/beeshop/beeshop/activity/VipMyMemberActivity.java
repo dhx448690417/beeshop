@@ -11,9 +11,18 @@ import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.adapter.ItemOnClickListener;
 import com.beeshop.beeshop.adapter.VipMemberLeftAdapter;
 import com.beeshop.beeshop.adapter.VipMemberRightAdapter;
+import com.beeshop.beeshop.model.Shop;
+import com.beeshop.beeshop.model.VipEntity;
+import com.beeshop.beeshop.model.VipTypeEntity;
+import com.beeshop.beeshop.net.HttpLoader;
+import com.beeshop.beeshop.net.ResponseEntity;
+import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
+import com.beeshop.beeshop.utils.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,8 +40,8 @@ public class VipMyMemberActivity extends BaseActivity {
     @BindView(R.id.rv_vip_member)
     RecyclerView rvVipMember;
 
-    protected List<String> mVipTypeList = new ArrayList<>();
-    protected List<String> mVipMemberList = new ArrayList<>();
+    protected List<VipTypeEntity.ListBean> mVipTypeList = new ArrayList<>();
+    protected List<VipEntity.ListBean> mVipMemberList = new ArrayList<>();
     private VipMemberLeftAdapter mVipMemberLeftAdapter;
     private VipMemberRightAdapter mVipMemberRightAdapter;
 
@@ -60,19 +69,9 @@ public class VipMyMemberActivity extends BaseActivity {
         rvVipType.setLayoutManager(linearLayoutManager);
         rvVipMember.setLayoutManager(linearLayoutManager1);
 
-        mVipTypeList.add("");
-        mVipTypeList.add("");
-        mVipTypeList.add("");
-        mVipTypeList.add("");
-        mVipTypeList.add("");
         mVipMemberLeftAdapter = new VipMemberLeftAdapter(this, mVipTypeList);
 
-        mVipMemberList.add("");
-        mVipMemberList.add("");
-        mVipMemberList.add("");
-        mVipMemberList.add("");
-        mVipMemberList.add("");
-        mVipMemberList.add("");
+
         mVipMemberRightAdapter = new VipMemberRightAdapter(this, mVipMemberList);
         mVipMemberRightAdapter.setmItemOnClickListener(new ItemOnClickListener() {
             @Override
@@ -83,5 +82,80 @@ public class VipMyMemberActivity extends BaseActivity {
         });
         rvVipType.setAdapter(mVipMemberLeftAdapter);
         rvVipMember.setAdapter(mVipMemberRightAdapter);
+
+        getVipList();
+        getVipTypeList();
+    }
+
+    private void getVipList() {
+        HashMap<String, Object> params1 = new HashMap<>();
+        params1.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
+        HttpLoader.getInstance().getVipList(params1, mCompositeSubscription, new SubscriberCallBack<VipEntity>(this,this){
+
+            @Override
+            protected void onSuccess(VipEntity response) {
+                super.onSuccess(response);
+                mVipMemberList.clear();
+                mVipMemberList.addAll(response.getList());
+                mVipMemberRightAdapter.notifyDataSetChanged();
+
+//                if (response.getList().size() > 0) {
+//
+//                    hideNoContentView();
+//                } else {
+//                    showNoContentView();
+//                }
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+
+            @Override
+            protected void onNetFailure(ResponseEntity errorBean) {
+                super.onNetFailure(errorBean);
+                showNoNetWork();
+            }
+        });
+    }
+
+    private void getVipTypeList() {
+        HashMap<String, Object> params1 = new HashMap<>();
+        params1.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        HttpLoader.getInstance().getVipTypeList(params1, mCompositeSubscription, new SubscriberCallBack<VipTypeEntity>(this, this) {
+
+            @Override
+            protected void onSuccess(VipTypeEntity response) {
+                super.onSuccess(response);
+                mVipTypeList.addAll(response.getList());
+                mVipMemberLeftAdapter.notifyDataSetChanged();
+
+//                if (response.getList().size() > 0) {
+//                    hideNoContentView();
+//                } else {
+//                    showNoContentView();
+//                }
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+//                if (errorBean.getCode() == 410) {
+//                    showNoContentView();
+//                }
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+
+            @Override
+            protected void onNetFailure(ResponseEntity errorBean) {
+                super.onNetFailure(errorBean);
+                showNoNetWork();
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+        });
     }
 }

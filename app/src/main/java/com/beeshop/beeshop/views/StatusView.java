@@ -67,7 +67,7 @@ public class StatusView extends RelativeLayout {
      * 无网络状态
      */
     public void setNoNetStatus() {
-        mInfoTv.setText("数据加载失败,请从新加载");
+        mInfoTv.setText("数据加载失败，点击页面重新加载。");
         mInfoIv.setBackgroundResource(R.drawable.net_error);
 //        mReloadTv.setVisibility(VISIBLE);
 //        mReloadTv.setOnClickListener(new OnClickListener() {

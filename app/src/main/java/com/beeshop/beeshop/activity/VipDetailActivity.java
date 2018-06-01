@@ -10,12 +10,21 @@ import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.adapter.RecordAdapter;
+import com.beeshop.beeshop.model.PayHistoryRecord;
+import com.beeshop.beeshop.model.RechargeHistoryRecord;
+import com.beeshop.beeshop.model.VipTypeEntity;
+import com.beeshop.beeshop.net.HttpLoader;
+import com.beeshop.beeshop.net.ResponseEntity;
+import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
+import com.beeshop.beeshop.utils.ToastUtils;
 import com.beeshop.beeshop.views.ListViewForScrollView;
 
 import org.angmarch.views.NiceSpinner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,6 +97,13 @@ public class VipDetailActivity extends BaseActivity {
 
     private RecordAdapter mRecordAdapter;
     private List<String> mRecordList = new ArrayList<>();
+
+    private String mRemark;
+    private String mVipName;
+    private String mMemberClassId;
+    private String mUserId;
+    private String mMoney;
+    private String mDescribe;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -176,6 +192,172 @@ public class VipDetailActivity extends BaseActivity {
                 vPayRecord.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    /**
+     * 更新会员
+     *
+     */
+    private void updateVip() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        params.put("member_class_id", mMemberClassId);
+        params.put("user_id", mUserId);
+        params.put("remark", mRemark);
+        params.put("member_id", mVipName);
+        HttpLoader.getInstance().addVip(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
+
+            @Override
+            protected void onSuccess(ResponseEntity response) {
+                super.onSuccess(response);
+                ToastUtils.showToast("更新会员成功");
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
+    }
+
+    /**
+     * 充值
+     *
+     */
+    private void recharge() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        params.put("money", mMoney);
+        params.put("user_id", mUserId);
+        params.put("remark", mRemark);
+        params.put("member_id", mVipName);
+        params.put("describe", mDescribe);
+//        params.put("give", "");
+        HttpLoader.getInstance().recharge(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
+
+            @Override
+            protected void onSuccess(ResponseEntity response) {
+                super.onSuccess(response);
+                ToastUtils.showToast("充值成功");
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
+    }
+
+    /**
+     * 消费
+     *
+     */
+    private void pay() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        params.put("money", mMoney);
+        params.put("user_id", mUserId);
+        params.put("member_id", mVipName);
+        params.put("describe", mDescribe);
+        HttpLoader.getInstance().pay(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
+
+            @Override
+            protected void onSuccess(ResponseEntity response) {
+                super.onSuccess(response);
+                ToastUtils.showToast("消费成功");
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
+    }
+
+    /**
+     * 获取消费记录
+     */
+    private void getPayHistoryRecord() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
+        params.put("user_id", mUserId);
+        params.put("member_id", mVipName);
+        HttpLoader.getInstance().payHistoryRecord(params, mCompositeSubscription, new SubscriberCallBack<PayHistoryRecord>(this,this){
+
+            @Override
+            protected void onSuccess(PayHistoryRecord response) {
+                super.onSuccess(response);
+                if (response.getList().size() > 0) {
+//                    mList.addAll(response.getList());
+//                    mVipTypeAdapter.notifyDataSetChanged();
+                    hideNoContentView();
+                } else {
+                    showNoContentView();
+                }
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                if (errorBean.getCode() == 410) {
+                    showNoContentView();
+                }
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+
+            @Override
+            protected void onNetFailure(ResponseEntity errorBean) {
+                super.onNetFailure(errorBean);
+                showNoNetWork();
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+        });
+    }
+
+    /**
+     * 获取充值记录
+     */
+    private void getRechargeHistoryRecord() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
+        params.put("user_id", mUserId);
+        params.put("member_id", mVipName);
+        HttpLoader.getInstance().rechargeHistoryRecord(params, mCompositeSubscription, new SubscriberCallBack<RechargeHistoryRecord>(this,this){
+
+            @Override
+            protected void onSuccess(RechargeHistoryRecord response) {
+                super.onSuccess(response);
+                if (response.getList().size() > 0) {
+//                    mList.addAll(response.getList());
+//                    mVipTypeAdapter.notifyDataSetChanged();
+                    hideNoContentView();
+                } else {
+                    showNoContentView();
+                }
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                if (errorBean.getCode() == 410) {
+                    showNoContentView();
+                }
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+
+            @Override
+            protected void onNetFailure(ResponseEntity errorBean) {
+                super.onNetFailure(errorBean);
+                showNoNetWork();
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+        });
     }
 
 }

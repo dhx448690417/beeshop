@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.activity.MyShopActivity;
 import com.beeshop.beeshop.activity.VipMyMemberActivity;
 import com.beeshop.beeshop.activity.ProductManagerActivity;
 import com.beeshop.beeshop.activity.ShopManagerActivity;
@@ -73,7 +74,7 @@ public class ClientFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.shop_manage:
-                startActivity(new Intent(getActivity(), ShopManagerActivity.class));
+                startActivity(new Intent(getActivity(), MyShopActivity.class));
                 break;
             case R.id.product_manage:
                 startActivity(new Intent(getActivity(), ProductManagerActivity.class));
@@ -114,6 +115,12 @@ public class ClientFragment extends BaseFragment {
     }
 
 
+    @Override
+    protected void reFrensh() {
+        super.reFrensh();
+        srlHome.autoRefresh();
+    }
+
     private void getChat() {
         HashMap<String, Object> params1 = new HashMap<>();
         params1.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
@@ -122,9 +129,14 @@ public class ClientFragment extends BaseFragment {
             @Override
             protected void onSuccess(ClientChatEntity response) {
                 super.onSuccess(response);
-                mChatList.addAll(response.getList());
-                mClientChatAdapter.notifyDataSetChanged();
-                srlHome.finishRefresh();
+                if (response.getList().size() > 0) {
+                    mChatList.addAll(response.getList());
+                    mClientChatAdapter.notifyDataSetChanged();
+                    hideNoContentView();
+                } else {
+                    showNoContentView();
+                }
+
             }
 
             @Override
@@ -133,6 +145,17 @@ public class ClientFragment extends BaseFragment {
                 LogUtil.e(errorBean.getMsg());
             }
 
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                srlHome.finishRefresh();
+            }
+
+            @Override
+            protected void onNetFailure(ResponseEntity errorBean) {
+                super.onNetFailure(errorBean);
+                showNoNetWork();
+            }
         });
     }
 

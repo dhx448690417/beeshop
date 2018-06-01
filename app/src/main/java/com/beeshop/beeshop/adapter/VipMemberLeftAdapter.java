@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.VipTypeEntity;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ import java.util.List;
  * Time：  2018/5/19 上午10:49
  * Description：我的会员左侧
  */
-public class VipMemberLeftAdapter extends RvBaseAdapter<String,VipMemberLeftAdapter.MyToolsViewHolder> {
+public class VipMemberLeftAdapter extends RvBaseAdapter<VipTypeEntity.ListBean,VipMemberLeftAdapter.MyToolsViewHolder> {
 
 
-    public VipMemberLeftAdapter(Context mContext, List<String> mList) {
+    public VipMemberLeftAdapter(Context mContext, List<VipTypeEntity.ListBean> mList) {
         super(mContext, mList);
     }
 
@@ -31,7 +32,8 @@ public class VipMemberLeftAdapter extends RvBaseAdapter<String,VipMemberLeftAdap
 
     @Override
     public void onBindViewHolder(MyToolsViewHolder holder, final int position) {
-        holder.tv_vip_type_name.setText("一级会员");
+        VipTypeEntity.ListBean listBean = mList.get(position);
+        holder.tv_vip_type_name.setText(listBean.getTitle());
         holder.rl_vip_member_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

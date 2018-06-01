@@ -7,10 +7,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.net.HttpLoader;
+import com.beeshop.beeshop.net.ResponseEntity;
+import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
+import com.beeshop.beeshop.utils.ToastUtils;
 
 import org.angmarch.views.NiceSpinner;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,6 +39,11 @@ public class VipAddActivity extends BaseActivity {
     @BindView(R.id.tv_vip_add)
     TextView tvVipAdd;
 
+    private String mPhone;
+    private String mRemark;
+    private String mVipName;
+    private String mMemberClassId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,5 +65,31 @@ public class VipAddActivity extends BaseActivity {
             }
         });
 
+    }
+
+    /**
+     * 添加会员
+     *
+     */
+    private void addVip() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        params.put("member_class_id", mMemberClassId);
+        params.put("phone", mPhone);
+        params.put("remark", mRemark);
+//        params.put("name", mVipName);
+        HttpLoader.getInstance().addVip(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
+
+            @Override
+            protected void onSuccess(ResponseEntity response) {
+                super.onSuccess(response);
+                ToastUtils.showToast("添加会员成功");
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
     }
 }

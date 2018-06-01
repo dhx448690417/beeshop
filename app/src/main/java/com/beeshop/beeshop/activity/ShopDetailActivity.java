@@ -116,9 +116,9 @@ public class ShopDetailActivity extends BaseActivity {
         });
         List<String> imageList = new ArrayList<>();
         imageList.add("http://img4.imgtn.bdimg.com/it/u=3730565220,1475936246&fm=27&gp=0.jpg");
-        imageList.add("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=742456348,2972158456&fm=27&gp=0.jpg");
-        imageList.add("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1757891169,1150399296&fm=27&gp=0.jpg");
-        imageList.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3660015256,3208948633&fm=27&gp=0.jpg");
+        imageList.add("http://img4.imgtn.bdimg.com/it/u=3882041707,3819813181&fm=27&gp=0.jpg");
+        imageList.add("http://img1.imgtn.bdimg.com/it/u=2558221527,3165070826&fm=27&gp=0.jpg");
+        imageList.add("http://img1.imgtn.bdimg.com/it/u=4274803127,1354140264&fm=27&gp=0.jpg");
 
         banner.setData(imageList, null);
     }

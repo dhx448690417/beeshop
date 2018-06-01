@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.VipEntity;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ import java.util.List;
  * Time：  2018/5/19 上午10:49
  * Description：我的会员right
  */
-public class VipMemberRightAdapter extends RvBaseAdapter<String,VipMemberRightAdapter.MyToolsViewHolder> {
+public class VipMemberRightAdapter extends RvBaseAdapter<VipEntity.ListBean,VipMemberRightAdapter.MyToolsViewHolder> {
 
 
-    public VipMemberRightAdapter(Context mContext, List<String> mList) {
+    public VipMemberRightAdapter(Context mContext, List<VipEntity.ListBean> mList) {
         super(mContext, mList);
     }
 
@@ -31,8 +32,9 @@ public class VipMemberRightAdapter extends RvBaseAdapter<String,VipMemberRightAd
 
     @Override
     public void onBindViewHolder(MyToolsViewHolder holder, final int position) {
-        holder.tv_vip_member_name.setText("隔壁老王");
-        holder.tv_money.setText("剩余：250元");
+        VipEntity.ListBean listBean = mList.get(position);
+        holder.tv_vip_member_name.setText(listBean.getPhone());
+        holder.tv_money.setText("剩余："+listBean.getMoney()+"元");
         holder.rl_vip_member_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

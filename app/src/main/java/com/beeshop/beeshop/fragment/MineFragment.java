@@ -63,7 +63,6 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.rl_my_vip:
                 startActivity(new Intent(getActivity(), MyVipActivity.class));
-                startActivity(new Intent(getActivity(), MyVipActivity.class));
                 break;
             case R.id.rl_my_broadcast:
                 startActivity(new Intent(getActivity(), MyBroadcastActivity.class));

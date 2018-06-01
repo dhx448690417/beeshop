@@ -73,5 +73,55 @@ public interface ApiManager {
     @POST("/shop/customer")
     Observable<String> postCustomer(@FieldMap HashMap<String, Object> map);
 
+    // 会员分类
+    @FormUrlEncoded
+    @POST("/shop/memberclass")
+    Observable<String> postVipTypeList(@FieldMap HashMap<String, Object> map);
+
+    // 添加会员分类
+    @FormUrlEncoded
+    @POST("/shop/addmemberclass")
+    Observable<String> postAddVipType(@FieldMap HashMap<String, Object> map);
+
+    // 便捷会员分类
+    @FormUrlEncoded
+    @POST("/shop/upmemberclass")
+    Observable<String> postUpdateVipType(@FieldMap HashMap<String, Object> map);
+
+    // 会员列表
+    @FormUrlEncoded
+    @POST("/shop/shopmember")
+    Observable<String> postVipList(@FieldMap HashMap<String, Object> map);
+
+    // 添加会员
+    @FormUrlEncoded
+    @POST("/shop/addmember")
+    Observable<String> postAddVip(@FieldMap HashMap<String, Object> map);
+
+    // 更新会员
+    @FormUrlEncoded
+    @POST("/shop/upmember")
+    Observable<String> postUpdateVip(@FieldMap HashMap<String, Object> map);
+
+    // 充值
+    @FormUrlEncoded
+    @POST("/shop/memberrecharge")
+    Observable<String> postRecharge(@FieldMap HashMap<String, Object> map);
+
+    // 消费
+    @FormUrlEncoded
+    @POST("/shop/memberconsume")
+    Observable<String> postPay(@FieldMap HashMap<String, Object> map);
+
+    // 消费记录
+    @FormUrlEncoded
+    @POST("/shop/memberconsumehistory")
+    Observable<String> postPayHistoryRecord(@FieldMap HashMap<String, Object> map);
+
+    // 充值记录
+    @FormUrlEncoded
+    @POST("/shop/memberrechargehistory")
+    Observable<String> postRechargeHistoryRecord(@FieldMap HashMap<String, Object> map);
+
 
 }
