@@ -69,6 +69,30 @@
         <activity
             android:name=".activity.ShopSortActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.VipTypeActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.VipTypeUpdateActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.VipMyMemberActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.VipAddActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.VipDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.MyVipDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.MyShopActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.BroadcastDetailActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

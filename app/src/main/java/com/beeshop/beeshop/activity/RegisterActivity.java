@@ -132,7 +132,7 @@ public class RegisterActivity extends BaseActivity {
             case R.id.tv_forget_password:
                 break;
             case R.id.tv_goto_login:
-                startActivity(new Intent(this,LoginActivity.class));
+                this.finish();
                 break;
         }
     }

@@ -5,17 +5,27 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.adapter.HomeShopAdapter;
 import com.beeshop.beeshop.adapter.OnRecycleItemClickListener;
+import com.beeshop.beeshop.adapter.ShopDetailProductAdapter;
 import com.beeshop.beeshop.model.Shop;
+import com.beeshop.beeshop.model.ShopDetailEntity;
+import com.beeshop.beeshop.net.HttpLoader;
+import com.beeshop.beeshop.net.ResponseEntity;
+import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
+import com.beeshop.beeshop.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,8 +46,14 @@ public class ShopDetailActivity extends BaseActivity {
     @BindView(R.id.rv_products)
     RecyclerView rvProducts;
 
-    private List<Shop.ListBean> mShopList = new ArrayList<>();
-    private HomeShopAdapter mHomeShopAdapter;
+    public static final String PARAM_SHOP_ID = "id";
+    public final int COLLECT_SHOP = 2; // 关注店铺
+    public final int NOT_COLLECT_SHOP = 1; // 取消关注店铺
+
+    private List<ShopDetailEntity.ProductBean> mShopList = new ArrayList<>();
+    private ShopDetailProductAdapter mShopDetailProductAdapter;
+    private int mShopId;
+    private boolean mIsCollected; //是否关注收藏
 
 
     @Override
@@ -46,27 +62,37 @@ public class ShopDetailActivity extends BaseActivity {
         setContentView(R.layout.aty_shop_detail);
         ButterKnife.bind(this);
         setTitleAndBackPressListener("蜂店");
+        setRightTextClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
+                    startActivity(new Intent(ShopDetailActivity.this,LoginActivity.class));
+                    return;
+                }
+                if (mIsCollected) {
+                    collect(NOT_COLLECT_SHOP);
+                } else {
+                    collect(COLLECT_SHOP);
+                }
+            }
+        });
         initBanner();
-
+        mShopId = getIntent().getIntExtra(PARAM_SHOP_ID,0);
         initView();
     }
 
     private void initView() {
-        Shop.ListBean listBean = new Shop.ListBean();
-        mShopList.add(listBean);
-        mShopList.add(listBean);
-        mShopList.add(listBean);
-        mShopList.add(listBean);
-        mShopList.add(listBean);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvProducts.setLayoutManager(linearLayoutManager);
-        mHomeShopAdapter = new HomeShopAdapter(this, mShopList);
-        rvProducts.setAdapter(mHomeShopAdapter);
-        mHomeShopAdapter.setOnRecycleItemClickListener(new OnRecycleItemClickListener() {
+        mShopDetailProductAdapter = new ShopDetailProductAdapter(this, mShopList);
+        rvProducts.setAdapter(mShopDetailProductAdapter);
+        mShopDetailProductAdapter.setOnRecycleItemClickListener(new OnRecycleItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                startActivity(new Intent(ShopDetailActivity.this, ProductDetailActivity.class));
+                Intent intent = new Intent(ShopDetailActivity.this, ProductDetailActivity.class);
+                intent.putExtra(ProductDetailActivity.PARAM_PRODUCT_ID, mShopList.get(position).getId());
+                startActivity(intent);
             }
         });
 
@@ -74,6 +100,7 @@ public class ShopDetailActivity extends BaseActivity {
         banner.setFocusable(true);
         banner.setFocusableInTouchMode(true);
         banner.requestFocus();
+        getShopDetail();
     }
 
     private void initBanner() {
@@ -88,11 +115,75 @@ public class ShopDetailActivity extends BaseActivity {
             }
         });
         List<String> imageList = new ArrayList<>();
-        imageList.add("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=394591684,703198697&fm=27&gp=0.jpg");
-        imageList.add("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=742456348,2972158456&fm=27&gp=0.jpg");
-        imageList.add("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1757891169,1150399296&fm=27&gp=0.jpg");
-        imageList.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3660015256,3208948633&fm=27&gp=0.jpg");
+        imageList.add("http://img4.imgtn.bdimg.com/it/u=3730565220,1475936246&fm=27&gp=0.jpg");
+        imageList.add("http://img4.imgtn.bdimg.com/it/u=3882041707,3819813181&fm=27&gp=0.jpg");
+        imageList.add("http://img1.imgtn.bdimg.com/it/u=2558221527,3165070826&fm=27&gp=0.jpg");
+        imageList.add("http://img1.imgtn.bdimg.com/it/u=4274803127,1354140264&fm=27&gp=0.jpg");
 
         banner.setData(imageList, null);
+    }
+
+    private void getShopDetail() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
+        params.put("id", mShopId);
+        HttpLoader.getInstance().getShopDetail(params, mCompositeSubscription, new SubscriberCallBack<ShopDetailEntity>(this, this) {
+
+            @Override
+            protected void onSuccess(ShopDetailEntity response) {
+                super.onSuccess(response);
+                tvShopIntroduce.setText(response.getInfo().getBusiness());
+                setTitle(response.getInfo().getTitle());
+                ShopDetailEntity.ProductBean productBean = new ShopDetailEntity.ProductBean();
+                productBean.setId(1);
+                productBean.setDetails("水电费水电费及垃圾哦较为 高度发给");
+                productBean.setTitle("高端产品");
+                response.getProduct().add(productBean);
+                mShopList.addAll(response.getProduct());
+                mShopDetailProductAdapter.notifyDataSetChanged();
+                if (response.getCollection() == 2) {
+                    setRightText("取消关注");
+                    mIsCollected = true;
+                } else {
+                    setRightText("添加关注");
+                    mIsCollected = false;
+                }
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
+    }
+
+    /**
+     * 是否关注or取消关注店铺
+     * @param type
+     */
+    private void collect(int type) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
+        params.put("shop_id", mShopId);
+        params.put("type", type);
+        HttpLoader.getInstance().collect(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
+
+            @Override
+            protected void onSuccess(ResponseEntity response) {
+                super.onSuccess(response);
+                if (mIsCollected) {
+                    setRightText("添加关注");
+                    mIsCollected = false;
+                } else {
+                    setRightText("取消关注");
+                    mIsCollected = true;
+                }
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
     }
 }

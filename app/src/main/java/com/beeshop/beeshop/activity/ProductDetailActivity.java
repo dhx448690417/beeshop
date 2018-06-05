@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.ProductDetailEntity;
 import com.beeshop.beeshop.net.ApiManager;
 import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.RSAUtil;
@@ -59,12 +60,18 @@ public class ProductDetailActivity extends BaseActivity {
     @BindView(R.id.tv_buy)
     TextView tvBuy;
 
+    public static final String PARAM_PRODUCT_ID ="product_id";
+
+    private int mProductId;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_product_detail);
         ButterKnife.bind(this);
         setTitleAndBackPressListener("蜂店详情");
+        mProductId = getIntent().getIntExtra(PARAM_PRODUCT_ID, 0);
         initView();
     }
 
@@ -81,44 +88,20 @@ public class ProductDetailActivity extends BaseActivity {
             }
         });
         List<String> imageList = new ArrayList<>();
-        imageList.add("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=394591684,703198697&fm=27&gp=0.jpg");
-        imageList.add("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=742456348,2972158456&fm=27&gp=0.jpg");
-        imageList.add("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1757891169,1150399296&fm=27&gp=0.jpg");
-        imageList.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3660015256,3208948633&fm=27&gp=0.jpg");
+        imageList.add("http://img2.imgtn.bdimg.com/it/u=2232213457,2695021481&fm=27&gp=0.jpg");
+        imageList.add("http://img0.imgtn.bdimg.com/it/u=412350416,2059446610&fm=27&gp=0.jpg");
+        imageList.add("http://img3.imgtn.bdimg.com/it/u=2645597901,3299484952&fm=27&gp=0.jpg");
+        imageList.add("http://img2.imgtn.bdimg.com/it/u=97747901,3204014835&fm=27&gp=0.jpg");
 
         banner.setData(imageList, null);
+
+        getProductInfo();
     }
 
     @OnClick({R.id.tv_contect_shop, R.id.tv_buy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_contect_shop:
-//                String content = "sZGWD4CwpRVlnYQ/egoYlPBewobjNcEFu6pQywqpNq4UcANjBb3UjXxd7PbDTylBgLb4AXcRdgHC4+vxYVHZEvqQD209KunXYw0lzH4MrJyjLm/5diK1PZbMNUy+YXyWsEL077wk+km0EgVYlUIuFNUJjkVnzzQMtLg5FF9cikdNZaVZtLjP+2f0WK2wWgG3ySJIyV2SuPFZXghfFJhVhyEbqrCoThbyczqkeIaCMghLXSGp0z6WaiNnNX8Jr8k1zNNHtB93FSfYPHPhl7n1qEPtEdjoVQqj6RpTXfqTcb+/PGxQYWzWpjFD+VlXmnJin+fzfZfxluZXbOv+BK4GjA==";
-//                String content = "{\"data\":\"{\\\"xx2\\\":\\\"222\\\",\\\"xx1\\\":\\\"111\\\",\\\"xx3\\\":\\\"333\\\"}\",\"code\":200,\"msg\":\"SUCCESS\",\"time\":1525919228}";
-
-
-
-                //获取公钥
-//                PublicKey publicKey = RSAUtil.keyStrToPublicKey(RSAUtil.PUBLIC_KEY_STR);
-//                PrivateKey privateKey = RSAUtil.keyStrToPrivate(RSAUtil.PRIVATE_KEY_STR);
-//
-//                String res = null;
-//                try {
-//                    res = RSAUtil.encryptByPublicKey(content.getBytes(), privateKey);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-
-
-//                String respone = null;
-//                try {
-//                    respone = RSAUtil.decryptByPublicKey(Base64.decode(content,Base64.DEFAULT), publicKey);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-                test1();
-                ToastUtils.showToast("联系商家 === ");
-//                LogUtil.e("ah   respone ==  "+respone);
                 break;
             case R.id.tv_buy:
                 ToastUtils.showToast("立即购买");
@@ -126,78 +109,27 @@ public class ProductDetailActivity extends BaseActivity {
         }
     }
 
-    private void test1() {
+    private void getProductInfo() {
         HashMap<String, Object> params1 = new HashMap<>();
-        params1.put("xx1", "111");
-        params1.put("xx2", "222");
-        params1.put("xx3", "333");
+        params1.put("id", mProductId);
 
-        HttpLoader.getInstance().getTest(params1, mCompositeSubscription, new SubscriberCallBack<Test>() {
+        HttpLoader.getInstance().getProductInfo(params1, mCompositeSubscription, new SubscriberCallBack<ProductDetailEntity>(this,this) {
+
+            @Override
+            protected void onSuccess(ProductDetailEntity response) {
+                super.onSuccess(response);
+                tvPrice.setText(response.getPrice());
+                tvProductIntroduce.setText(response.getPrice());
+                tvUnit.setText(response.getNum()+"");
+            }
+
             @Override
             protected void onFailure(ResponseEntity errorBean) {
                 ToastUtils.showToast(errorBean.getMsg());
                 LogUtil.e(errorBean.getMsg());
             }
 
-            @Override
-            protected void onSuccess(Test response) {
-                super.onSuccess(response);
-                ToastUtils.showToast(response.toString());
-                LogUtil.e(response.toString());
-            }
         });
     }
 
-//    private void test() {
-//
-//        HashMap<String, Object> params1 = new HashMap<>();
-//        params1.put("xx1", "111");
-//        params1.put("xx2", "222");
-//        params1.put("xx3", "333");
-//
-//        Gson gson = new Gson();
-//
-//        String requestStr = gson.toJson(params1);
-//
-//        //获取公钥
-//        PublicKey publicKey = RSAUtil.keyStrToPublicKey(RSAUtil.PUBLIC_KEY_STR);
-//
-//        requestStr = RSAUtil.encryptDataByPublicKey(requestStr.getBytes(), publicKey);
-//        try {
-//            requestStr = RSAUtil.encryptByPublicKey(requestStr.getBytes(), publicKey);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        ApiManager apiManager = RetrofitManager.getInstance().create(ApiManager.class);
-//        HashMap<String, Object> params = new HashMap<>();
-//        params.put("version", "1.0.0");
-//        params.put("rsa", "201805");
-//        params.put("data", requestStr);
-//        Call<String> call = apiManager.postLogin(params);
-//        call.enqueue(new Callback<String>() {
-//            @Override
-//            public void onResponse(Call<String> call, Response<String> response) {
-//                LogUtil.e("ah  onResponse == "+response.body());
-//                String content = response.body();
-//
-//                // 获取公钥
-//                PublicKey publicKey = RSAUtil.keyStrToPublicKey(RSAUtil.PUBLIC_KEY_STR);
-//                String respone = null;
-//                try {
-//                    respone = RSAUtil.decryptByPublicKey(Base64.decode(content,Base64.DEFAULT));
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                ToastUtils.showToast("respone === "+respone);
-//                LogUtil.e("ah   respone ==  "+respone);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<String> call, Throwable t) {
-//                t.printStackTrace();
-//                LogUtil.e("ah   ==  onFailure");
-//            }
-//        });
-//    }
 }

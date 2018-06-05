@@ -75,7 +75,9 @@ public class HomeFragment extends BaseFragment {
         mHomeShopAdapter.setOnRecycleItemClickListener(new OnRecycleItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                startActivity(new Intent(getActivity(), ShopDetailActivity.class));
+                Intent intent = new Intent(getActivity(), ShopDetailActivity.class);
+                intent.putExtra(ShopDetailActivity.PARAM_SHOP_ID, mShopList.get(position).getId());
+                startActivity(intent);
             }
         });
 
@@ -102,24 +104,45 @@ public class HomeFragment extends BaseFragment {
         startActivity(new Intent(getActivity(), SearchShopActivity.class));
     }
 
+    @Override
+    protected void reFrensh() {
+        super.reFrensh();
+        srlHome.autoRefresh();
+    }
+
     private void getShops() {
         HashMap<String, Object> params1 = new HashMap<>();
-        params1.put("token", "");
-//        params1.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
+        params1.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
         HttpLoader.getInstance().getShops(params1, mCompositeSubscription, new SubscriberCallBack<Shop>(){
 
             @Override
             protected void onSuccess(Shop response) {
                 super.onSuccess(response);
-                mShopList.clear();
-                mShopList.addAll(response.getList());
-                mHomeShopAdapter.notifyDataSetChanged();
-                srlHome.finishRefresh();
+                if (response.getList().size() > 0) {
+                    mShopList.clear();
+                    mShopList.addAll(response.getList());
+                    mHomeShopAdapter.notifyDataSetChanged();
+                    hideNoContentView();
+                } else {
+                    showNoContentView();
+                }
             }
 
             @Override
             protected void onFailure(ResponseEntity errorBean) {
                 ToastUtils.showToast(errorBean.getMsg());
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                srlHome.finishRefresh();
+            }
+
+            @Override
+            protected void onNetFailure(ResponseEntity errorBean) {
+                super.onNetFailure(errorBean);
+                showNoNetWork();
             }
         });
     }

@@ -5,10 +5,17 @@ import android.util.Base64;
 
 
 import com.beeshop.beeshop.config.AppConfig;
+import com.beeshop.beeshop.model.ClientChatEntity;
+import com.beeshop.beeshop.model.PayHistoryRecord;
+import com.beeshop.beeshop.model.ProductDetailEntity;
+import com.beeshop.beeshop.model.RechargeHistoryRecord;
 import com.beeshop.beeshop.model.SearchShopEntity;
 import com.beeshop.beeshop.model.Shop;
 import com.beeshop.beeshop.model.ShopCategoryEntity;
+import com.beeshop.beeshop.model.ShopDetailEntity;
 import com.beeshop.beeshop.model.UserEntity;
+import com.beeshop.beeshop.model.VipEntity;
+import com.beeshop.beeshop.model.VipTypeEntity;
 import com.beeshop.beeshop.utils.GsonUtil;
 import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 import com.google.gson.reflect.TypeToken;
@@ -226,4 +233,256 @@ public class HttpLoader {
         },subscriber);
     }
 
+    /**
+     * 店铺详情
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getShopDetail(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<ShopDetailEntity> subscriber) {
+        normalPost(mApiManager.postShopDetail(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<ShopDetailEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<ShopDetailEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<ShopDetailEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<ShopDetailEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 店铺的关注or取消关注
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void collect(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postCollect(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 产品详情
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getProductInfo(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<ProductDetailEntity> subscriber) {
+        normalPost(mApiManager.postProductInfo(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<ProductDetailEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<ProductDetailEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<ProductDetailEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<ProductDetailEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 客户聊天列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getChat(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<ClientChatEntity> subscriber) {
+        normalPost(mApiManager.postCustomer(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<ClientChatEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<ClientChatEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<ClientChatEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<ClientChatEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 会员分类列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getVipTypeList(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<VipTypeEntity> subscriber) {
+        normalPost(mApiManager.postVipTypeList(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<VipTypeEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<VipTypeEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<VipTypeEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<VipTypeEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 添加会员分类
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void addVipType(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postAddVipType(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 添加会员分类
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void uptadeVipType(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postUpdateVipType(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 会员列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getVipList(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<VipEntity> subscriber) {
+        normalPost(mApiManager.postVipList(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<VipEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<VipEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<VipEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<VipEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 添加会员
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void addVip(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postAddVip(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+
+    }
+
+    /**
+     * 更新会员
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void updateVip(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postUpdateVip(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 充值
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void recharge(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postRecharge(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 消费
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void pay(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postPay(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 消费历史记录
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void payHistoryRecord(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<PayHistoryRecord> subscriber) {
+        normalPost(mApiManager.postPayHistoryRecord(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<PayHistoryRecord>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<PayHistoryRecord> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<PayHistoryRecord> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<PayHistoryRecord>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 消费历史记录
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void rechargeHistoryRecord(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<RechargeHistoryRecord> subscriber) {
+        normalPost(mApiManager.postRechargeHistoryRecord(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<RechargeHistoryRecord>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<RechargeHistoryRecord> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<RechargeHistoryRecord> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<RechargeHistoryRecord>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
 }
