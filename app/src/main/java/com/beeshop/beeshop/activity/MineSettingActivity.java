@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
 
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -18,8 +19,9 @@ import butterknife.OnClick;
  * Time：  2018/5/17 下午10:00
  * Description：设置页面
  */
-public class MineSettingActivity extends BaseActivity {
+public class MineSettingActivity extends BaseActivity  {
 
+    private static final String TAG = MineSettingActivity.class.getName();
     @BindView(R.id.et_name)
     EditText etName;
     @BindView(R.id.et_sign_name)
@@ -53,4 +55,5 @@ public class MineSettingActivity extends BaseActivity {
                 break;
         }
     }
+
 }
