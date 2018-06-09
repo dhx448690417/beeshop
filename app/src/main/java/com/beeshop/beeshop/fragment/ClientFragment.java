@@ -15,10 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.beeshop.beeshop.R;
-import com.beeshop.beeshop.activity.MyShopActivity;
+import com.beeshop.beeshop.activity.ShopManagerActivity;
 import com.beeshop.beeshop.activity.VipMyMemberActivity;
 import com.beeshop.beeshop.activity.ProductManagerActivity;
-import com.beeshop.beeshop.activity.ShopManagerActivity;
 import com.beeshop.beeshop.activity.VipTypeActivity;
 import com.beeshop.beeshop.adapter.ClientChatAdapter;
 import com.beeshop.beeshop.model.ClientChatEntity;
@@ -74,7 +73,7 @@ public class ClientFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.shop_manage:
-                startActivity(new Intent(getActivity(), MyShopActivity.class));
+                startActivity(new Intent(getActivity(), ShopManagerActivity.class));
                 break;
             case R.id.product_manage:
                 startActivity(new Intent(getActivity(), ProductManagerActivity.class));

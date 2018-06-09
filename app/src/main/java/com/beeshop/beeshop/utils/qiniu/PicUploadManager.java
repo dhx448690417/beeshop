@@ -4,10 +4,7 @@ import android.util.Log;
 
 import com.qiniu.android.common.FixedZone;
 import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UpCompletionHandler;
-import com.qiniu.android.storage.UploadManager;
-import com.qiniu.android.storage.UploadOptions;
+import com.qiniu.android.storage.*;
 
 import org.json.JSONObject;
 
@@ -19,8 +16,9 @@ import org.json.JSONObject;
 public class PicUploadManager {
 
     private UploadManager mUploadManager;
+    private boolean isCancelled; // 是否取消上传图片
 
-    private String token = "TrXg-Xc6au5j84DwolTckRtYzYDyfMmTfrSnhfqo:OCm0GgHgg26Uq8nYxVP9TQuW8MA=:eyJzY29wZSI6ImZkd2wiLCJkZWFkbGluZSI6MTUyNzk0OTY1OX0=";
+    private String token = "TrXg-Xc6au5j84DwolTckRtYzYDyfMmTfrSnhfqo:gk7qXoQT3GPZ0q6j6o89duH68-8=:eyJzY29wZSI6ImZkd2wiLCJkZWFkbGluZSI6MTUyODU2NTcyN30=";
 
     private PicUploadManager() {
         Configuration config = new Configuration.Builder()
@@ -30,7 +28,7 @@ public class PicUploadManager {
                 .useHttps(true)               // 是否使用https上传域名
                 .responseTimeout(60)          // 服务器响应超时。默认60秒
                 .recorder(null)           // recorder分片上传时，已上传片记录器。默认null
-                .zone(FixedZone.zone0)        // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
+                .zone(FixedZone.zone1)        // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
                 .build();
         // 重用uploadManager。一般地，只需要创建一个uploadManager对象
         mUploadManager = new UploadManager(config);
@@ -44,21 +42,43 @@ public class PicUploadManager {
         return ClassHolder.picUploadManager;
     }
 
-    public void uploadPic(String path, String key/*,UpCompletionHandler completionHandler,final UploadOptions options*/) {
-//        mUploadManager.put(path, key, token,completionHandler, options);
-        mUploadManager.put(path, key, token,
+    public void uploadPic(String path,final UploadPicCallBack uploadPicCallBack) {
+        mUploadManager.put(path, System.currentTimeMillis()+"", token,
                 new UpCompletionHandler() {
                     @Override
                     public void complete(String key, ResponseInfo info, JSONObject res) {
                         //res包含hash、key等信息，具体字段取决于上传策略的设置
                         if(info.isOK()) {
+                            uploadPicCallBack.uploadSuccess(key,info);
                             Log.i("qiniu", "Upload Success");
                         } else {
+                            uploadPicCallBack.uploadFailed(key,info);
                             Log.i("qiniu", "Upload Fail");
                             //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
                         }
                         Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
                     }
-                }, null);
+                },     new UploadOptions(null, null, false,
+                        new UpProgressHandler(){
+                            public void progress(String key, double percent){
+                                uploadPicCallBack.uploadProgress(key,percent);
+                                Log.i("qiniu", key + ": " + percent);
+                            }
+                        },         new UpCancellationSignal(){
+                    public boolean isCancelled(){
+                        return isCancelled;
+
+                    }
+                }));
+    }
+
+    public void setCancelUpload(boolean isCancel) {
+        this.isCancelled = isCancel;
+    }
+
+    public interface UploadPicCallBack{
+        void uploadSuccess(String key,ResponseInfo info);
+        void uploadFailed(String key,ResponseInfo info);
+        void uploadProgress(String key,double percent);
     }
 }

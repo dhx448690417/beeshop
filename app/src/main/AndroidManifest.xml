@@ -55,7 +55,7 @@
             android:name=".activity.SearchResultActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.ShopManagerActivity"
+            android:name=".activity.ShopInfoEditActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.ProductManagerActivity"
@@ -88,7 +88,7 @@
             android:name=".activity.MyVipDetailActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.MyShopActivity"
+            android:name=".activity.ShopManagerActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.BroadcastDetailActivity"

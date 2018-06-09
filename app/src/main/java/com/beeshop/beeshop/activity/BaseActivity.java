@@ -40,6 +40,7 @@ import com.beeshop.beeshop.views.StatusView;
 import java.util.HashMap;
 import java.util.List;
 
+import com.luck.picture.lib.PictureSelectionModel;
 import rx.subscriptions.CompositeSubscription;
 
 
