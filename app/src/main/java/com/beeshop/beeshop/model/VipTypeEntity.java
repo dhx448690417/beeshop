@@ -38,6 +38,15 @@ public class VipTypeEntity implements Serializable{
         private int created_time;
         private int list_order;
         private int number;
+        private int selected; // 0未选中   1选中
+
+        public int getSelected() {
+            return selected;
+        }
+
+        public void setSelected(int selected) {
+            this.selected = selected;
+        }
 
         public int getId() {
             return id;

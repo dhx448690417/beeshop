@@ -1,5 +1,6 @@
 package com.beeshop.beeshop.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -86,6 +88,28 @@ public class MainActivity extends AppCompatActivity {
         tabBottom.addTab(tabBottom.newTab().setCustomView(new BottomTabView(this,R.drawable.icon_news_normal,R.drawable.icon_news_selected,"客户")));
         tabBottom.addTab(tabBottom.newTab().setCustomView(new BottomTabView(this,R.drawable.icon_station_normal,R.drawable.icon_station_selected,"电台")));
         tabBottom.addTab(tabBottom.newTab().setCustomView(new BottomTabView(this,R.drawable.icon_account_normal,R.drawable.icon_account_selected,"我的")));
+
+        for (int i = 0; i < tabBottom.getTabCount(); i++) {  // 判断是否登录，没有登录则跳转到登录页面
+            View tabView = (View) tabBottom.getTabAt(i).getCustomView().getParent();
+            tabView.setTag(i);
+            tabView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        int pos = (int) v.getTag();
+                        if ((pos == 1 || pos == 3) && TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            });
+
+        }
     }
 
     @Override
@@ -147,7 +171,10 @@ public class MainActivity extends AppCompatActivity {
             mCurrentFragment = mStationFragment;
         }
         else { //我的
-
+            if (TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
+                startActivity(new Intent(this,LoginActivity.class));
+                return;
+            }
             mMineFragment = (MineFragment) mFragmentManager.findFragmentByTag(MineFragment.class.getSimpleName());
             if (mMineFragment == null) {
                 mMineFragment = new MineFragment();

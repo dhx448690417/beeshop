@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.VipTypeEntity;
 import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.ResponseEntity;
 import com.beeshop.beeshop.net.SubscriberCallBack;
@@ -40,20 +41,20 @@ public class VipTypeUpdateActivity extends BaseActivity {
     @BindView(R.id.tv_submit)
     TextView tvSubmit;
 
-    public static final String PARAM_CLASS_ID = "param_class_id";
+    public static final String PARAM_CLASS_ENTITY = "param_class_entity";
 
     private String mTitle;
     private String mDescribe;
     private String mListOrder;
-    private int mClassId = -1;
+    private VipTypeEntity.ListBean mVipTypeEntity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_vip_type_update);
         ButterKnife.bind(this);
-        mClassId = getIntent().getIntExtra(PARAM_CLASS_ID, -1);
-        if (mClassId != -1) {
+        mVipTypeEntity = (VipTypeEntity.ListBean) getIntent().getSerializableExtra(PARAM_CLASS_ENTITY);
+        if (mVipTypeEntity != null) {
             setTitleAndBackPressListener("编辑会员类别");
         } else {
             setTitleAndBackPressListener("添加会员类别");
@@ -84,7 +85,7 @@ public class VipTypeUpdateActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (verify()) {
-                    if (mClassId != -1) {
+                    if (mVipTypeEntity != null) {
                         updateVipType();
                     }else{
                         addVipType();
@@ -92,6 +93,13 @@ public class VipTypeUpdateActivity extends BaseActivity {
                 }
             }
         });
+
+        if (mVipTypeEntity != null) {
+            etVipTypeName.setText(mVipTypeEntity.getTitle());
+            etVipTypeName.setEnabled(false);
+            etSortNumber.setText(mVipTypeEntity.getList_order()+"");
+            etVipTypeIntroduce.setText(mVipTypeEntity.getDescribe());
+        }
     }
 
     private boolean verify() {
@@ -99,7 +107,7 @@ public class VipTypeUpdateActivity extends BaseActivity {
         mListOrder = etSortNumber.getText().toString();
         mDescribe = etVipTypeIntroduce.getText().toString();
 
-        if (mClassId == -1 && TextUtils.isEmpty(mTitle)) {
+        if (mVipTypeEntity != null && TextUtils.isEmpty(mTitle)) {
             ToastUtils.showToast("请输入名称");
             return false;
         } else if(TextUtils.isEmpty(mListOrder)) {
@@ -128,6 +136,7 @@ public class VipTypeUpdateActivity extends BaseActivity {
             protected void onSuccess(ResponseEntity response) {
                 super.onSuccess(response);
                 ToastUtils.showToast("添加会员分类成功");
+                VipTypeUpdateActivity.this.finish();
             }
 
             @Override
@@ -144,15 +153,16 @@ public class VipTypeUpdateActivity extends BaseActivity {
     private void updateVipType() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
-        params.put("class_id", mClassId);
+        params.put("class_id", mVipTypeEntity.getId());
         params.put("describe", mDescribe);
         params.put("list_order", mListOrder);
-        HttpLoader.getInstance().addVipType(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
+        HttpLoader.getInstance().uptadeVipType(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
 
             @Override
             protected void onSuccess(ResponseEntity response) {
                 super.onSuccess(response);
                 ToastUtils.showToast("更新会员分类成功");
+                VipTypeUpdateActivity.this.finish();
             }
 
             @Override

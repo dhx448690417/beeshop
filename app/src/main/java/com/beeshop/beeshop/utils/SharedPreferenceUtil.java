@@ -20,6 +20,7 @@ public class SharedPreferenceUtil extends Observable {
     // 登陆状态
     public static final String KEY_TOKEN = "token";
     public static final String KEY_ID = "id";
+    public static final String KEY_USER_ID = "user_id";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_ICON = "icon";
     public static final String KEY_IS_SUPER_USER = "is_super_user";

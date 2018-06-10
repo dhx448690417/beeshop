@@ -45,6 +45,7 @@ public class VipMyMemberActivity extends BaseActivity {
     private VipMemberLeftAdapter mVipMemberLeftAdapter;
     private VipMemberRightAdapter mVipMemberRightAdapter;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +71,21 @@ public class VipMyMemberActivity extends BaseActivity {
         rvVipMember.setLayoutManager(linearLayoutManager1);
 
         mVipMemberLeftAdapter = new VipMemberLeftAdapter(this, mVipTypeList);
+        mVipMemberLeftAdapter.setmItemOnClickListener(new ItemOnClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                for (int i = 0; i < mVipTypeList.size(); i++) {
+                    VipTypeEntity.ListBean listBean = mVipTypeList.get(i);
+                    if (position == i) {
+                        listBean.setSelected(1);
+                    } else {
+                        listBean.setSelected(0);
+                    }
+                }
+                mVipMemberLeftAdapter.notifyDataSetChanged();
+                getVipList(mVipTypeList.get(position).getId());
+            }
+        });
 
 
         mVipMemberRightAdapter = new VipMemberRightAdapter(this, mVipMemberList);
@@ -77,19 +93,25 @@ public class VipMyMemberActivity extends BaseActivity {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(VipMyMemberActivity.this, VipDetailActivity.class);
+                intent.putExtra(VipDetailActivity.PARAM_KEY_VIP_MEMBER,mVipMemberList.get(position));
                 startActivity(intent);
             }
         });
         rvVipType.setAdapter(mVipMemberLeftAdapter);
         rvVipMember.setAdapter(mVipMemberRightAdapter);
 
-        getVipList();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         getVipTypeList();
     }
 
-    private void getVipList() {
+    private void getVipList(int memberClassId) {
         HashMap<String, Object> params1 = new HashMap<>();
         params1.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
+        params1.put("member_class_id", memberClassId);
         HttpLoader.getInstance().getVipList(params1, mCompositeSubscription, new SubscriberCallBack<VipEntity>(this,this){
 
             @Override
@@ -99,12 +121,6 @@ public class VipMyMemberActivity extends BaseActivity {
                 mVipMemberList.addAll(response.getList());
                 mVipMemberRightAdapter.notifyDataSetChanged();
 
-//                if (response.getList().size() > 0) {
-//
-//                    hideNoContentView();
-//                } else {
-//                    showNoContentView();
-//                }
             }
 
             @Override
@@ -128,21 +144,20 @@ public class VipMyMemberActivity extends BaseActivity {
             @Override
             protected void onSuccess(VipTypeEntity response) {
                 super.onSuccess(response);
-                mVipTypeList.addAll(response.getList());
-                mVipMemberLeftAdapter.notifyDataSetChanged();
-
-//                if (response.getList().size() > 0) {
-//                    hideNoContentView();
-//                } else {
-//                    showNoContentView();
-//                }
+                if (response.getList().size() > 0) {
+                    mVipTypeList.clear();
+                    mVipTypeList.addAll(response.getList());
+                    mVipTypeList.get(0).setSelected(1); // 默认第一个选中
+                    getVipList(mVipTypeList.get(0).getId());
+                    mVipMemberLeftAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
             protected void onFailure(ResponseEntity errorBean) {
-//                if (errorBean.getCode() == 410) {
-//                    showNoContentView();
-//                }
+                if (errorBean.getCode() == 410) {
+                    VipMyMemberActivity.this.finish();
+                }
                 ToastUtils.showToast(errorBean.getMsg());
             }
 

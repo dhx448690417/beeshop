@@ -1,14 +1,11 @@
 package com.beeshop.beeshop.net;
 
-import android.text.TextUtils;
 import android.util.Base64;
 
 
-import com.beeshop.beeshop.config.AppConfig;
 import com.beeshop.beeshop.model.ClientChatEntity;
-import com.beeshop.beeshop.model.PayHistoryRecord;
+import com.beeshop.beeshop.model.VipMoneyHistoryRecord;
 import com.beeshop.beeshop.model.ProductDetailEntity;
-import com.beeshop.beeshop.model.RechargeHistoryRecord;
 import com.beeshop.beeshop.model.SearchShopEntity;
 import com.beeshop.beeshop.model.Shop;
 import com.beeshop.beeshop.model.ShopCategoryEntity;
@@ -17,15 +14,9 @@ import com.beeshop.beeshop.model.UserEntity;
 import com.beeshop.beeshop.model.VipEntity;
 import com.beeshop.beeshop.model.VipTypeEntity;
 import com.beeshop.beeshop.utils.GsonUtil;
-import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -456,12 +447,12 @@ public class HttpLoader {
      * @param compositeSubscription
      * @param subscriber
      */
-    public void payHistoryRecord(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<PayHistoryRecord> subscriber) {
-        normalPost(mApiManager.postPayHistoryRecord(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<PayHistoryRecord>>() {//将接口返回的String数据，转换为实体类
+    public void payHistoryRecord(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<VipMoneyHistoryRecord> subscriber) {
+        normalPost(mApiManager.postPayHistoryRecord(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<VipMoneyHistoryRecord>>() {//将接口返回的String数据，转换为实体类
             @Override
-            public ResponseEntity<PayHistoryRecord> call(String s) {
+            public ResponseEntity<VipMoneyHistoryRecord> call(String s) {
                 String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
-                ResponseEntity<PayHistoryRecord> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<PayHistoryRecord>>() {}.getType());
+                ResponseEntity<VipMoneyHistoryRecord> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<VipMoneyHistoryRecord>>() {}.getType());
                 LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
                 return response;
             }
@@ -474,12 +465,12 @@ public class HttpLoader {
      * @param compositeSubscription
      * @param subscriber
      */
-    public void rechargeHistoryRecord(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<RechargeHistoryRecord> subscriber) {
-        normalPost(mApiManager.postRechargeHistoryRecord(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<RechargeHistoryRecord>>() {//将接口返回的String数据，转换为实体类
+    public void rechargeHistoryRecord(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<VipMoneyHistoryRecord> subscriber) {
+        normalPost(mApiManager.postRechargeHistoryRecord(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<VipMoneyHistoryRecord>>() {//将接口返回的String数据，转换为实体类
             @Override
-            public ResponseEntity<RechargeHistoryRecord> call(String s) {
+            public ResponseEntity<VipMoneyHistoryRecord> call(String s) {
                 String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
-                ResponseEntity<RechargeHistoryRecord> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<RechargeHistoryRecord>>() {}.getType());
+                ResponseEntity<VipMoneyHistoryRecord> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<VipMoneyHistoryRecord>>() {}.getType());
                 LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
                 return response;
             }

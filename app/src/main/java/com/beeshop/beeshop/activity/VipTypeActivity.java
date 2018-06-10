@@ -39,6 +39,12 @@ public class VipTypeActivity extends BaseListActivity<VipTypeEntity.ListBean> {
                 startActivity(new Intent(VipTypeActivity.this,VipTypeUpdateActivity.class));
             }
         });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         getVipTypeList();
     }
 
@@ -55,7 +61,9 @@ public class VipTypeActivity extends BaseListActivity<VipTypeEntity.ListBean> {
         mVipTypeAdapter.setmItemOnClickListener(new ItemOnClickListener() {
             @Override
             public void onItemClick(int position) {
-
+                Intent intent = new Intent(VipTypeActivity.this, VipTypeUpdateActivity.class);
+                intent.putExtra(VipTypeUpdateActivity.PARAM_CLASS_ENTITY, mList.get(position));
+                startActivity(intent);
             }
         });
         return mVipTypeAdapter;
@@ -76,6 +84,7 @@ public class VipTypeActivity extends BaseListActivity<VipTypeEntity.ListBean> {
             protected void onSuccess(VipTypeEntity response) {
                 super.onSuccess(response);
                 if (response.getList().size() > 0) {
+                    mList.clear();
                     mList.addAll(response.getList());
                     mVipTypeAdapter.notifyDataSetChanged();
                     hideNoContentView();

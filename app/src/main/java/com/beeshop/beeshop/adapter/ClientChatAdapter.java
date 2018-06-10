@@ -45,7 +45,7 @@ public class ClientChatAdapter extends RecyclerView.Adapter<ClientChatAdapter.Ho
     @Override
     public void onBindViewHolder(HomeShopViewHolder holder, final int position) {
         ClientChatEntity.ListBean listBean = mChatList.get(position);
-        Glide.with(mContext).load("http://img0.imgtn.bdimg.com/it/u=4077729777,2039477845&fm=27&gp=0.jpg").into(holder.iv_head);
+        Glide.with(mContext).load("http://img0.imgtn.bdimg.com/it/u=2941993316,3751651394&fm=27&gp=0.jpg").into(holder.iv_head);
 
         holder.tv_client_name.setText("名字");
         holder.tv_chat_conent.setText(listBean.getLast_content());

@@ -1,6 +1,8 @@
 package com.beeshop.beeshop.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,11 @@ public class VipMemberLeftAdapter extends RvBaseAdapter<VipTypeEntity.ListBean,V
                 }
             }
         });
+        if (listBean.getSelected() != 0) {
+            holder.rl_vip_member_left.setBackgroundColor(Color.WHITE);
+        } else {
+            holder.rl_vip_member_left.setBackgroundColor(ContextCompat.getColor(mContext,R.color.grey_F5F5F5));
+        }
     }
 
     class MyToolsViewHolder extends RecyclerView.ViewHolder{

@@ -8,7 +8,7 @@ import java.util.List;
  * Time :  2018/5/27 上午9:02
  * Description : 消费历史记录
  */
-public class PayHistoryRecord implements Serializable {
+public class VipMoneyHistoryRecord implements Serializable {
 
 
     private List<ListBean> list;

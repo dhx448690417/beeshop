@@ -3,15 +3,15 @@ package com.beeshop.beeshop.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.beeshop.beeshop.R;
-import com.beeshop.beeshop.activity.MyBroadcastActivity;
-import com.beeshop.beeshop.activity.NearbyBroadcastActivity;
-import com.beeshop.beeshop.activity.ShopSortActivity;
+import com.beeshop.beeshop.activity.*;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 import com.beeshop.beeshop.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -55,7 +55,11 @@ public class StationFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), NearbyBroadcastActivity.class));
                 break;
             case R.id.rl_want_boradcast:
-                ToastUtils.showToast("我要广播");
+                SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_TOKEN,"");
+//                if (TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
+//                    startActivity(new Intent(getActivity(),LoginActivity.class));
+//                    return;
+//                }
                 break;
         }
     }

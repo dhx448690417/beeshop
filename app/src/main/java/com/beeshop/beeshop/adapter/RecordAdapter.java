@@ -3,6 +3,7 @@ package com.beeshop.beeshop.adapter;
 import android.content.Context;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.VipMoneyHistoryRecord;
 
 import java.util.List;
 
@@ -11,9 +12,10 @@ import java.util.List;
  * Time :  2018/5/24 下午5:05
  * Description :
  */
-public class RecordAdapter extends HolderAdapter<String> {
+public class RecordAdapter extends HolderAdapter<VipMoneyHistoryRecord.ListBean> {
 
-    public RecordAdapter(Context context, List<String> dateList) {
+    private int mRecordType; // 0消费   1充值
+    public RecordAdapter(Context context, List<VipMoneyHistoryRecord.ListBean> dateList) {
         super(context, dateList);
     }
 
@@ -23,8 +25,14 @@ public class RecordAdapter extends HolderAdapter<String> {
     }
 
     @Override
-    public void buildViewData(Context context, ViewHolder holder, String s, int position) {
-        holder.setText(R.id.tv_record_title,"2018-5-24 消费 250元  状态：已消费");
-        holder.setText(R.id.tv_record_explain,"削了一个脑袋。。。");
+    public void buildViewData(Context context, ViewHolder holder,VipMoneyHistoryRecord.ListBean listBean, int position) {
+        String status = listBean.getStatus() == 1 ? "状态：待确认" : "状态：已确认";
+        String type = mRecordType == 0 ? "消费 "+listBean.getMoney()+"元 "+status:"充值 "+listBean.getMoney()+"元";
+        holder.setText(R.id.tv_record_title,listBean.getCreated_time()+"  "+type);
+        holder.setText(R.id.tv_record_explain,listBean.getDescribe());
+    }
+
+    public void setRecordType(int type) {
+        mRecordType =type;
     }
 }
