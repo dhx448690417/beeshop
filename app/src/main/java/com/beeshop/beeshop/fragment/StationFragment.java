@@ -55,11 +55,11 @@ public class StationFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), NearbyBroadcastActivity.class));
                 break;
             case R.id.rl_want_boradcast:
-                SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_TOKEN,"");
-//                if (TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
-//                    startActivity(new Intent(getActivity(),LoginActivity.class));
-//                    return;
-//                }
+                if (TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
+                    startActivity(new Intent(getActivity(),LoginActivity.class));
+                    return;
+                }
+                startActivity(new Intent(getActivity(), BroadcastSendActivity.class));
                 break;
         }
     }

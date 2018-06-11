@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <include layout="@layout/view_titlebar"></include>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:visibility="visible"
+            android:background="@color/white">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="广播主题"
+                android:textColor="@color/text_color_black"
+                android:textSize="18sp"/>
+
+        <EditText
+                android:id="@+id/et_broadcast_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:layout_marginLeft="110dp"
+                android:textColorHint="@color/text_color_gray"
+                android:hint="请输入广播主题"
+                android:textSize="16sp"
+                android:text=""
+                android:textColor="@color/text_color_black"
+        />
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/background_color"></View>
+    </RelativeLayout>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:background="@color/white"
+    >
+
+        <EditText
+                android:id="@+id/et_broadcast_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColorHint="@color/text_color_gray"
+                android:maxLength="200"
+                android:hint="请输入广播内容"
+                android:textSize="16sp"
+                android:text=""
+                android:textColor="@color/text_color_black"
+        />
+        <TextView
+                android:id="@+id/tv_introduce_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="0/200"
+                android:textColor="@color/text_color_black"
+                android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="10dp"
+    >
+        <TextView
+                android:id="@+id/upload_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="图片上传"
+                android:textColor="@color/text_color_black"
+                android:textSize="18sp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:text="0/2"
+                android:textColor="@color/text_color_black"
+                android:textSize="14sp"/>
+
+        <com.beeshop.beeshop.views.HorizontalPicAddGallery
+                android:id="@+id/hpag_add_pic"
+                android:layout_below="@+id/upload_pic"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/background_color"></View>
+
+    </RelativeLayout>
+
+    <TextView
+            android:id="@+id/tv_send"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/shape_green_radius_bg"
+            android:gravity="center"
+            android:text="发   布"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+    />
+</LinearLayout>
