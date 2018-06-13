@@ -18,7 +18,7 @@ public class PicUploadManager {
     private UploadManager mUploadManager;
     private boolean isCancelled; // 是否取消上传图片
 
-    private String token = "TrXg-Xc6au5j84DwolTckRtYzYDyfMmTfrSnhfqo:gk7qXoQT3GPZ0q6j6o89duH68-8=:eyJzY29wZSI6ImZkd2wiLCJkZWFkbGluZSI6MTUyODU2NTcyN30=";
+    private String token = "TrXg-Xc6au5j84DwolTckRtYzYDyfMmTfrSnhfqo:AUTeVtlrRYzeU1rzAKjQXrJypaM=:eyJzY29wZSI6ImZkd2wiLCJkZWFkbGluZSI6MTUyODg4MTk4MH0=";
 
     private PicUploadManager() {
         Configuration config = new Configuration.Builder()
