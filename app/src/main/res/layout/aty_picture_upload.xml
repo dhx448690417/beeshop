@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/view_titlebar"></include>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:id="@+id/ll_pic_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+            </LinearLayout>
+            <RelativeLayout android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="10dp"
+                >
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/background_color"></View>
+                <TextView
+                    android:id="@+id/upload_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="选择图片"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/tv_remain_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:text="还可以上传5张图片"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="14sp"/>
+
+                <View
+                    android:id="@+id/v_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/upload_pic"
+                    android:background="@color/background_color"></View>
+
+                <com.beeshop.beeshop.views.SelectPicImageView
+                    android:id="@+id/iv_pic"
+                    android:layout_below="@+id/v_line"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/add_image"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/background_color"></View>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/white"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="图片标题"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/et_pic_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:layout_marginLeft="110dp"
+                    android:inputType="text"
+                    android:textColorHint="@color/text_color_gray"
+                    android:hint="请输入图片标题"
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:textSize="16sp"
+                    android:text=""
+                    android:textColor="@color/text_color_black"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/background_color"></View>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_upload_pic"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/shape_green_radius_bg"
+                android:gravity="center"
+                android:text="上传图片"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

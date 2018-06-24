@@ -125,6 +125,10 @@ public class LoginActivity extends BaseActivity {
             protected void onSuccess(UserEntity response) {
                 super.onSuccess(response);
                 SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_TOKEN,response.getToken());
+                SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_OPEN_SHOP,response.getOpenshop());
+                SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_ICON,response.getHeadimg());
+                SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_USER_NAME,response.getUsername());
+                SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_PHONE,response.getPhone());
                 LoginActivity.this.finish();
             }
 

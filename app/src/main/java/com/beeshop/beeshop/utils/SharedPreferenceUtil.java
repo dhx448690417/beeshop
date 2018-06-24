@@ -21,16 +21,14 @@ public class SharedPreferenceUtil extends Observable {
     public static final String KEY_TOKEN = "token";
     public static final String KEY_ID = "id";
     public static final String KEY_USER_ID = "user_id";
+    public static final String KEY_USER_NAME = "user_name";
+    public static final String KEY_PHONE = "key_phone";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_ICON = "icon";
-    public static final String KEY_IS_SUPER_USER = "is_super_user";
+    public static final String KEY_OPEN_SHOP = "key_open_shop"; // 0未开店  1开店
     public static final String KEY_USER_ENTITY = "user_entity";
-    public static final String KEY_IS_DO_NOT_SHOW_UPDATE_VIEW = "is_do_not_show_update_view"; //是否不显示更新view
-    public static final String KEY_IS_NOT_SHOW_YI_WEI_WU_DU_REA_POINT = "key_is_first_modules_show"; //是否是第一次展示一维五度
-    public static final String KEY_IS_NOT_SHOW_APPLICATION_REA_POINT = "key_is_not_show_application_rea_point"; //底部tab是否是显示红点
 
-    public static final String KEY_GUIDE_CITY_POWER = "key_guide_city_power"; // 城市能力 引导
-    public static final String KEY_GUIDE_CITY_DETAIL = "key_guide_city_detail"; // 城市详情 引导
+    public static final String KEY_QI_NIU_TOKEN = "key_qi_niu_token"; // 七牛上传图片token
 
     public static SharedPreferences getSpInstance(Context context) {
         return context.getSharedPreferences("user", Context.MODE_PRIVATE);

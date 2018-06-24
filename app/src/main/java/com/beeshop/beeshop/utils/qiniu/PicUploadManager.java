@@ -18,8 +18,6 @@ public class PicUploadManager {
     private UploadManager mUploadManager;
     private boolean isCancelled; // 是否取消上传图片
 
-    private String token = "TrXg-Xc6au5j84DwolTckRtYzYDyfMmTfrSnhfqo:AUTeVtlrRYzeU1rzAKjQXrJypaM=:eyJzY29wZSI6ImZkd2wiLCJkZWFkbGluZSI6MTUyODg4MTk4MH0=";
-
     private PicUploadManager() {
         Configuration config = new Configuration.Builder()
                 .chunkSize(512 * 1024)        // 分片上传时，每片的大小。 默认256K
@@ -42,7 +40,7 @@ public class PicUploadManager {
         return ClassHolder.picUploadManager;
     }
 
-    public void uploadPic(String path,final UploadPicCallBack uploadPicCallBack) {
+    public void uploadPic(String path,String token ,final UploadPicCallBack uploadPicCallBack) {
         mUploadManager.put(path, System.currentTimeMillis()+"", token,
                 new UpCompletionHandler() {
                     @Override

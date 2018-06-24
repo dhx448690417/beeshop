@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.ProductListEntity;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ import java.util.List;
  * Time：  2018/5/19 上午10:49
  * Description：产品管理Adapter
  */
-public class ProductManagerAdapter extends RvBaseAdapter<String,ProductManagerAdapter.MyToolsViewHolder> {
+public class ProductManagerAdapter extends RvBaseAdapter<ProductListEntity.ListBean,ProductManagerAdapter.MyToolsViewHolder> {
 
 
-    public ProductManagerAdapter(Context mContext, List<String> mList) {
+    public ProductManagerAdapter(Context mContext, List<ProductListEntity.ListBean> mList) {
         super(mContext, mList);
     }
 
@@ -31,7 +32,8 @@ public class ProductManagerAdapter extends RvBaseAdapter<String,ProductManagerAd
 
     @Override
     public void onBindViewHolder(MyToolsViewHolder holder, final int position) {
-        holder.tv_tool_name.setText("产品名称");
+        ProductListEntity.ListBean listBean = mList.get(position);
+        holder.tv_tool_name.setText(listBean.getTitle());
         holder.tv_tool_state.setText("编辑");
         holder.rl_tool.setOnClickListener(new View.OnClickListener() {
             @Override

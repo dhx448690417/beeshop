@@ -27,42 +27,42 @@ public class ProductDetailEntity implements Serializable {
      * pic : [{"title":"外景照片","path":"/static/images/logo.png"},{"title":"室内照片","path":"/static/images/logo.png"}]
      */
 
-    private int id;
-    private int shop_id;
-    private int user_id;
+    private String id;
+    private String shop_id;
+    private String user_id;
     private String title;
     private String price;
-    private int unit;
-    private int supply;
-    private int min_buy;
-    private int max_buy;
+    private String unit;
+    private String supply;
+    private String min_buy;
+    private String max_buy;
     private String cover;
     private String details;
-    private int hits;
-    private int num;
+    private String hits;
+    private String num;
     private List<PicBean> pic;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getShop_id() {
+    public String getShop_id() {
         return shop_id;
     }
 
-    public void setShop_id(int shop_id) {
+    public void setShop_id(String shop_id) {
         this.shop_id = shop_id;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
@@ -82,35 +82,35 @@ public class ProductDetailEntity implements Serializable {
         this.price = price;
     }
 
-    public int getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(int unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 
-    public int getSupply() {
+    public String getSupply() {
         return supply;
     }
 
-    public void setSupply(int supply) {
+    public void setSupply(String supply) {
         this.supply = supply;
     }
 
-    public int getMin_buy() {
+    public String getMin_buy() {
         return min_buy;
     }
 
-    public void setMin_buy(int min_buy) {
+    public void setMin_buy(String min_buy) {
         this.min_buy = min_buy;
     }
 
-    public int getMax_buy() {
+    public String getMax_buy() {
         return max_buy;
     }
 
-    public void setMax_buy(int max_buy) {
+    public void setMax_buy(String max_buy) {
         this.max_buy = max_buy;
     }
 
@@ -130,19 +130,19 @@ public class ProductDetailEntity implements Serializable {
         this.details = details;
     }
 
-    public int getHits() {
+    public String getHits() {
         return hits;
     }
 
-    public void setHits(int hits) {
+    public void setHits(String hits) {
         this.hits = hits;
     }
 
-    public int getNum() {
+    public String getNum() {
         return num;
     }
 
-    public void setNum(int num) {
+    public void setNum(String num) {
         this.num = num;
     }
 

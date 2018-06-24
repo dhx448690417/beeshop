@@ -39,7 +39,7 @@ public class RSAUtil {
             "HQamumeO57L0VpIDUt3SS/FjownBmVbH2gkQBGVEQOzF6KAkuplCG9l5PJXUWqKc\n" +
             "an54zCgaOyeT1T9z2wIDAQAB";
 
-    public static final String PRIVATE_KEY_STR ="MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAL0OBlrBZYbeC8jZ\n" +
+    public static final String PRIVATE_KEY_STR = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAL0OBlrBZYbeC8jZ\n" +
             "e9xQtYkMuXpxTwdJGonDSsQzv8rCUBGh5XkUchdxl9Y1hoeWrfBLqmkIVieVLOl8\n" +
             "M/oKg8jY2BQdBqa6Z47nsvRWkgNS3dJL8WOjCcGZVsfaCRAEZURA7MXooCS6mUIb\n" +
             "2Xk8ldRaopxqfnjMKBo7J5PVP3PbAgMBAAECgYAutA5B0VEBdk02+vMsRAv0pV4U\n" +
@@ -60,7 +60,9 @@ public class RSAUtil {
     //进行Base64转码时的flag设置，默认为Base64.DEFAULT
     private static int sBase64Mode = Base64.DEFAULT;
 
-    /** RSA最大解密密文大小 */
+    /**
+     * RSA最大解密密文大小
+     */
     private static final int MAX_DECRYPT_BLOCK = 128;
     /**
      * RSA最大加密明文大小
@@ -68,7 +70,7 @@ public class RSAUtil {
     private static final int MAX_ENCRYPT_BLOCK = 117;
 
     //初始化方法，设置参数
-    public static void init(String transform,int base64Mode){
+    public static void init(String transform, int base64Mode) {
         sTransform = transform;
         sBase64Mode = base64Mode;
     }
@@ -79,7 +81,7 @@ public class RSAUtil {
         @param keyLength
         密钥长度，小于1024长度的密钥已经被证实是不安全的，通常设置为1024或者2048，建议2048
      */
-    public static KeyPair generateRSAKeyPair(int keyLength){
+    public static KeyPair generateRSAKeyPair(int keyLength) {
         KeyPair keyPair = null;
         try {
 
@@ -106,7 +108,7 @@ public class RSAUtil {
         指定是加密还是解密，值为Cipher.ENCRYPT_MODE或者Cipher.DECRYPT_MODE
 
      */
-    private static byte[] processData(byte[] srcData, Key key,int mode){
+    private static byte[] processData(byte[] srcData, Key key, int mode) {
 
         //用来保存处理结果
         byte[] resultBytes = null;
@@ -116,7 +118,7 @@ public class RSAUtil {
             //获取Cipher实例
             Cipher cipher = Cipher.getInstance(sTransform);
             //初始化Cipher，mode指定是加密还是解密，key为公钥或私钥
-            cipher.init(mode,key);
+            cipher.init(mode, key);
             //处理数据
             resultBytes = cipher.doFinal(srcData);
 
@@ -137,51 +139,66 @@ public class RSAUtil {
 
 
     /*
-    * 使用公钥加密数据，结果用Base64转码
-    * */
-    public static String encryptDataByPublicKey(byte[] srcData, PublicKey publicKey){
+     * 使用公钥加密数据，结果用Base64转码
+     * */
+    public static String encryptDataByPublicKey(byte[] srcData, PublicKey publicKey) {
 
-        byte[] resultBytes = processData(srcData,publicKey,Cipher.ENCRYPT_MODE);
+        byte[] resultBytes = processData(srcData, publicKey, Cipher.ENCRYPT_MODE);
 
-        return Base64.encodeToString(resultBytes,sBase64Mode);
+        return Base64.encodeToString(resultBytes, sBase64Mode);
 
     }
 
     /*
      * 使用公钥加密数据，结果用Base64转码
      * */
-    public static String encryptDataByPublicKey(byte[] srcData){
+    public static String encryptDataByPublicKey(byte[] srcData) {
         PublicKey publicKey = RSAUtil.keyStrToPublicKey(RSAUtil.PUBLIC_KEY_STR);
-        byte[] resultBytes = processData(srcData,publicKey,Cipher.ENCRYPT_MODE);
 
-        return Base64.encodeToString(resultBytes,sBase64Mode);
+        try {
 
+            return encryptByPublicKey(srcData, publicKey);
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     /*
         使用私钥解密，返回解码数据
      */
-    public static byte[] decryptDataByPrivate(String encryptedData, PrivateKey privateKey){
+    public static byte[] decryptDataByPrivate(String encryptedData, PrivateKey privateKey) {
 
-        byte[] bytes = Base64.decode(encryptedData,sBase64Mode);
+        byte[] bytes = Base64.decode(encryptedData, sBase64Mode);
 
-        return processData(bytes,privateKey,Cipher.DECRYPT_MODE);
+        return processData(bytes, privateKey, Cipher.DECRYPT_MODE);
     }
 
     /*
         使用私钥进行解密，解密数据转换为字符串，使用utf-8编码格式
      */
-    public static String decryptedToStrByPrivate(String encryptedData, PrivateKey privateKey){
-        return new String(decryptDataByPrivate(encryptedData,privateKey));
+    public static String decryptedToStrByPrivate(String encryptedData, PrivateKey privateKey) {
+        return new String(decryptDataByPrivate(encryptedData, privateKey));
     }
 
     /*
         使用私钥解密，解密数据转换为字符串，并指定字符集
      */
-    public static String decryptedToStrByPrivate(String encryptedData, PrivateKey privateKey,String charset){
+    public static String decryptedToStrByPrivate(String encryptedData, PrivateKey privateKey, String charset) {
         try {
 
-            return new String(decryptDataByPrivate(encryptedData,privateKey),charset);
+            return new String(decryptDataByPrivate(encryptedData, privateKey), charset);
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -195,22 +212,22 @@ public class RSAUtil {
             使用私钥加密，结果用Base64转码
          */
 
-    public static String encryptDataByPrivateKey(byte[] srcData,PrivateKey privateKey){
+    public static String encryptDataByPrivateKey(byte[] srcData, PrivateKey privateKey) {
 
-        byte[] resultBytes = processData(srcData,privateKey,Cipher.ENCRYPT_MODE);
+        byte[] resultBytes = processData(srcData, privateKey, Cipher.ENCRYPT_MODE);
 
-        return Base64.encodeToString(resultBytes,sBase64Mode);
+        return Base64.encodeToString(resultBytes, sBase64Mode);
     }
 
         /*
             使用公钥解密，返回解密数据
          */
 
-    public static byte[] decryptDataByPublicKey(String encryptedData,PublicKey publicKey){
+    public static byte[] decryptDataByPublicKey(String encryptedData, PublicKey publicKey) {
 
-        byte[] bytes = Base64.decode(encryptedData,sBase64Mode);
+        byte[] bytes = Base64.decode(encryptedData, sBase64Mode);
 
-        return processData(bytes,publicKey,Cipher.DECRYPT_MODE);
+        return processData(bytes, publicKey, Cipher.DECRYPT_MODE);
 
     }
 
@@ -227,7 +244,7 @@ public class RSAUtil {
     public static String decrypByKey(String content, Key key) throws Exception {
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.DECRYPT_MODE, key);
-        InputStream ins = new ByteArrayInputStream(Base64.decode(content,Base64.DEFAULT));
+        InputStream ins = new ByteArrayInputStream(Base64.decode(content, Base64.DEFAULT));
         ByteArrayOutputStream writer = new ByteArrayOutputStream();
         // rsa解密的字节大小最多是128，将需要解密的内容，按128位拆开解密
         byte[] buf = new byte[MAX_DECRYPT_BLOCK];
@@ -249,7 +266,7 @@ public class RSAUtil {
         return new String(writer.toByteArray(), "utf-8");
     }
 
-    public static String decryptByPublicKey(byte[] encryptedData){
+    public static String decryptByPublicKey(byte[] encryptedData) {
 
         PublicKey publicKey = RSAUtil.keyStrToPublicKey(RSAUtil.PUBLIC_KEY_STR);
         byte[] resultBytes = null;
@@ -295,8 +312,8 @@ public class RSAUtil {
     public static String encryptByPublicKey(byte[] data, Key key)
             throws Exception {
         // 对数据加密
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        cipher.init(Cipher.DECRYPT_MODE, key);
+        Cipher cipher = Cipher.getInstance(sTransform);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
         int inputLen = data.length;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         int offSet = 0;
@@ -315,14 +332,14 @@ public class RSAUtil {
         }
         byte[] encryptedData = out.toByteArray();
         out.close();
-        return Base64.encodeToString(encryptedData,sBase64Mode);
+        return Base64.encodeToString(encryptedData, sBase64Mode);
     }
 
     /*
         使用公钥解密，结果转换为字符串，使用默认字符集utf-8
      */
-    public static String decryptedToStrByPublicKey(String encryptedData,PublicKey publicKey){
-        return new String(decryptDataByPublicKey(encryptedData,publicKey));
+    public static String decryptedToStrByPublicKey(String encryptedData, PublicKey publicKey) {
+        return new String(decryptDataByPublicKey(encryptedData, publicKey));
     }
 
 
@@ -330,10 +347,10 @@ public class RSAUtil {
             使用公钥解密，结果转换为字符串，使用指定字符集
          */
 
-    public static String decryptedToStrByPublicKey(String encryptedData,PublicKey publicKey,String charset){
+    public static String decryptedToStrByPublicKey(String encryptedData, PublicKey publicKey, String charset) {
         try {
 
-            return new String(decryptDataByPublicKey(encryptedData,publicKey),charset);
+            return new String(decryptDataByPublicKey(encryptedData, publicKey), charset);
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -349,11 +366,11 @@ public class RSAUtil {
             将字符串形式的公钥转换为公钥对象
          */
 
-    public static PublicKey keyStrToPublicKey(String publicKeyStr){
+    public static PublicKey keyStrToPublicKey(String publicKeyStr) {
 
         PublicKey publicKey = null;
 
-        byte[] keyBytes = Base64.decode(publicKeyStr,sBase64Mode);
+        byte[] keyBytes = Base64.decode(publicKeyStr, sBase64Mode);
 
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
 
@@ -377,11 +394,11 @@ public class RSAUtil {
             将字符串形式的私钥，转换为私钥对象
          */
 
-    public static PrivateKey keyStrToPrivate(String privateKeyStr){
+    public static PrivateKey keyStrToPrivate(String privateKeyStr) {
 
         PrivateKey privateKey = null;
 
-        byte[] keyBytes = Base64.decode(privateKeyStr,sBase64Mode);
+        byte[] keyBytes = Base64.decode(privateKeyStr, sBase64Mode);
 
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.model.Shop;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -44,7 +45,9 @@ public class HomeShopAdapter extends RecyclerView.Adapter<HomeShopAdapter.HomeSh
     @Override
     public void onBindViewHolder(HomeShopViewHolder holder, final int position) {
         Shop.ListBean listBean = mShopList.get(position);
-        Glide.with(mContext).load("https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1296902609,4050242992&fm=27&gp=0.jpg").into(holder.iv_shop);
+        Glide.with(mContext).load(listBean.getCover())
+                .apply(new RequestOptions().placeholder(R.drawable.default_banner).error(R.drawable.default_banner).dontAnimate().centerCrop())
+                .into(holder.iv_shop);
 
         holder.tv_shop_name.setText(listBean.getTitle());
         holder.tv_shop_detail.setText(listBean.getBusiness());

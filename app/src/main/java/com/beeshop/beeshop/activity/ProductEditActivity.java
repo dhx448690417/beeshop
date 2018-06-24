@@ -4,25 +4,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.ProductInfo;
+import com.beeshop.beeshop.model.ProductListEntity;
+import com.beeshop.beeshop.net.HttpLoader;
+import com.beeshop.beeshop.net.ResponseEntity;
+import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
+import com.beeshop.beeshop.utils.ToastUtils;
+
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.beeshop.beeshop.R;
-import com.beeshop.beeshop.model.TransformUtil;
-import com.beeshop.beeshop.utils.LogUtil;
-import com.beeshop.beeshop.utils.qiniu.PicUploadManager;
-import com.beeshop.beeshop.views.HorizontalPicAddGallery;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
-import com.qiniu.android.http.ResponseInfo;
-
-import java.util.List;
 
 /**
  * Author : cooper
@@ -43,10 +45,24 @@ public class ProductEditActivity extends BaseActivity {
     EditText etProductDescribe;
     @BindView(R.id.tv_introduce_number)
     TextView tvIntroduceNumber;
-    @BindView(R.id.hpag_add_pic)
-    HorizontalPicAddGallery hpagAddPic;
     @BindView(R.id.tv_submit)
     TextView tvSubmit;
+
+    public static final String PARAM_PRODUCT_INFO = "param_product_info";
+    @BindView(R.id.tv_update)
+    TextView tvUpdate;
+    @BindView(R.id.tv_manager_pic)
+    TextView tvManagerPic;
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom;
+
+    private String mProductTitle;
+    private String mProductPrice;
+    private String mProductUnit;
+    private String mProductTotal;
+    private String mProductDescribe;
+
+    private ProductListEntity.ListBean mListBean;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +70,7 @@ public class ProductEditActivity extends BaseActivity {
         setContentView(R.layout.aty_edit_product);
         ButterKnife.bind(this);
         setTitleAndBackPressListener("编辑产品");
+        mListBean = (ProductListEntity.ListBean) getIntent().getSerializableExtra(PARAM_PRODUCT_INFO);
         initView();
     }
 
@@ -75,95 +92,116 @@ public class ProductEditActivity extends BaseActivity {
             }
         });
 
-        hpagAddPic.setPicAddListener(new HorizontalPicAddGallery.PicAddListener() {
-            @Override
-            public void deletePic(int position) {
+        if (mListBean != null) {
+            etProductName.setText(mListBean.getTitle());
+            etProductPirce.setText(mListBean.getPrice());
+            etProductUnit.setText(mListBean.getUnit());
+//            etProductTotal.setText(mListBean.getTitle());
+//            etProductDescribe.setText(mListBean.get);
+            llBottom.setVisibility(View.VISIBLE);
+            tvSubmit.setVisibility(View.GONE);
+        } else {
+            llBottom.setVisibility(View.GONE);
+            tvSubmit.setVisibility(View.VISIBLE);
+        }
 
+    }
+
+    @OnClick({R.id.tv_submit,R.id.tv_update, R.id.tv_manager_pic})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_submit:
+                if (verify()) {
+                    addProduct();
+                }
+                break;
+            case R.id.tv_update:
+                if (verify()) {
+                    updateProduct();
+                }
+                break;
+            case R.id.tv_manager_pic:
+                Intent intent = new Intent(ProductEditActivity.this, ProductPictureUploadActivity.class);
+                intent.putExtra(ProductPictureUploadActivity.PARAM_PRODUCT_ID, mListBean.getId());
+                startActivity(intent);
+                break;
+        }
+    }
+
+    private boolean verify() {
+        mProductTitle = etProductName.getText().toString();
+        mProductPrice = etProductPirce.getText().toString();
+        mProductUnit = etProductUnit.getText().toString();
+        mProductTotal = etProductTotal.getText().toString();
+        mProductDescribe = etProductDescribe.getText().toString();
+        if (TextUtils.isEmpty(mProductTitle)) {
+            ToastUtils.showToast("请填写产品名称");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mProductDescribe)) {
+            ToastUtils.showToast("请填写产品描述");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 添加产品
+     */
+    private void addProduct() {
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        params.put("title", mProductTitle);
+        params.put("price", mProductPrice);
+        params.put("unit", mProductUnit);
+        params.put("details", mProductDescribe);
+//        params.put("total", mProductTotal);
+        HttpLoader.getInstance().addProduct(params, mCompositeSubscription, new SubscriberCallBack<ProductInfo>(this, this) {
+
+            @Override
+            protected void onSuccess(ProductInfo response) {
+                super.onSuccess(response);
+                Intent intent = new Intent(ProductEditActivity.this, ProductPictureUploadActivity.class);
+                intent.putExtra(ProductPictureUploadActivity.PARAM_PRODUCT_ID, response.getProduct_id());
+                startActivity(intent);
+                finish();
             }
 
             @Override
-            public void retryUploadPic(int position) {
-
-            }
-
-            @Override
-            public void picClicked(int position) {
-                PictureSelector.create(ProductEditActivity.this).externalPicturePreview(position,hpagAddPic.getChoosedPic());
-            }
-
-            @Override
-            public void addPic() {
-                PictureSelector.create(ProductEditActivity.this)
-                        .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
-                        .maxSelectNum(2)// 最大图片选择数量
-                        .minSelectNum(1)// 最小选择数量
-                        .imageSpanCount(3)// 每行显示个数
-                        .selectionMedia(hpagAddPic.getChoosedPic())
-                        .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选
-                        .previewImage(true)// 是否可预览图片
-                        .previewVideo(false)// 是否可预览视频
-                        .enablePreviewAudio(false) // 是否可播放音频
-                        .isCamera(true)// 是否显示拍照按钮
-                        .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
-                        .imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg
-                        .setOutputCameraPath("/BeeShopCache")// 自定义拍照保存路径
-                        .enableCrop(false)// 是否裁剪
-                        .compress(true)// 是否压缩
-                        .synOrAsy(true)//同步true或异步false 压缩 默认同步
-                        .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
-                        .withAspectRatio(16, 9)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
-                        .isGif(false)// 是否显示gif图片
-                        .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
-                        .circleDimmedLayer(false)// 是否圆形裁剪
-                        .openClickSound(true)// 是否开启点击声音
-                        .minimumCompressSize(100)// 小于100kb的图片不压缩
-                        .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
             }
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case PictureConfig.CHOOSE_REQUEST:
-                    // 图片、视频、音频选择结果回调
-                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                    hpagAddPic.setPicList(TransformUtil.transUploadPicEnrity(selectList));
-                    for (int i = 0; i < hpagAddPic.getPicList().size()-1; i++) {
-                        final HorizontalPicAddGallery.UploadPicEnrity uploadPicEnrity = hpagAddPic.getPicList().get(i);
-                        PicUploadManager.getInstance().uploadPic(uploadPicEnrity.localMedia.getPath(), new PicUploadManager.UploadPicCallBack() {
-                            @Override
-                            public void uploadSuccess(String key, ResponseInfo info) {
-                                LogUtil.e("upload success key ==  "+key);
-                                LogUtil.e("upload success info ==  "+info.toString());
-                            }
+    /**
+     * 更新产品
+     */
+    private void updateProduct() {
 
-                            @Override
-                            public void uploadFailed(String key, ResponseInfo info) {
-                                LogUtil.e("upload failed key ==  "+key);
-                                uploadPicEnrity.isFailed = 1;
-                                hpagAddPic.refreshGallery();
-                            }
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        params.put("product_id", mListBean.getId());
+        params.put("title", mProductTitle);
+        params.put("price", mProductPrice);
+        params.put("unit", mProductUnit);
+        params.put("details", mProductDescribe);
+//        params.put("total", mProductTotal);
+        HttpLoader.getInstance().updateProduct(params, mCompositeSubscription, new SubscriberCallBack<ProductInfo>(this, this) {
 
-                            @Override
-                            public void uploadProgress(String key, double percent) {
-                                uploadPicEnrity.progress = (int)(percent*100);
-                                hpagAddPic.refreshGallery();
-                            }
-                        });
-                    }
-                    break;
+            @Override
+            protected void onSuccess(ProductInfo response) {
+                super.onSuccess(response);
+                finish();
             }
-        }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
     }
 
-    @OnClick({ R.id.tv_submit})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_submit:
-                break;
-        }
-    }
 }

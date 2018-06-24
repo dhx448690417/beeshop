@@ -51,6 +51,7 @@ public class ShopDetailActivity extends BaseActivity {
     public final int NOT_COLLECT_SHOP = 1; // 取消关注店铺
 
     private List<ShopDetailEntity.ProductBean> mShopList = new ArrayList<>();
+    private List<ShopDetailEntity.PicBean> mShopPicList = new ArrayList<>();
     private ShopDetailProductAdapter mShopDetailProductAdapter;
     private int mShopId;
     private boolean mIsCollected; //是否关注收藏
@@ -104,7 +105,6 @@ public class ShopDetailActivity extends BaseActivity {
     }
 
     private void initBanner() {
-        banner.setAutoPlayAble(true);
         banner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
@@ -114,13 +114,29 @@ public class ShopDetailActivity extends BaseActivity {
                         .into(itemView);
             }
         });
-        List<String> imageList = new ArrayList<>();
-        imageList.add("http://img4.imgtn.bdimg.com/it/u=3730565220,1475936246&fm=27&gp=0.jpg");
-        imageList.add("http://img4.imgtn.bdimg.com/it/u=3882041707,3819813181&fm=27&gp=0.jpg");
-        imageList.add("http://img1.imgtn.bdimg.com/it/u=2558221527,3165070826&fm=27&gp=0.jpg");
-        imageList.add("http://img1.imgtn.bdimg.com/it/u=4274803127,1354140264&fm=27&gp=0.jpg");
+    }
 
-        banner.setData(imageList, null);
+    private void setBanner(ShopDetailEntity shopDetailEntity) {
+        List<String> titleList = new ArrayList<>();
+        List<String> picList = new ArrayList<>();
+
+        if (shopDetailEntity != null && shopDetailEntity.getPic() != null && shopDetailEntity.getPic().size() > 0) {
+            for (int i = 0; i < shopDetailEntity.getPic().size(); i++) {
+                ShopDetailEntity.PicBean picBean = shopDetailEntity.getPic().get(i);
+                titleList.add(picBean.getTitle());
+                picList.add(picBean.getPath());
+            }
+        } else {
+            titleList.add("暂无图片");
+            picList.add("");
+        }
+
+        if (picList.size() > 1) {
+            banner.setAutoPlayAble(true);
+        } else {
+            banner.setAutoPlayAble(false);
+        }
+        banner.setData(picList,titleList);
     }
 
     private void getShopDetail() {
@@ -133,12 +149,8 @@ public class ShopDetailActivity extends BaseActivity {
             protected void onSuccess(ShopDetailEntity response) {
                 super.onSuccess(response);
                 tvShopIntroduce.setText(response.getInfo().getBusiness());
+                setBanner(response);
                 setTitle(response.getInfo().getTitle());
-                ShopDetailEntity.ProductBean productBean = new ShopDetailEntity.ProductBean();
-                productBean.setId(1);
-                productBean.setDetails("水电费水电费及垃圾哦较为 高度发给");
-                productBean.setTitle("高端产品");
-                response.getProduct().add(productBean);
                 mShopList.addAll(response.getProduct());
                 mShopDetailProductAdapter.notifyDataSetChanged();
                 if (response.getCollection() == 2) {

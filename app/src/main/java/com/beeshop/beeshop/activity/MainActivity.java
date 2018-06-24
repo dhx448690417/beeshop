@@ -19,8 +19,14 @@ import com.beeshop.beeshop.fragment.ClientFragment;
 import com.beeshop.beeshop.fragment.HomeFragment;
 import com.beeshop.beeshop.fragment.MineFragment;
 import com.beeshop.beeshop.fragment.StationFragment;
+import com.beeshop.beeshop.model.QiNiuTokenEntity;
+import com.beeshop.beeshop.net.HttpLoader;
+import com.beeshop.beeshop.net.ResponseEntity;
+import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.LogUtil;
 import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 import com.beeshop.beeshop.utils.StatusBarUtil;
+import com.beeshop.beeshop.utils.ToastUtils;
 import com.beeshop.beeshop.views.BottomTabView;
 
 import java.util.HashMap;
@@ -28,7 +34,7 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.fl_main_container)
     FrameLayout flMainContainer;
@@ -61,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
             mStationFragment = (StationFragment) mFragmentManager.findFragmentByTag(StationFragment.class.getSimpleName());
             mMineFragment = (MineFragment) mFragmentManager.findFragmentByTag(MineFragment.class.getSimpleName());
             tabBottom.getTabAt(mTabIndex).select();
+        }
+
+        // 获取七牛上传图片token
+        if (!TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
+            getQiNiuToken();
         }
 
     }
@@ -206,6 +217,27 @@ public class MainActivity extends AppCompatActivity {
             ft.hide(mMineFragment);
         }
 
+    }
+
+    /**
+     * 开店申请
+     */
+    private void getQiNiuToken() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        HttpLoader.getInstance().getQiNiuToken(params, mCompositeSubscription, new SubscriberCallBack<QiNiuTokenEntity>() {
+
+            @Override
+            protected void onSuccess(QiNiuTokenEntity response) {
+                super.onSuccess(response);
+                SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_QI_NIU_TOKEN,response.getToken());
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
     }
 
 

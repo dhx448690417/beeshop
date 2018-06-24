@@ -99,6 +99,21 @@
         <activity
             android:name=".activity.ProductEditActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ShopPictureUploadActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ProductPictureUploadActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.MyOrderListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ShopOrderListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.OrderActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

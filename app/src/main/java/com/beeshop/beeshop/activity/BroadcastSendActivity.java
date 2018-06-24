@@ -14,6 +14,7 @@ import butterknife.OnClick;
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.model.TransformUtil;
 import com.beeshop.beeshop.utils.LogUtil;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 import com.beeshop.beeshop.utils.qiniu.PicUploadManager;
 import com.beeshop.beeshop.views.HorizontalPicAddGallery;
 import com.luck.picture.lib.PictureSelector;
@@ -128,7 +129,7 @@ public class BroadcastSendActivity extends BaseActivity {
                     hpagAddPic.setPicList(TransformUtil.transUploadPicEnrity(selectList));
                     for (int i = 0; i < hpagAddPic.getPicList().size()-1; i++) {
                         final HorizontalPicAddGallery.UploadPicEnrity uploadPicEnrity = hpagAddPic.getPicList().get(i);
-                        PicUploadManager.getInstance().uploadPic(uploadPicEnrity.localMedia.getPath(), new PicUploadManager.UploadPicCallBack() {
+                        PicUploadManager.getInstance().uploadPic(uploadPicEnrity.localMedia.getPath(), SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_QI_NIU_TOKEN,""), new PicUploadManager.UploadPicCallBack() {
                             @Override
                             public void uploadSuccess(String key, ResponseInfo info) {
                                 LogUtil.e("upload success key ==  "+key);

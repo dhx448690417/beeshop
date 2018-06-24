@@ -13,6 +13,7 @@ import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.model.Shop;
 import com.beeshop.beeshop.model.ShopDetailEntity;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -45,8 +46,9 @@ public class ShopDetailProductAdapter extends RecyclerView.Adapter<ShopDetailPro
     @Override
     public void onBindViewHolder(HomeShopViewHolder holder, final int position) {
         ShopDetailEntity.ProductBean listBean = mShopList.get(position);
-        Glide.with(mContext).load("http://img0.imgtn.bdimg.com/it/u=137912730,2043931548&fm=27&gp=0.jpg").into(holder.iv_shop);
-
+        Glide.with(mContext).load(listBean.getCover())
+                .apply(new RequestOptions().placeholder(R.drawable.default_banner).error(R.drawable.default_banner).dontAnimate().centerCrop())
+                .into(holder.iv_shop);
         holder.tv_shop_name.setText(listBean.getTitle());
         holder.tv_shop_detail.setText(listBean.getDetails());
         holder.rl_shop.setOnClickListener(new View.OnClickListener() {

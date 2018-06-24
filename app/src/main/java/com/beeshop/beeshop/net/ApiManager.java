@@ -123,5 +123,93 @@ public interface ApiManager {
     @POST("/shop/memberrechargehistory")
     Observable<String> postRechargeHistoryRecord(@FieldMap HashMap<String, Object> map);
 
+    // 开店申请
+    @FormUrlEncoded
+    @POST("/shop/setup")
+    Observable<String> postRegisterShop(@FieldMap HashMap<String, Object> map);
+
+    // 获取七牛上传图片token
+    @FormUrlEncoded
+    @POST("/qiniu/uploadToken")
+    Observable<String> postQiNiuToken(@FieldMap HashMap<String, Object> map);
+
+    // 获取我的店铺信息
+    @FormUrlEncoded
+    @POST("/shop/index")
+    Observable<String> postShopInfo(@FieldMap HashMap<String, Object> map);
+
+    // 更新我的店铺信息
+    @FormUrlEncoded
+    @POST("/shop/update")
+    Observable<String> postShopInfoUpdate(@FieldMap HashMap<String, Object> map);
+
+    // 获取店铺店铺照片
+    @FormUrlEncoded
+    @POST("/album/index")
+    Observable<String> postShopPicList(@FieldMap HashMap<String, Object> map);
+
+    // 添加店铺图片
+    @FormUrlEncoded
+    @POST("/album/addpic")
+    Observable<String> postAddShopPic(@FieldMap HashMap<String, Object> map);
+
+    // 删除店铺图片
+    @FormUrlEncoded
+    @POST("/album/delpic")
+    Observable<String> postDeleteShopPic(@FieldMap HashMap<String, Object> map);
+
+    // 设置店铺图片为封面
+    @FormUrlEncoded
+    @POST("/album/setcover")
+    Observable<String> postSetShopCoverPic(@FieldMap HashMap<String, Object> map);
+
+    // 添加产品
+    @FormUrlEncoded
+    @POST("/product/addone")
+    Observable<String> postAddProduct(@FieldMap HashMap<String, Object> map);
+
+    // 产品列表
+    @FormUrlEncoded
+    @POST("/product/index")
+    Observable<String> postProductList(@FieldMap HashMap<String, Object> map);
+
+    // 更新产品
+    @FormUrlEncoded
+    @POST("/product/update")
+    Observable<String> postUpdateProduct(@FieldMap HashMap<String, Object> map);
+
+
+    // 获取产品list照片
+    @FormUrlEncoded
+    @POST("/product/album")
+    Observable<String> postProductPicList(@FieldMap HashMap<String, Object> map);
+
+    // 添加产品图片
+    @FormUrlEncoded
+    @POST("/product/addpic")
+    Observable<String> postAddProductPic(@FieldMap HashMap<String, Object> map);
+
+    // 删除产品图片
+    @FormUrlEncoded
+    @POST("/product/delpic")
+    Observable<String> postDeleteProductPic(@FieldMap HashMap<String, Object> map);
+
+    // 设置产品图片为封面
+    @FormUrlEncoded
+    @POST("/product/setcover")
+    Observable<String> postSetProductCoverPic(@FieldMap HashMap<String, Object> map);
+
+
+    // ===============================  订单接口  =====================================
+
+    // 获取我的订单列表
+    @FormUrlEncoded
+    @POST("/trade/userorder")
+    Observable<String> postMyOrderList(@FieldMap HashMap<String, Object> map);
+
+    // 获取商铺订单列表
+    @FormUrlEncoded
+    @POST("/trade/shoporder")
+    Observable<String> postShopOrderList(@FieldMap HashMap<String, Object> map);
 
 }

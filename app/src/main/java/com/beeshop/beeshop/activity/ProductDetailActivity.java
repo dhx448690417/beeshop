@@ -1,5 +1,6 @@
 package com.beeshop.beeshop.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Base64;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.model.ProductDetailEntity;
+import com.beeshop.beeshop.model.ShopDetailEntity;
 import com.beeshop.beeshop.net.ApiManager;
 import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.RSAUtil;
@@ -87,15 +89,31 @@ public class ProductDetailActivity extends BaseActivity {
                         .into(itemView);
             }
         });
-        List<String> imageList = new ArrayList<>();
-        imageList.add("http://img2.imgtn.bdimg.com/it/u=2232213457,2695021481&fm=27&gp=0.jpg");
-        imageList.add("http://img0.imgtn.bdimg.com/it/u=412350416,2059446610&fm=27&gp=0.jpg");
-        imageList.add("http://img3.imgtn.bdimg.com/it/u=2645597901,3299484952&fm=27&gp=0.jpg");
-        imageList.add("http://img2.imgtn.bdimg.com/it/u=97747901,3204014835&fm=27&gp=0.jpg");
-
-        banner.setData(imageList, null);
 
         getProductInfo();
+    }
+
+    private void setBanner(ProductDetailEntity productDetailEntity) {
+        List<String> titleList = new ArrayList<>();
+        List<String> picList = new ArrayList<>();
+
+        if (productDetailEntity != null && productDetailEntity.getPic() != null && productDetailEntity.getPic().size() > 0) {
+            for (int i = 0; i < productDetailEntity.getPic().size(); i++) {
+                ProductDetailEntity.PicBean picBean = productDetailEntity.getPic().get(i);
+                titleList.add(picBean.getTitle());
+                picList.add(picBean.getPath());
+            }
+        } else {
+            titleList.add("暂无图片");
+            picList.add("");
+        }
+
+        if (picList.size() > 1) {
+            banner.setAutoPlayAble(true);
+        } else {
+            banner.setAutoPlayAble(false);
+        }
+        banner.setData(picList,titleList);
     }
 
     @OnClick({R.id.tv_contect_shop, R.id.tv_buy})
@@ -104,7 +122,8 @@ public class ProductDetailActivity extends BaseActivity {
             case R.id.tv_contect_shop:
                 break;
             case R.id.tv_buy:
-                ToastUtils.showToast("立即购买");
+                Intent intent = new Intent(this,OrderActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -118,9 +137,11 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             protected void onSuccess(ProductDetailEntity response) {
                 super.onSuccess(response);
+                setBanner(response);
                 tvPrice.setText(response.getPrice());
-                tvProductIntroduce.setText(response.getPrice());
-                tvUnit.setText(response.getNum()+"");
+                tvProductIntroduce.setText(response.getDetails());
+                tvRepertory.setText(response.getSupply());
+                tvUnit.setText(response.getUnit());
             }
 
             @Override
