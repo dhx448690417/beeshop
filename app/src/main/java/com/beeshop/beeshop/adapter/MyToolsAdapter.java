@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.BroadcastCardEntity;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ import java.util.List;
  * Time：  2018/5/19 上午10:49
  * Description：我的工具
  */
-public class MyToolsAdapter extends RvBaseAdapter<String,MyToolsAdapter.MyToolsViewHolder> {
+public class MyToolsAdapter extends RvBaseAdapter<BroadcastCardEntity.ListBean,MyToolsAdapter.MyToolsViewHolder> {
 
 
-    public MyToolsAdapter(Context mContext, List<String> mList) {
+    public MyToolsAdapter(Context mContext, List<BroadcastCardEntity.ListBean> mList) {
         super(mContext, mList);
     }
 
@@ -31,8 +32,13 @@ public class MyToolsAdapter extends RvBaseAdapter<String,MyToolsAdapter.MyToolsV
 
     @Override
     public void onBindViewHolder(MyToolsViewHolder holder, final int position) {
-        holder.tv_tool_name.setText("暗影战斧");
-        holder.tv_tool_state.setText("已过期");
+        BroadcastCardEntity.ListBean listBean = mList.get(position);
+        holder.tv_tool_name.setText(listBean.getTitle());
+        if (listBean.getStatus() == 2) {
+            holder.tv_tool_state.setText("可用");
+        } else {
+            holder.tv_tool_state.setText("不可用");
+        }
         holder.rl_tool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

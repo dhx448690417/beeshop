@@ -212,4 +212,34 @@ public interface ApiManager {
     @POST("/trade/shoporder")
     Observable<String> postShopOrderList(@FieldMap HashMap<String, Object> map);
 
+    // ===============================  电台接口  =====================================
+
+    // 获取商铺排序
+    @FormUrlEncoded
+    @POST("/station/shopcharts")
+    Observable<String> postShopSortList(@FieldMap HashMap<String, Object> map);
+
+    // 获取附近广播
+    @FormUrlEncoded
+    @POST("/station/broadcast")
+    Observable<String> postNearbyBroadcast(@FieldMap HashMap<String, Object> map);
+
+    // 发布广播
+    @FormUrlEncoded
+    @POST("/station/publish")
+    Observable<String> postPublishBroadcast(@FieldMap HashMap<String, Object> map);
+
+
+    // ===============================  我的接口  =====================================
+
+    // 我的广播
+    @FormUrlEncoded
+    @POST("/user/broadcast")
+    Observable<String> postMyBroadcast(@FieldMap HashMap<String, Object> map);
+
+    // 我的广播卡
+    @FormUrlEncoded
+    @POST("/user/broadcastcard")
+    Observable<String> postMyBroadcastCard(@FieldMap HashMap<String, Object> map);
+
 }

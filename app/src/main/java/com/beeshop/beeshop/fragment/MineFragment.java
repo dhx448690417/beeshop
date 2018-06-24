@@ -70,6 +70,7 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.rl_my_tool:
                 startActivity(new Intent(getActivity(), MyToolsActivity.class));
+                break;
             case R.id.rl_my_order:
                 startActivity(new Intent(getActivity(), MyOrderListActivity.class));
                 break;

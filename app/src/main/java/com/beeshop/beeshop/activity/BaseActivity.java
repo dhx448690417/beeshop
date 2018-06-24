@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -171,6 +172,12 @@ public class BaseActivity extends AppCompatActivity implements ProgressControlIn
                 .openClickSound(true)// 是否开启点击声音
                 .minimumCompressSize(100)// 小于100kb的图片不压缩
                 .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+    }
+
+    protected void startActivity(String key,int param,Context context, Class<?> cls) {
+        Intent intent = new Intent(context, cls);
+        intent.putExtra(key, param);
+        startActivity(intent);
     }
 
 

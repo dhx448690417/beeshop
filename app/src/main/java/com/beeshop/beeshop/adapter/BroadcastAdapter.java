@@ -10,7 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.BroadcastListEntity;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -19,10 +21,10 @@ import java.util.List;
  * Time：  2018/5/19 上午10:49
  * Description：广播
  */
-public class BroadcastAdapter extends RvBaseAdapter<String,BroadcastAdapter.BroadcatViewHolder> {
+public class BroadcastAdapter extends RvBaseAdapter<BroadcastListEntity.ListBean,BroadcastAdapter.BroadcatViewHolder> {
 
 
-    public BroadcastAdapter(Context mContext, List<String> mList) {
+    public BroadcastAdapter(Context mContext, List<BroadcastListEntity.ListBean> mList) {
         super(mContext, mList);
     }
 
@@ -33,9 +35,12 @@ public class BroadcastAdapter extends RvBaseAdapter<String,BroadcastAdapter.Broa
 
     @Override
     public void onBindViewHolder(BroadcatViewHolder holder, final int position) {
-        holder.tv_bc_title.setText("广播标题");
-        holder.tv_bc_content.setText("广播介绍一下");
-        Glide.with(mContext).load("http://img4.imgtn.bdimg.com/it/u=1853292014,942298160&fm=27&gp=0.jpg").into(holder.iv_broadcast_pic);
+        BroadcastListEntity.ListBean listBean = mList.get(position);
+        holder.tv_bc_title.setText(listBean.getTitle());
+        holder.tv_bc_content.setText(listBean.getDescribe());
+        Glide.with(mContext).load(listBean.getImg())
+                .apply(new RequestOptions().placeholder(R.drawable.default_banner).error(R.drawable.default_banner).dontAnimate().centerCrop())
+                .into(holder.iv_broadcast_pic);
         holder.rl_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

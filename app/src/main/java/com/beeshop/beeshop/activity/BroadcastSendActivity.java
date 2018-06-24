@@ -4,26 +4,41 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.BroadcastCardEntity;
+import com.beeshop.beeshop.model.ShopCategoryEntity;
 import com.beeshop.beeshop.model.TransformUtil;
+import com.beeshop.beeshop.net.HttpLoader;
+import com.beeshop.beeshop.net.ResponseEntity;
+import com.beeshop.beeshop.net.SubscriberCallBack;
 import com.beeshop.beeshop.utils.LogUtil;
 import com.beeshop.beeshop.utils.SharedPreferenceUtil;
+import com.beeshop.beeshop.utils.ToastUtils;
 import com.beeshop.beeshop.utils.qiniu.PicUploadManager;
 import com.beeshop.beeshop.views.HorizontalPicAddGallery;
+import com.beeshop.beeshop.views.SelectPicImageView;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.qiniu.android.http.ResponseInfo;
 
+import org.angmarch.views.NiceSpinner;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Author : cooper
@@ -38,10 +53,18 @@ public class BroadcastSendActivity extends BaseActivity {
     EditText etBroadcastContent;
     @BindView(R.id.tv_introduce_number)
     TextView tvIntroduceNumber;
-    @BindView(R.id.hpag_add_pic)
-    HorizontalPicAddGallery hpagAddPic;
     @BindView(R.id.tv_send)
     TextView tvSend;
+    @BindView(R.id.ns_broadcast_card)
+    NiceSpinner nsBroadcastCard;
+    @BindView(R.id.iv_pic)
+    SelectPicImageView ivPic;
+
+    private List<BroadcastCardEntity.ListBean> mBeanList = new ArrayList<>();
+    private int mBroadcastCardId;
+    private String mTitle;
+    private String mContent;
+    private String mPicPath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,51 +94,25 @@ public class BroadcastSendActivity extends BaseActivity {
             }
         });
 
-        hpagAddPic.setPicAddListener(new HorizontalPicAddGallery.PicAddListener() {
+        nsBroadcastCard.addOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void deletePic(int position) {
-
-            }
-
-            @Override
-            public void retryUploadPic(int position) {
-
-            }
-
-            @Override
-            public void picClicked(int position) {
-                PictureSelector.create(BroadcastSendActivity.this).externalPicturePreview(position,hpagAddPic.getChoosedPic());
-            }
-
-            @Override
-            public void addPic() {
-                PictureSelector.create(BroadcastSendActivity.this)
-                        .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
-                        .maxSelectNum(2)// 最大图片选择数量
-                        .minSelectNum(1)// 最小选择数量
-                        .imageSpanCount(3)// 每行显示个数
-                        .selectionMedia(hpagAddPic.getChoosedPic())
-                        .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选
-                        .previewImage(true)// 是否可预览图片
-                        .previewVideo(false)// 是否可预览视频
-                        .enablePreviewAudio(false) // 是否可播放音频
-                        .isCamera(true)// 是否显示拍照按钮
-                        .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
-                        .imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg
-                        .setOutputCameraPath("/BeeShopCache")// 自定义拍照保存路径
-                        .enableCrop(false)// 是否裁剪
-                        .compress(true)// 是否压缩
-                        .synOrAsy(true)//同步true或异步false 压缩 默认同步
-                        .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
-                        .withAspectRatio(16, 9)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
-                        .isGif(false)// 是否显示gif图片
-                        .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
-                        .circleDimmedLayer(false)// 是否圆形裁剪
-                        .openClickSound(true)// 是否开启点击声音
-                        .minimumCompressSize(100)// 小于100kb的图片不压缩
-                        .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mBroadcastCardId = mBeanList.get(position).getId();
             }
         });
+
+        ivPic.setSelectPicClickCallBack(new SelectPicImageView.SelectPicClickCallBack() {
+            @Override
+            public void onClick(boolean isAddPic) {
+                if (isAddPic) {
+                    openPicSelecter(1, 1, null);
+                } else {
+                    openPicSelecter(1, 1, ivPic.getLocalMediaList());
+                }
+            }
+        });
+
+        getMyBroadcastCardList();
     }
 
     @Override
@@ -126,30 +123,7 @@ public class BroadcastSendActivity extends BaseActivity {
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片、视频、音频选择结果回调
                     List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                    hpagAddPic.setPicList(TransformUtil.transUploadPicEnrity(selectList));
-                    for (int i = 0; i < hpagAddPic.getPicList().size()-1; i++) {
-                        final HorizontalPicAddGallery.UploadPicEnrity uploadPicEnrity = hpagAddPic.getPicList().get(i);
-                        PicUploadManager.getInstance().uploadPic(uploadPicEnrity.localMedia.getPath(), SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_QI_NIU_TOKEN,""), new PicUploadManager.UploadPicCallBack() {
-                            @Override
-                            public void uploadSuccess(String key, ResponseInfo info) {
-                                LogUtil.e("upload success key ==  "+key);
-                                LogUtil.e("upload success info ==  "+info.toString());
-                            }
-
-                            @Override
-                            public void uploadFailed(String key, ResponseInfo info) {
-                                LogUtil.e("upload failed key ==  "+key);
-                                uploadPicEnrity.isFailed = 1;
-                                hpagAddPic.refreshGallery();
-                            }
-
-                            @Override
-                            public void uploadProgress(String key, double percent) {
-                                uploadPicEnrity.progress = (int)(percent*100);
-                                hpagAddPic.refreshGallery();
-                            }
-                        });
-                    }
+                    ivPic.setPic(selectList);
                     break;
             }
         }
@@ -159,7 +133,112 @@ public class BroadcastSendActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_send:
+                if (verify()) {
+                    showProgress();
+                    if (!TextUtils.isEmpty(ivPic.getPicPath())) {
+                        uploadPicToQiNiu();
+                    } else {
+                        publishBroadcast();
+                    }
+                }
                 break;
         }
+    }
+
+    private boolean verify() {
+        mTitle = etBroadcastTitle.getText().toString();
+        mContent = etBroadcastContent.getText().toString();
+        if (TextUtils.isEmpty(mTitle)) {
+            ToastUtils.showToast("请输入广播标题");
+            return false;
+        }else if (TextUtils.isEmpty(mContent)) {
+            ToastUtils.showToast("请输入广播内容");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 上传图片到七牛
+     */
+    private void uploadPicToQiNiu() {
+        PicUploadManager.getInstance().uploadPic(ivPic.getPicPath(), SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_QI_NIU_TOKEN,""), new PicUploadManager.UploadPicCallBack() {
+            @Override
+            public void uploadSuccess(String key, ResponseInfo info) {
+                LogUtil.e("upload success key ==  "+key);
+                LogUtil.e("upload success info ==  "+info.toString());
+                mPicPath = key;
+                publishBroadcast();
+            }
+
+            @Override
+            public void uploadFailed(String key, ResponseInfo info) {
+                ToastUtils.showToast("上传图片失败");
+                hideProgress();
+            }
+
+            @Override
+            public void uploadProgress(String key, double percent) {
+//                uploadPicEnrity.progress = (int)(percent*100);
+            }
+        });
+    }
+
+    /**
+     * 发布广播
+     *
+     */
+    private void publishBroadcast() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        params.put("title", mTitle);
+        params.put("content", mContent);
+        params.put("card_id", mBroadcastCardId);
+        params.put("img", mPicPath);
+        HttpLoader.getInstance().publishBroadcast(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
+
+            @Override
+            protected void onSuccess(ResponseEntity response) {
+                super.onSuccess(response);
+                ToastUtils.showToast("发布广播成功");
+                BroadcastSendActivity.this.finish();
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
+    }
+
+    /**
+     * 获取我的广播卡
+     */
+    private void getMyBroadcastCardList() {
+        HashMap<String, Object> params1 = new HashMap<>();
+        params1.put("token", mToken);
+        HttpLoader.getInstance().getMyBroadcastCardList(params1, mCompositeSubscription, new SubscriberCallBack<BroadcastCardEntity>(this,this) {
+
+            @Override
+            protected void onSuccess(BroadcastCardEntity response) {
+                super.onSuccess(response);
+                if (response.getList().size() > 0) {
+                    mBeanList.clear();
+                    mBeanList.addAll(response.getList());
+                    List<String> dataset = new ArrayList<>();
+                    for (BroadcastCardEntity.ListBean listBean : response.getList()) {
+                        dataset.add(listBean.getTitle());
+                    }
+                    nsBroadcastCard.attachDataSource(dataset);
+                    mBroadcastCardId = response.getList().get(0).getId();
+                }
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+
+        });
     }
 }

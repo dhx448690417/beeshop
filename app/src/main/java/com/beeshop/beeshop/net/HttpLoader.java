@@ -3,6 +3,8 @@ package com.beeshop.beeshop.net;
 import android.util.Base64;
 
 
+import com.beeshop.beeshop.model.BroadcastCardEntity;
+import com.beeshop.beeshop.model.BroadcastListEntity;
 import com.beeshop.beeshop.model.ClientChatEntity;
 import com.beeshop.beeshop.model.OrderListEntity;
 import com.beeshop.beeshop.model.PicListEntity;
@@ -789,6 +791,102 @@ public class HttpLoader {
             public ResponseEntity<OrderListEntity> call(String s) {
                 String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
                 ResponseEntity<OrderListEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<OrderListEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+
+    // ===============================  电台类接口  =====================================
+
+    /**
+     * 获取店铺排序列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getShopSortList(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<Shop> subscriber) {
+        normalPost(mApiManager.postShopSortList(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<Shop>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<Shop> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<Shop> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<Shop>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 获取附近广播列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getNearbyBroadcastList(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<BroadcastListEntity> subscriber) {
+        normalPost(mApiManager.postNearbyBroadcast(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<BroadcastListEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<BroadcastListEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<BroadcastListEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<BroadcastListEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 发布广播
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void publishBroadcast(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postPublishBroadcast(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+
+    // ===============================  我的接口  =====================================
+
+    /**
+     * 获取我的广播列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getMyBroadcastList(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<BroadcastListEntity> subscriber) {
+        normalPost(mApiManager.postMyBroadcast(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<BroadcastListEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<BroadcastListEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<BroadcastListEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<BroadcastListEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 获取我的广播卡列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getMyBroadcastCardList(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<BroadcastCardEntity> subscriber) {
+        normalPost(mApiManager.postMyBroadcastCard(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<BroadcastCardEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<BroadcastCardEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<BroadcastCardEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<BroadcastCardEntity>>() {}.getType());
                 LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
                 return response;
             }
