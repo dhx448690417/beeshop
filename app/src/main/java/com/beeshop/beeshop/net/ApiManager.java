@@ -242,4 +242,20 @@ public interface ApiManager {
     @POST("/user/broadcastcard")
     Observable<String> postMyBroadcastCard(@FieldMap HashMap<String, Object> map);
 
+
+    // 我的地址
+    @FormUrlEncoded
+    @POST("/address/index")
+    Observable<String> postMyAddress(@FieldMap HashMap<String, Object> map);
+
+    // 增加地址
+    @FormUrlEncoded
+    @POST("/address/addone")
+    Observable<String> postAddAddress(@FieldMap HashMap<String, Object> map);
+
+    // 更新地址
+    @FormUrlEncoded
+    @POST("/address/update")
+    Observable<String> postUpdateAddress(@FieldMap HashMap<String, Object> map);
+
 }

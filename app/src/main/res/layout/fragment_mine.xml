@@ -234,10 +234,42 @@
                 android:layout_height="2dp"
                 android:background="@color/background_color"></View>
 
+            <RelativeLayout
+                android:id="@+id/rl_set_address"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <ImageView
+                    android:id="@+id/icon_address"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/default_head" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/icon_address"
+                    android:text="收货地址"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_arrow" />
+            </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="30dp"
                 android:background="@color/background_color"></View>
 
             <RelativeLayout
@@ -272,6 +304,11 @@
                     android:layout_centerVertical="true"
                     android:background="@drawable/ic_arrow" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/background_color"></View>
 
             <RelativeLayout
                 android:id="@+id/rl_fankui"

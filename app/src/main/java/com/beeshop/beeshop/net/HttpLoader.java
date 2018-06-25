@@ -3,6 +3,7 @@ package com.beeshop.beeshop.net;
 import android.util.Base64;
 
 
+import com.beeshop.beeshop.model.AddressEntity;
 import com.beeshop.beeshop.model.BroadcastCardEntity;
 import com.beeshop.beeshop.model.BroadcastListEntity;
 import com.beeshop.beeshop.model.ClientChatEntity;
@@ -887,6 +888,60 @@ public class HttpLoader {
             public ResponseEntity<BroadcastCardEntity> call(String s) {
                 String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
                 ResponseEntity<BroadcastCardEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<BroadcastCardEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 获取我的地址列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getMyAddress(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<AddressEntity> subscriber) {
+        normalPost(mApiManager.postMyAddress(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<AddressEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<AddressEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<AddressEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<AddressEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 添加地址
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void addAddress(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postAddAddress(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 更新地址
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void updateAddress(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postUpdateAddress(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
                 LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
                 return response;
             }

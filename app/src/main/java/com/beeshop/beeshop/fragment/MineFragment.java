@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.activity.MineSettingActivity;
+import com.beeshop.beeshop.activity.MyAddressManagerActivity;
 import com.beeshop.beeshop.activity.MyBroadcastActivity;
 import com.beeshop.beeshop.activity.MyOrderListActivity;
 import com.beeshop.beeshop.activity.MyToolsActivity;
@@ -56,7 +57,7 @@ public class MineFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.rl_mine_data, R.id.rl_my_vip, R.id.rl_my_broadcast, R.id.rl_my_tool, R.id.rl_setting})
+    @OnClick({R.id.rl_mine_data, R.id.rl_my_vip,R.id.rl_set_address, R.id.rl_my_broadcast, R.id.rl_my_tool, R.id.rl_setting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_mine_data:
@@ -73,6 +74,9 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.rl_my_order:
                 startActivity(new Intent(getActivity(), MyOrderListActivity.class));
+                break;
+            case R.id.rl_set_address:
+                startActivity(new Intent(getActivity(), MyAddressManagerActivity.class));
                 break;
             case R.id.rl_setting:
                 break;

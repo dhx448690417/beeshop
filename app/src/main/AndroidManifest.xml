@@ -112,6 +112,12 @@
             android:name=".activity.ShopOrderListActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".activity.MyAddressManagerActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.AddressEditActivity"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".activity.OrderActivity"
             android:screenOrientation="portrait"/>
     </application>
