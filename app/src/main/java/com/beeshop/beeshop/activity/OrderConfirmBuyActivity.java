@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.sdk.app.PayTask;
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.model.OrderCreateEntity;
 import com.beeshop.beeshop.net.HttpLoader;
@@ -18,12 +20,24 @@ import com.beeshop.beeshop.net.SubscriberCallBack;
 import com.beeshop.beeshop.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.luck.picture.lib.rxbus2.Subscribe;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.disposables.Disposable;
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Author : cooper
@@ -137,8 +151,16 @@ public class OrderConfirmBuyActivity extends BaseActivity {
             protected void onSuccess(JSONObject response) {
                 super.onSuccess(response);
                 if (response != null) {
-                    ToastUtils.showToast("支付成功");
-                    finish();
+                    String orderInfo = response.getString("pay");
+                    if (!TextUtils.isEmpty(orderInfo)) {
+
+
+                        ToastUtils.showToast("支付成功");
+                        finish();
+
+                    } else {
+                        ToastUtils.showToast("支付异常");
+                    }
                 }
                 hideProgress();
             }
@@ -150,5 +172,35 @@ public class OrderConfirmBuyActivity extends BaseActivity {
             }
 
         });
+    }
+
+    private void useZhiFuBao(final String orderInfo) {
+
+        Observable.create(new Observable.OnSubscribe<Map<String, String>>(){
+            @Override
+            public void call(Subscriber<? super Map<String, String>> subscriber) {
+                PayTask alipay = new PayTask(OrderConfirmBuyActivity.this);
+                Map<String, String> result = alipay.payV2(orderInfo, true);
+                Log.i("msp", result.toString());
+                subscriber.onNext(result);
+            }
+        }).subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Map<String, String>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Map<String, String> stringStringMap) {
+
+                    }
+                });
     }
 }
