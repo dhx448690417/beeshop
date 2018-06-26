@@ -11,6 +11,7 @@ import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.adapter.ItemOnClickListener;
 import com.beeshop.beeshop.adapter.MyOrderListAdapter;
 import com.beeshop.beeshop.adapter.ProductManagerAdapter;
+import com.beeshop.beeshop.model.OrderCreateEntity;
 import com.beeshop.beeshop.model.OrderListEntity;
 import com.beeshop.beeshop.model.ProductListEntity;
 import com.beeshop.beeshop.net.HttpLoader;
@@ -25,7 +26,7 @@ import java.util.HashMap;
  * Time：  2018/5/20 下午12:53
  * Description：我的订单列表
  */
-public class MyOrderListActivity extends BaseListActivity<OrderListEntity.ListBean>  {
+public class MyOrderListActivity extends BaseListActivity<OrderListEntity.ListBean> {
 
     private MyOrderListAdapter mMyOrderListAdapter;
 
@@ -42,14 +43,30 @@ public class MyOrderListActivity extends BaseListActivity<OrderListEntity.ListBe
 
     @Override
     protected RecyclerView.Adapter getAdapter() {
-        mMyOrderListAdapter = new MyOrderListAdapter(this,mList);
+        mMyOrderListAdapter = new MyOrderListAdapter(this, mList);
         mMyOrderListAdapter.setmItemOnClickListener(new ItemOnClickListener() {
             @Override
             public void onItemClick(int position) {
                 OrderListEntity.ListBean listBean = mList.get(position);
-//                Intent intent = new Intent(MyOrderListActivity.this, ProductEditActivity.class);
-//                intent.putExtra(ProductEditActivity.PARAM_PRODUCT_INFO,listBean);
-//                startActivity(intent);
+
+                if (listBean.getStatus() == 1) {
+                    OrderCreateEntity orderCreateEntity = new OrderCreateEntity();
+
+                    orderCreateEntity.setTitle(listBean.getTitle());
+                    orderCreateEntity.setDetails(listBean.getRemark());
+                    orderCreateEntity.setUnit(listBean.getUnit());
+                    orderCreateEntity.setCover(listBean.getCover());
+                    orderCreateEntity.setNum(listBean.getNum());
+                    orderCreateEntity.setOrder_id(listBean.getId() + "");
+                    orderCreateEntity.setOrder_no(listBean.getOrder_no());
+                    orderCreateEntity.setPrice(listBean.getPrice());
+                    orderCreateEntity.setReal_payment(listBean.getReal_payment());
+
+                    Intent intent = new Intent(MyOrderListActivity.this, OrderConfirmBuyActivity.class);
+                    intent.putExtra(OrderConfirmBuyActivity.PARAM_ORDER_KEY, orderCreateEntity);
+                    startActivity(intent);
+                }
+
             }
         });
         return mMyOrderListAdapter;

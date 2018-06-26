@@ -200,7 +200,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:background="@drawable/icon_chat_album_selected" />
+                    android:background="@drawable/icon_chat_album_unselected" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -230,7 +230,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:background="@drawable/icon_chat_album_selected" />
+                    android:background="@drawable/icon_chat_album_unselected" />
 
                 <TextView
                     android:layout_width="wrap_content"

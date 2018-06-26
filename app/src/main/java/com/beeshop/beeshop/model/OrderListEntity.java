@@ -113,6 +113,24 @@ public class OrderListEntity implements Serializable {
         private int delivery_time;
         private int recipient_time;
         private String remark;
+        private String unit;
+        private String isvip;
+
+        public String getUnit() {
+            return unit;
+        }
+
+        public void setUnit(String unit) {
+            this.unit = unit;
+        }
+
+        public String getIsvip() {
+            return isvip;
+        }
+
+        public void setIsvip(String isvip) {
+            this.isvip = isvip;
+        }
 
         public int getId() {
             return id;

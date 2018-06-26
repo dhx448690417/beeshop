@@ -31,7 +31,7 @@ public class MyOrderListAdapter extends RvBaseAdapter<OrderListEntity.ListBean,M
 
     @Override
     public MyOrderListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyOrderListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_my_tool,parent,false));
+        return new MyOrderListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_my_order_list,parent,false));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class MyOrderListAdapter extends RvBaseAdapter<OrderListEntity.ListBean,M
         holder.tv_product_name.setText(listBean.getTitle());
 
         holder.tv_order_id.setText("订单编号："+listBean.getOrder_no());
-        holder.tv_order_money.setText("订单金额："+listBean.getMoney());
+        holder.tv_order_money.setText("订单金额："+listBean.getMoney()+"元");
         // 订单状态1待支付[商家确认]2支付成功3已发货[商家确认]4订单完成[确认收货]
         String status = "";
         switch (listBean.getStatus()) {

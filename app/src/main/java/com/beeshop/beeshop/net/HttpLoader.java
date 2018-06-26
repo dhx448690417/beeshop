@@ -3,10 +3,12 @@ package com.beeshop.beeshop.net;
 import android.util.Base64;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.beeshop.beeshop.model.AddressEntity;
 import com.beeshop.beeshop.model.BroadcastCardEntity;
 import com.beeshop.beeshop.model.BroadcastListEntity;
 import com.beeshop.beeshop.model.ClientChatEntity;
+import com.beeshop.beeshop.model.OrderCreateEntity;
 import com.beeshop.beeshop.model.OrderListEntity;
 import com.beeshop.beeshop.model.PicListEntity;
 import com.beeshop.beeshop.model.ProductInfo;
@@ -761,6 +763,42 @@ public class HttpLoader {
     }
 
     // ===============================  订单接口  =====================================
+
+    /**
+     * 下单
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void createOrder(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<OrderCreateEntity> subscriber) {
+        normalPost(mApiManager.postCreateOrder(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<OrderCreateEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<OrderCreateEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<OrderCreateEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<OrderCreateEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 支付
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void confirmPay(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<JSONObject> subscriber) {
+        normalPost(mApiManager.postConfirmPay(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<JSONObject>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<JSONObject> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<JSONObject> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<JSONObject>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
 
     /**
      * 获取我的订单列表

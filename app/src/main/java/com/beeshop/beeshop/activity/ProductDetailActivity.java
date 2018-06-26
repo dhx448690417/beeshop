@@ -65,7 +65,7 @@ public class ProductDetailActivity extends BaseActivity {
     public static final String PARAM_PRODUCT_ID ="product_id";
 
     private int mProductId;
-
+    private ProductDetailEntity mProductDetailEntity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,6 +123,7 @@ public class ProductDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_buy:
                 Intent intent = new Intent(this,OrderActivity.class);
+                intent.putExtra(OrderActivity.PARAM_PRODUCT_KEY, mProductDetailEntity);
                 startActivity(intent);
                 break;
         }
@@ -138,9 +139,10 @@ public class ProductDetailActivity extends BaseActivity {
             protected void onSuccess(ProductDetailEntity response) {
                 super.onSuccess(response);
                 setBanner(response);
+                mProductDetailEntity = response;
                 tvPrice.setText(response.getPrice());
                 tvProductIntroduce.setText(response.getDetails());
-                tvRepertory.setText(response.getSupply());
+                tvRepertory.setText(response.getSupply()+"");
                 tvUnit.setText(response.getUnit());
             }
 

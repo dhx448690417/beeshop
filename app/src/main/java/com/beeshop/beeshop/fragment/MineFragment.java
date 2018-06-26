@@ -57,7 +57,7 @@ public class MineFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.rl_mine_data, R.id.rl_my_vip,R.id.rl_set_address, R.id.rl_my_broadcast, R.id.rl_my_tool, R.id.rl_setting})
+    @OnClick({R.id.rl_mine_data, R.id.rl_my_vip,R.id.rl_my_order,R.id.rl_set_address, R.id.rl_my_broadcast, R.id.rl_my_tool, R.id.rl_setting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_mine_data:

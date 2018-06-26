@@ -33,7 +33,7 @@ public class ProductDetailEntity implements Serializable {
     private String title;
     private String price;
     private String unit;
-    private String supply;
+    private int supply;
     private String min_buy;
     private String max_buy;
     private String cover;
@@ -90,11 +90,11 @@ public class ProductDetailEntity implements Serializable {
         this.unit = unit;
     }
 
-    public String getSupply() {
+    public int getSupply() {
         return supply;
     }
 
-    public void setSupply(String supply) {
+    public void setSupply(int supply) {
         this.supply = supply;
     }
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include layout="@layout/view_titlebar"></include>
@@ -119,7 +120,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
-                        android:text="2"
+                        android:text="1"
                         android:textColor="@color/text_color_black"
                         android:textSize="20sp" />
 
@@ -162,65 +163,10 @@
                     android:layout_height="2dp"
                     android:background="@color/background_color"></View>
 
-                <RelativeLayout
-                    android:id="@+id/rl_address_no"
+                <com.beeshop.beeshop.views.TypeRadioView
+                    android:id="@+id/trv_address"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp">
-
-                    <ImageView
-                        android:id="@+id/iv_address_no"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/icon_chat_album_selected" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
-                        android:layout_toRightOf="@+id/iv_address_no"
-                        android:text="无"
-                        android:textColor="@color/text_color_black"
-                        android:textSize="17sp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/background_color"></View>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rl_address_home"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp">
-
-                    <ImageView
-                        android:id="@+id/iv_address_home"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/icon_chat_album_selected" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
-                        android:layout_toRightOf="@+id/iv_address_home"
-                        android:text="家"
-                        android:textColor="@color/text_color_black"
-                        android:textSize="17sp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/background_color"></View>
-                </RelativeLayout>
+                    android:layout_height="wrap_content"></com.beeshop.beeshop.views.TypeRadioView>
             </LinearLayout>
             <TextView
                 android:id="@+id/tv_submit"
