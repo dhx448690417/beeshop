@@ -163,7 +163,8 @@ public class BaseActivity extends AppCompatActivity implements ProgressControlIn
                 .setOutputCameraPath("/BeeShopCache")// 自定义拍照保存路径
                 .enableCrop(false)// 是否裁剪
                 .compress(true)// 是否压缩
-                .synOrAsy(true)//同步true或异步false 压缩 默认同步
+                .compressSavePath(this.getExternalCacheDir().getPath())
+                .synOrAsy(false)//同步true或异步false 压缩 默认同步
                 .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
                 .withAspectRatio(16, 9)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
                 .isGif(false)// 是否显示gif图片
@@ -172,6 +173,7 @@ public class BaseActivity extends AppCompatActivity implements ProgressControlIn
                 .openClickSound(true)// 是否开启点击声音
                 .minimumCompressSize(100)// 小于100kb的图片不压缩
                 .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+
     }
 
     protected void startActivity(String key,int param,Context context, Class<?> cls) {

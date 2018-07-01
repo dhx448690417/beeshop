@@ -10,6 +10,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.config.AppConfig;
+import com.beeshop.beeshop.permission.PermissionsActivity;
+import com.beeshop.beeshop.permission.PermissionsChecker;
 import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 
 import butterknife.BindView;
@@ -27,6 +30,7 @@ public class SplashActivity extends BaseActivity {
     @BindView(R.id.launch_iv)
     ImageView launchIv;
     private Bundle mPushBundle;
+    private PermissionsChecker mPermissionsChecker;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class SplashActivity extends BaseActivity {
         window.setFlags(flag, flag);
         setContentView(R.layout.activity_splash_layout);
         ButterKnife.bind(this);
+        mPermissionsChecker = new PermissionsChecker(this);
         if (getIntent() != null && getIntent().getExtras() != null) {
             mPushBundle = getIntent().getExtras();
         }
@@ -49,17 +54,16 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        if (Build.VERSION.SDK_INT >= 23) {
-//            // 检查权限
-//            if (mPermissionsChecker.lacksPermissions(AppConfig.PERMISSIONS)) {
-//                PermissionsActivity.startActivityForResult(this, 0, AppConfig.PERMISSIONS);
-//            } else {
-//                delayStartHome();
-//            }
-//        } else {
-//            delayStartHome();
-//        }
-        delayStartHome();
+        if (Build.VERSION.SDK_INT >= 23) {
+            // 检查权限
+            if (mPermissionsChecker.lacksPermissions(AppConfig.PERMISSIONS)) {
+                PermissionsActivity.startActivityForResult(this, 0, AppConfig.PERMISSIONS);
+            } else {
+                delayStartHome();
+            }
+        } else {
+            delayStartHome();
+        }
     }
 
     private void delayStartHome() {

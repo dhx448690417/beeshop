@@ -932,6 +932,25 @@ public class HttpLoader {
         },subscriber);
     }
 
+
+    /**
+     * 获取我的信息
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getMyInfo(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<UserEntity> subscriber) {
+        normalPost(mApiManager.postMyInfo(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<UserEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<UserEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<UserEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<UserEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
     /**
      * 获取我的地址列表
      * @param params
@@ -958,6 +977,24 @@ public class HttpLoader {
      */
     public void addAddress(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
         normalPost(mApiManager.postAddAddress(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 上传我的信息
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void submitMyInfo(final HashMap<String, Object> params,CompositeSubscription compositeSubscription,SubscriberCallBack subscriber) {
+        normalPost(mApiManager.postSubmitMyInfo(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity>() {//将接口返回的String数据，转换为实体类
             @Override
             public ResponseEntity call(String s) {
                 String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));

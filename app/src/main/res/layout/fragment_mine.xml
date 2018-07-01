@@ -10,7 +10,7 @@
         android:layout_height="50dp"
         android:background="@color/colorPrimary"
         android:gravity="center"
-        android:text="蜂店"
+        android:text="我的"
         android:textColor="@color/white"
         android:textSize="22sp" />
 
@@ -33,7 +33,7 @@
                 android:paddingRight="15dp">
 
                 <ImageView
-                    android:id="@+id/user_head"
+                    android:id="@+id/iv_user_head"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_centerVertical="true"
@@ -43,10 +43,10 @@
                     android:id="@+id/tv_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/user_head"
+                    android:layout_alignTop="@+id/iv_user_head"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="7dp"
-                    android:layout_toRightOf="@+id/user_head"
+                    android:layout_toRightOf="@+id/iv_user_head"
                     android:text="我的名字"
                     android:textColor="@color/text_color_black"
                     android:textSize="18sp" />
@@ -58,7 +58,7 @@
                     android:layout_below="@+id/tv_user_name"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="7dp"
-                    android:layout_toRightOf="@+id/user_head"
+                    android:layout_toRightOf="@+id/iv_user_head"
                     android:text="12011112222"
                     android:textColor="#787878"
                     android:textSize="15sp" />
@@ -79,7 +79,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/background_color"></View>
 
             <RelativeLayout
@@ -92,10 +92,10 @@
 
                 <ImageView
                     android:id="@+id/icon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/default_head" />
+                    android:background="@drawable/ic_my_vips" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -130,10 +130,10 @@
 
                 <ImageView
                     android:id="@+id/icon_broadcast"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/default_head" />
+                    android:background="@drawable/ic_my_broadcast" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -168,10 +168,10 @@
 
                 <ImageView
                     android:id="@+id/icon_tool"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/default_head" />
+                    android:background="@drawable/ic_my_tools" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -206,10 +206,10 @@
 
                 <ImageView
                     android:id="@+id/icon_order"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/default_head" />
+                    android:background="@drawable/ic_my_order" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -244,10 +244,10 @@
 
                 <ImageView
                     android:id="@+id/icon_address"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/default_head" />
+                    android:background="@drawable/ic_my_address" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -282,10 +282,10 @@
 
                 <ImageView
                     android:id="@+id/icon_setting"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/default_head" />
+                    android:background="@drawable/ic_my_version" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -297,7 +297,19 @@
                     android:textColor="@color/text_color_black"
                     android:textSize="15sp" />
 
+                <TextView
+                    android:id="@+id/tv_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/version_arraw"
+                    android:text="v1.0.0"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="15sp" />
+
                 <ImageView
+                    android:id="@+id/version_arraw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -314,6 +326,7 @@
                 android:id="@+id/rl_fankui"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:visibility="gone"
                 android:background="@color/white"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
@@ -346,6 +359,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
+                android:visibility="gone"
                 android:layout_marginBottom="20dp"
                 android:background="@color/background_color"></View>
 

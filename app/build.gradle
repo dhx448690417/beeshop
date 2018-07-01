@@ -1,22 +1,33 @@
 apply plugin: 'com.android.application'
 
 android {
+//    signingConfigs {
+//        config {
+//            keyAlias 'beeshop_keystore'
+//            keyPassword 'beeshop123'
+//            storeFile file('/Users/cooper/Desktop/MyWorkPlace/MyCode/BeeShop/beeshop_keystore')
+//            storePassword 'beeshop123'
+//        }
+//    }
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.beeshop.beeshop"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 100
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.config
         }
+//        debug {
+//            signingConfig signingConfigs.config
+//        }
     }
-
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
@@ -65,4 +76,6 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.47'
     //支付宝
     implementation files('libs/alipaySdk-20180403.jar')
+    //微信支付
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.0.2'
 }

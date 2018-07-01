@@ -3,6 +3,7 @@ package com.beeshop.beeshop.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
@@ -72,7 +73,7 @@ public class ProductDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_product_detail);
         ButterKnife.bind(this);
-        setTitleAndBackPressListener("蜂店详情");
+        setTitleAndBackPressListener("产品详情");
         mProductId = getIntent().getIntExtra(PARAM_PRODUCT_ID, 0);
         initView();
     }
@@ -122,6 +123,10 @@ public class ProductDetailActivity extends BaseActivity {
             case R.id.tv_contect_shop:
                 break;
             case R.id.tv_buy:
+                if (TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
+                    startActivity(new Intent(ProductDetailActivity.this, LoginActivity.class));
+                    return;
+                }
                 Intent intent = new Intent(this,OrderActivity.class);
                 intent.putExtra(OrderActivity.PARAM_PRODUCT_KEY, mProductDetailEntity);
                 startActivity(intent);

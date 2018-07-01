@@ -62,7 +62,7 @@ public class SelectPicImageView extends AppCompatImageView{
 
     public String getPicPath() {
         if (mSelectionMedia != null && mSelectionMedia.size() > 0) {
-            return mSelectionMedia.get(0).getPath();
+            return mSelectionMedia.get(0).getCompressPath();
         } else {
             return "";
         }

@@ -10,6 +10,12 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +34,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".permission.PermissionsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"/>
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"/>
@@ -127,9 +137,11 @@
         <activity
             android:name=".activity.OrderConfirmBuyActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.OrderPaySuccessActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- 支付宝 支付SDK -->
-
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
@@ -144,8 +156,22 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
-
         <!-- 支付宝 支付SDK -->
+
+
+        <!-- 微信 支付SDK -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="wx234f5277333171ba"/>
+            </intent-filter>
+        </activity>
+        <!-- 微信 支付SDK -->
+
     </application>
 
 </manifest>

@@ -141,6 +141,9 @@ public class ClientFragment extends BaseFragment {
             @Override
             protected void onFailure(ResponseEntity errorBean) {
                 ToastUtils.showToast(errorBean.getMsg());
+                if (errorBean.getCode() == 410) {
+                    showNoContentView();
+                }
                 LogUtil.e(errorBean.getMsg());
             }
 

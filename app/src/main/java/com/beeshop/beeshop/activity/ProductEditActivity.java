@@ -189,11 +189,11 @@ public class ProductEditActivity extends BaseActivity {
         params.put("unit", mProductUnit);
         params.put("details", mProductDescribe);
 //        params.put("total", mProductTotal);
-        HttpLoader.getInstance().updateProduct(params, mCompositeSubscription, new SubscriberCallBack<ProductInfo>(this, this) {
+        HttpLoader.getInstance().updateProduct(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
 
             @Override
-            protected void onSuccess(ProductInfo response) {
-                super.onSuccess(response);
+            protected void onSuccess() {
+                super.onSuccess();
                 finish();
             }
 

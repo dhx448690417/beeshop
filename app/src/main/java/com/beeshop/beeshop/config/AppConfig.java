@@ -12,6 +12,18 @@ public class AppConfig {
 
     // 18233608179
 
+    /**
+     * keystore
+     * beeshop_keystore   password:beeshop123
+     * <p>
+     * 蜂店应用签名：f5342955ea4cf08259d23277c510ab5d
+     * debug 签名：9b7405a5f08659f5e7d9d6acdd110c15
+     * <p>
+     * 微信 appid wx234f5277333171ba
+     */
+
+    public static final String WEIXIN_APP_ID = "wx234f5277333171ba";
+
 
     public static final boolean DEBUG = true;
 

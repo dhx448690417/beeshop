@@ -2,6 +2,7 @@ package com.beeshop.beeshop.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.ResponseEntity;
 import com.beeshop.beeshop.net.SubscriberCallBack;
 import com.beeshop.beeshop.utils.ToastUtils;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.HashMap;
 
@@ -75,12 +78,13 @@ public class MyOrderListActivity extends BaseListActivity<OrderListEntity.ListBe
     @Override
     protected void initView() {
         super.initView();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getMyOrderList();
+        mSrlRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                getMyOrderList();
+            }
+        });
+        mSrlRefresh.autoRefresh();
     }
 
     /**
@@ -97,13 +101,17 @@ public class MyOrderListActivity extends BaseListActivity<OrderListEntity.ListBe
                 mList.clear();
                 mList.addAll(response.getList());
                 mMyOrderListAdapter.notifyDataSetChanged();
-                hideProgress();
             }
 
             @Override
             protected void onFailure(ResponseEntity errorBean) {
                 ToastUtils.showToast(errorBean.getMsg());
-                hideProgress();
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                mSrlRefresh.finishRefresh();
             }
 
         });

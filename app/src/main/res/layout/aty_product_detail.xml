@@ -35,15 +35,15 @@
                     android:layout_height="wrap_content"
                     android:text="单价"
                     android:textColor="@color/text_color_black"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
                 <TextView
                     android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="100元"
+                    android:text=""
                     android:textColor="@color/text_color_black"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -57,15 +57,15 @@
                     android:layout_height="wrap_content"
                     android:text="单位"
                     android:textColor="@color/text_color_black"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
                 <TextView
                     android:id="@+id/tv_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="3个"
+                    android:text=""
                     android:textColor="@color/text_color_black"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -79,15 +79,15 @@
                     android:layout_height="wrap_content"
                     android:text="库存"
                     android:textColor="@color/text_color_black"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
                 <TextView
                     android:id="@+id/tv_repertory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="100个"
+                    android:text=""
                     android:textColor="@color/text_color_black"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
             </RelativeLayout>
 
 
@@ -102,9 +102,9 @@
                 android:ellipsize="end"
                 android:maxLines="99999"
                 android:scrollbars="vertical"
-                android:text="店铺介绍绍介绍不错店铺介绍介绍不不错绍不错店铺介绍介绍不不错绍不错店铺介绍介绍不不错绍不错店铺介绍介绍不不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错"
+                android:text=""
                 android:textColor="@color/text_color_black"
-                android:textSize="14sp" />
+                android:textSize="17sp" />
 
             <!--<View-->
                 <!--android:id="@+id/v_line"-->

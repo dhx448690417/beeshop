@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
+        android:visibility="gone"
         android:paddingRight="15dp">
 
         <TextView
@@ -58,6 +59,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:visibility="gone"
         android:background="@color/white"
         android:paddingRight="15dp">
 
@@ -115,7 +117,7 @@
             android:background="@null"
             android:layout_marginLeft="90dp"
             android:textColorHint="@color/text_color_gray"
-            android:hint="请输入签名"
+            android:hint="请输入新密码"
             android:textSize="16sp"
             android:text=""
             android:textColor="@color/text_color_black"
@@ -126,6 +128,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
+        android:visibility="gone"
         android:background="@color/background_color"></View>
 
     <View
@@ -135,6 +138,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:visibility="gone"
         android:background="@color/white"
         android:paddingRight="15dp">
 
@@ -176,25 +180,34 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
+        android:visibility="gone"
         android:background="@color/background_color"></View>
 
-    <ImageView
-        android:id="@+id/iv_add_image"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/add_image"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        >
+        <com.beeshop.beeshop.views.SelectPicImageView
+            android:id="@+id/iv_pic"
+            android:background="@drawable/add_image"
+            android:layout_centerHorizontal="true"
+            android:layout_width="120dp"
+            android:layout_height="120dp" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_submit"
-        android:layout_width="140dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="25dp"
         android:layout_gravity="center_horizontal"
-        android:text="提交"
-        android:textColor="@color/text_color_black"
+        android:background="@drawable/shape_green_radius_bg"
+        android:gravity="center"
+        android:text="提   交"
+        android:textColor="@color/white"
         android:textSize="18sp"
         />
 </LinearLayout>

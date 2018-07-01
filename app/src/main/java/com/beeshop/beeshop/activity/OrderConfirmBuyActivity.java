@@ -2,6 +2,8 @@ package com.beeshop.beeshop.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,17 +15,29 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.sdk.app.PayTask;
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.config.AppConfig;
 import com.beeshop.beeshop.model.OrderCreateEntity;
+import com.beeshop.beeshop.model.WeiXinPayEntity;
 import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.ResponseEntity;
 import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.GsonUtil;
+import com.beeshop.beeshop.utils.LogUtil;
 import com.beeshop.beeshop.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.luck.picture.lib.rxbus2.Subscribe;
+import com.luck.picture.lib.tools.Constant;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +61,11 @@ import rx.subscriptions.CompositeSubscription;
 public class OrderConfirmBuyActivity extends BaseActivity {
 
     public static final String PARAM_ORDER_KEY = "param_order_key";
+
+    //1微信 2支付宝 3vip支付
+    private final int PAY_STYLE_WEIXIN = 1;
+    private final int PAY_STYLE_ZHIFUBAO = 2;
+    private final int PAY_STYLE_VIP = 3;
 
     @BindView(R.id.iv_product)
     ImageView ivProduct;
@@ -79,6 +98,8 @@ public class OrderConfirmBuyActivity extends BaseActivity {
 
     private OrderCreateEntity mOrderCreateEntity;
     private int mPayStyle = 1; // 支付方式
+    private IWXAPI mWxApi;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +109,7 @@ public class OrderConfirmBuyActivity extends BaseActivity {
 
         mOrderCreateEntity = (OrderCreateEntity) getIntent().getSerializableExtra(PARAM_ORDER_KEY);
 
+        initWeiXinPay();
         initView();
     }
 
@@ -107,6 +129,12 @@ public class OrderConfirmBuyActivity extends BaseActivity {
         } else {
             rlVipPay.setVisibility(View.GONE);
         }
+
+    }
+
+    private void initWeiXinPay() {
+        mWxApi = WXAPIFactory.createWXAPI(this, AppConfig.WEIXIN_APP_ID,true);
+        mWxApi.registerApp(AppConfig.WEIXIN_APP_ID);
     }
 
 
@@ -114,19 +142,19 @@ public class OrderConfirmBuyActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_weixin_pay:
-                mPayStyle = 1;
+                mPayStyle = PAY_STYLE_WEIXIN;
                 ivWeixinCheck.setBackgroundResource(R.drawable.icon_chat_album_selected);
                 ivZhifubaoCheck.setBackgroundResource(R.drawable.icon_chat_album_unselected);
                 ivVipCheck.setBackgroundResource(R.drawable.icon_chat_album_unselected);
                 break;
             case R.id.rl_zhifubao_pay:
-                mPayStyle = 2;
+                mPayStyle = PAY_STYLE_ZHIFUBAO;
                 ivWeixinCheck.setBackgroundResource(R.drawable.icon_chat_album_unselected);
                 ivZhifubaoCheck.setBackgroundResource(R.drawable.icon_chat_album_selected);
                 ivVipCheck.setBackgroundResource(R.drawable.icon_chat_album_unselected);
                 break;
             case R.id.rl_vip_pay:
-                mPayStyle = 3;
+                mPayStyle = PAY_STYLE_VIP;
                 ivWeixinCheck.setBackgroundResource(R.drawable.icon_chat_album_unselected);
                 ivZhifubaoCheck.setBackgroundResource(R.drawable.icon_chat_album_unselected);
                 ivVipCheck.setBackgroundResource(R.drawable.icon_chat_album_selected);
@@ -151,16 +179,23 @@ public class OrderConfirmBuyActivity extends BaseActivity {
             protected void onSuccess(JSONObject response) {
                 super.onSuccess(response);
                 if (response != null) {
-                    String orderInfo = response.getString("pay");
-                    if (!TextUtils.isEmpty(orderInfo)) {
-
-
-                        ToastUtils.showToast("支付成功");
-                        finish();
-
-                    } else {
-                        ToastUtils.showToast("支付异常");
+                    switch (mPayStyle) {
+                        case PAY_STYLE_WEIXIN:
+                            JSONObject payObject = response.getJSONObject("pay");
+                            WeiXinPayEntity weiXinPayEntity = GsonUtil.gsonToBean(payObject.toString(), WeiXinPayEntity.class);
+                            useWxPay(weiXinPayEntity);
+                            break;
+                        case PAY_STYLE_ZHIFUBAO:
+                            String orderInfo = response.getString("pay");
+                            if (!TextUtils.isEmpty(orderInfo)) {
+                                useZFB(orderInfo);
+                                ToastUtils.showToast("支付包成功");
+                            }
+                            break;
+                        case PAY_STYLE_VIP:
+                            break;
                     }
+
                 }
                 hideProgress();
             }
@@ -172,6 +207,67 @@ public class OrderConfirmBuyActivity extends BaseActivity {
             }
 
         });
+    }
+
+    /**
+     * 微信支付
+     * @param weiXinPayEntity
+     */
+    private void useWxPay(WeiXinPayEntity weiXinPayEntity) {
+
+        PayReq request = new PayReq();
+        request.appId = weiXinPayEntity.getAppid();
+        request.partnerId = weiXinPayEntity.getPartnerid();
+        request.prepayId= weiXinPayEntity.getPrepayid();
+        request.packageValue = weiXinPayEntity.getPackageX();
+        request.nonceStr= weiXinPayEntity.getNoncestr();
+        request.timeStamp= weiXinPayEntity.getTimestamp();
+        request.sign= weiXinPayEntity.getSign();
+
+        mWxApi.sendReq(request);
+    }
+
+
+    /**
+     * 支付宝支付
+     * @param orderInfo
+     */
+    private void useZFB(String orderInfo) {
+        fixedThreadPool.execute(new ZhiFuBaoPayRunnable(orderInfo));
+    }
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Map<String, String> result = (Map<String, String>) msg.obj;
+            LogUtil.e("ah  mHandler result ====  "+result.toString());
+            startActivity(new Intent(OrderConfirmBuyActivity.this,OrderPaySuccessActivity.class));
+            OrderConfirmBuyActivity.this.finish();
+        }
+    };
+
+    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(3);
+
+    class ZhiFuBaoPayRunnable implements Runnable{
+
+        private String orderInfo;
+
+        public ZhiFuBaoPayRunnable(String orderInfo) {
+            this.orderInfo = orderInfo;
+        }
+
+        @Override
+        public void run() {
+            LogUtil.e("ah     orderInfo == "+orderInfo);
+            PayTask alipay = new PayTask(OrderConfirmBuyActivity.this);
+            Map<String, String> result = alipay.payV2(orderInfo, true);
+            LogUtil.e("ah  run  result ====  "+result.toString());
+
+            Message msg = new Message();
+            msg.obj = result;
+            mHandler.sendMessage(msg);
+        }
     }
 
     private void useZhiFuBao(final String orderInfo) {
@@ -199,7 +295,8 @@ public class OrderConfirmBuyActivity extends BaseActivity {
 
                     @Override
                     public void onNext(Map<String, String> stringStringMap) {
-
+                        LogUtil.e(stringStringMap.toString());
+                        LogUtil.e(stringStringMap.toString());
                     }
                 });
     }
