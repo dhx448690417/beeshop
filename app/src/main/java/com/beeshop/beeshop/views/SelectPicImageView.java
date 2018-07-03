@@ -84,6 +84,16 @@ public class SelectPicImageView extends AppCompatImageView{
 
     }
 
+    public void setPic(String path) {
+        this.mSelectionMedia = new ArrayList<>();
+        LocalMedia localMedia = new LocalMedia();
+        localMedia.setPath(path);
+        mSelectionMedia.add(localMedia);
+        isAddPic = false;
+        Glide.with(this).load(localMedia.getPath()).into(this);
+
+    }
+
     public interface SelectPicClickCallBack{
         void onClick(boolean isAddPic);
     }

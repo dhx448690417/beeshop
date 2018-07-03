@@ -8,6 +8,8 @@ import com.beeshop.beeshop.model.AddressEntity;
 import com.beeshop.beeshop.model.BroadcastCardEntity;
 import com.beeshop.beeshop.model.BroadcastListEntity;
 import com.beeshop.beeshop.model.ClientChatEntity;
+import com.beeshop.beeshop.model.JoinedVipEntity;
+import com.beeshop.beeshop.model.JoinedVipRecordEntity;
 import com.beeshop.beeshop.model.OrderCreateEntity;
 import com.beeshop.beeshop.model.OrderListEntity;
 import com.beeshop.beeshop.model.PicListEntity;
@@ -908,6 +910,60 @@ public class HttpLoader {
             public ResponseEntity<BroadcastListEntity> call(String s) {
                 String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
                 ResponseEntity<BroadcastListEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<BroadcastListEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 获取我加入的会员列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getMyJoinedVipsList(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<JoinedVipEntity> subscriber) {
+        normalPost(mApiManager.postMyJoinedVips(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<JoinedVipEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<JoinedVipEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<JoinedVipEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<JoinedVipEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 获取我加入的会员消费记录列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getMyJoinedVipConsumeRecordList(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<JoinedVipRecordEntity> subscriber) {
+        normalPost(mApiManager.postMyJoinedVipConsumeRecord(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<JoinedVipRecordEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<JoinedVipRecordEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<JoinedVipRecordEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<JoinedVipRecordEntity>>() {}.getType());
+                LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
+                return response;
+            }
+        },subscriber);
+    }
+
+    /**
+     * 获取我加入的会员充值记录列表
+     * @param params
+     * @param compositeSubscription
+     * @param subscriber
+     */
+    public void getMyJoinedVipRechargeRecordList(final HashMap<String, Object> params, CompositeSubscription compositeSubscription, SubscriberCallBack<JoinedVipRecordEntity> subscriber) {
+        normalPost(mApiManager.postMyJoinedVipRechargeRecord(createRequest(params)),compositeSubscription,new Func1<String, ResponseEntity<JoinedVipRecordEntity>>() {//将接口返回的String数据，转换为实体类
+            @Override
+            public ResponseEntity<JoinedVipRecordEntity> call(String s) {
+                String responseStr = RSAUtil.decryptByPublicKey(Base64.decode(s,Base64.DEFAULT));
+                ResponseEntity<JoinedVipRecordEntity> response = GsonUtil.gsonToResponse(responseStr,new TypeToken<ResponseEntity<JoinedVipRecordEntity>>() {}.getType());
                 LoggerUtil.i(JsonUtil.formatNetLog(GsonUtil.gsonMapToString(params),GsonUtil.gsonString(response)));
                 return response;
             }

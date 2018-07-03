@@ -247,6 +247,21 @@ public interface ApiManager {
     @POST("/user/broadcast")
     Observable<String> postMyBroadcast(@FieldMap HashMap<String, Object> map);
 
+    // 我加入的会员
+    @FormUrlEncoded
+    @POST("/user/member")
+    Observable<String> postMyJoinedVips(@FieldMap HashMap<String, Object> map);
+
+    // 我加入的会员 充值记录
+    @FormUrlEncoded
+    @POST("/user/memberrecharge")
+    Observable<String> postMyJoinedVipRechargeRecord(@FieldMap HashMap<String, Object> map);
+
+    // 我加入的会员 消费记录
+    @FormUrlEncoded
+    @POST("/user/memberconsume")
+    Observable<String> postMyJoinedVipConsumeRecord(@FieldMap HashMap<String, Object> map);
+
     // 我的广播卡
     @FormUrlEncoded
     @POST("/user/broadcastcard")

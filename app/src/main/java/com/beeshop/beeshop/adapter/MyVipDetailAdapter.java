@@ -9,16 +9,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.JoinedVipRecordEntity;
 import com.beeshop.beeshop.utils.ToastUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Author：cooper
  * Time：  2018/5/19 上午10:49
- * Description：我的工具
+ * Description：我加入会员的交易记录
  */
-public class MyVipDetailAdapter extends RvBaseAdapter<String,MyVipDetailAdapter.MyVipDetailViewHolder> {
+public class MyVipDetailAdapter extends RvBaseAdapter<JoinedVipRecordEntity.ListBean,MyVipDetailAdapter.MyVipDetailViewHolder> {
 
     private ConfirmClickCallBack mConfirmClickCallBack;
 
@@ -26,7 +29,7 @@ public class MyVipDetailAdapter extends RvBaseAdapter<String,MyVipDetailAdapter.
         this.mConfirmClickCallBack = mConfirmClickCallBack;
     }
 
-    public MyVipDetailAdapter(Context mContext, List<String> mList) {
+    public MyVipDetailAdapter(Context mContext, List<JoinedVipRecordEntity.ListBean> mList) {
         super(mContext, mList);
     }
 
@@ -37,10 +40,15 @@ public class MyVipDetailAdapter extends RvBaseAdapter<String,MyVipDetailAdapter.
 
     @Override
     public void onBindViewHolder(MyVipDetailViewHolder holder, final int position) {
+        JoinedVipRecordEntity.ListBean listBean = mList.get(position);
         holder.tv_record_title.setText("交易主题");
-        holder.tv_jiaoyi_money.setText("250元");
-        holder.tv_jiaoyi_describe.setText("我有钱就是牛我有钱就是牛我有钱就是牛我有钱就是牛我有钱就是牛我有钱就是牛我有钱就是牛");
-        holder.tv_jiaoyi_time.setText("2018-5-25 12:34");
+        holder.tv_jiaoyi_money.setText(listBean.getMoney()+"元");
+        holder.tv_jiaoyi_describe.setText(listBean.getDescribe());
+        if (listBean.getCreated_time() != 0) {
+            Date d = new Date(listBean.getCreated_time()*1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+            holder.tv_jiaoyi_time.setText(sdf.format(d));
+        }
         holder.tv_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

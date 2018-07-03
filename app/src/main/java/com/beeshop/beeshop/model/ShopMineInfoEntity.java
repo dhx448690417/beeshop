@@ -25,7 +25,7 @@ public class ShopMineInfoEntity implements Serializable {
     private String longitude;
     private String latitude;
     private String contact;
-    private int created_time;
+    private long created_time;
     private int hits;
     private String score;
     private int status; // 门店状态1审核中2营业中3暂停营业
@@ -158,11 +158,11 @@ public class ShopMineInfoEntity implements Serializable {
         this.contact = contact;
     }
 
-    public int getCreated_time() {
+    public long getCreated_time() {
         return created_time;
     }
 
-    public void setCreated_time(int created_time) {
+    public void setCreated_time(long created_time) {
         this.created_time = created_time;
     }
 

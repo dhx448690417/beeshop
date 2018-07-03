@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,6 +28,7 @@ import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 import com.beeshop.beeshop.utils.ToastUtils;
 import com.beeshop.beeshop.utils.qiniu.PicUploadManager;
 import com.beeshop.beeshop.views.HorizontalPicAddGallery;
+import com.bumptech.glide.Glide;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -81,6 +83,8 @@ public class ShopInfoEditActivity extends BaseActivity {
     RadioButton rbPeople;
     @BindView(R.id.rb_company)
     RadioButton rbCompany;
+    @BindView(R.id.iv_image)
+    ImageView ivImage;
 
     private String title; // 门点名称
     private int type = 1; // 门店类型1个人2企业
@@ -308,13 +312,16 @@ public class ShopInfoEditActivity extends BaseActivity {
             rbCompany.setChecked(true);
         }
 
-        HorizontalPicAddGallery.UploadPicEnrity uploadPicEnrity = new HorizontalPicAddGallery.UploadPicEnrity();
-        uploadPicEnrity.path = shopMineInfoEntity.getLicense_img();
-        uploadPicEnrity.isDelete = 1;
-        uploadPicEnrity.isFailed = 0;
-        uploadPicEnrity.progress = 100;
-        uploadPicEnrity.isAddPic = false;
-        hpagAddPic.setPic(uploadPicEnrity);
+        if (shopMineInfoEntity.getType() == 2) {
+            llLicenseImgUpload.setVisibility(View.GONE);
+            ivImage.setVisibility(View.VISIBLE);
+            Glide.with(this).load(shopMineInfoEntity.getCover()).into(ivImage);
+        } else {
+            ivImage.setVisibility(View.GONE);
+        }
+
+
+
         nsShopType.setSelectedIndex(shopMineInfoEntity.getCategory());
 
         if (shopMineInfoEntity.getStatus() == 2) { // 审核已通过时 开店申请时填写的信息只允许修改地址、经营内容、联系电话;
@@ -338,7 +345,6 @@ public class ShopInfoEditActivity extends BaseActivity {
 
     /**
      * 开店申请
-     *
      */
     private void registerShop() {
 
@@ -373,7 +379,6 @@ public class ShopInfoEditActivity extends BaseActivity {
 
     /**
      * 更新店铺信息
-     *
      */
     private void updateShopInfo() {
 

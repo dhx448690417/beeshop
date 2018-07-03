@@ -1,6 +1,7 @@
 package com.beeshop.beeshop.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,11 @@ import java.util.List;
  */
 public class ShopOrderListAdapter extends RvBaseAdapter<OrderListEntity.ListBean,ShopOrderListAdapter.ShopOrderListViewHolder> {
 
+    private ConfirmCallBack mConfirmCallBack;
+
+    public void setConfirmCallBack(ConfirmCallBack confirmCallBack) {
+        this.mConfirmCallBack = confirmCallBack;
+    }
 
     public ShopOrderListAdapter(Context mContext, List<OrderListEntity.ListBean> mList) {
         super(mContext, mList);
@@ -32,7 +38,7 @@ public class ShopOrderListAdapter extends RvBaseAdapter<OrderListEntity.ListBean
 
     @Override
     public ShopOrderListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ShopOrderListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_my_tool,parent,false));
+        return new ShopOrderListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_shop_order_list,parent,false));
     }
 
     @Override
@@ -42,7 +48,7 @@ public class ShopOrderListAdapter extends RvBaseAdapter<OrderListEntity.ListBean
         holder.tv_jiaoyi_money.setText(listBean.getMoney()+"元");
         holder.tv_jiaoyi_describe.setText(listBean.getOrder_no());
         if (listBean.getCreate_time() != 0) {
-            Date d = new Date(listBean.getCreate_time());
+            Date d = new Date(listBean.getCreate_time()*1000);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH-mm-ss");
             holder.tv_jiaoyi_time.setText(sdf.format(d));
         }
@@ -50,28 +56,33 @@ public class ShopOrderListAdapter extends RvBaseAdapter<OrderListEntity.ListBean
         String status = "";
         switch (listBean.getStatus()) {
             case 1:
-                status = "待支付";
+                status = "修改价格";
+                holder.tv_confirm.setBackgroundResource(R.drawable.shape_red_radius_bt_bg);
                 break;
             case 2:
-                status = "支付成功";
+                status = "确认发货";
+                holder.tv_confirm.setBackgroundResource(R.drawable.shape_red_radius_bt_bg);
                 break;
             case 3:
                 status = "已发货";
+                holder.tv_confirm.setBackgroundColor(Color.WHITE);
                 break;
             case 4:
                 status = "订单完成";
+                holder.tv_confirm.setBackgroundColor(Color.WHITE);
                 break;
         }
-        // todo 这里商家订单按键怎么显示 功能怎么设置
-        holder.tv_confirm.setText("订单状态："+status);
-        holder.rl_tool.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mItemOnClickListener != null) {
-                    mItemOnClickListener.onItemClick(position);
+        holder.tv_confirm.setText(status);
+        if (listBean.getStatus() == 1 || listBean.getStatus() == 2) {
+            holder.tv_confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mConfirmCallBack != null) {
+                        mConfirmCallBack.clickConfirm(position);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     class ShopOrderListViewHolder extends RecyclerView.ViewHolder{
@@ -91,5 +102,12 @@ public class ShopOrderListAdapter extends RvBaseAdapter<OrderListEntity.ListBean
             tv_confirm = itemView.findViewById(R.id.tv_confirm);
             rl_tool = itemView.findViewById(R.id.rl_tool);
         }
+    }
+
+    /**
+     * 确认回调
+     */
+    public interface ConfirmCallBack{
+        void clickConfirm(int position);
     }
 }

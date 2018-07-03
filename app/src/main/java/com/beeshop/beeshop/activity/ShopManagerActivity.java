@@ -106,7 +106,7 @@ public class ShopManagerActivity extends BaseActivity {
             tvShopStatus.setText("门店状态：暂停营业");
         }
         if (response.getCreated_time() != 0) {
-            Date d = new Date(response.getCreated_time());
+            Date d = new Date(response.getCreated_time()*1000);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             tvShopCreateTime.setText(sdf.format(d));
         }

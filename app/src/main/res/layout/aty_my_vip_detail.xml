@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
     <include layout="@layout/view_titlebar"></include>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,10 +27,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="110dp"
-            android:textSize="16sp"
             android:text="蜂小店"
             android:textColor="@color/text_color_black"
-            />
+            android:textSize="16sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -42,8 +42,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
@@ -60,10 +59,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="110dp"
-            android:textSize="16sp"
             android:text="2018-5-25"
             android:textColor="@color/text_color_black"
-            />
+            android:textSize="16sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -74,8 +73,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
@@ -92,36 +90,100 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="110dp"
-            android:textSize="16sp"
             android:text="12045元"
             android:textColor="@color/text_color_black"
-            />
+            android:textSize="16sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_alignParentBottom="true"
             android:background="@color/background_color"></View>
     </RelativeLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:textSize="16sp"
-        android:paddingLeft="15dp"
         android:background="@color/white"
         android:gravity="center_vertical"
+        android:paddingLeft="15dp"
         android:text="交易记录"
         android:textColor="@color/grey_969696"
-        />
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/srl_refresh"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_recharge_record"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_recharge_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="充值记录"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/v_recharge_record"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorAccent"
+                android:visibility="visible"></View>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_pay_record"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_pay_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="消费记录"
+                android:textColor="@color/text_color_black"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/v_pay_record"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorAccent"
+                android:visibility="gone"></View>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
+        <com.beeshop.beeshop.views.StatusView
+            android:id="@+id/status_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="#fff"
+            android:clickable="true"
+            app:infoImage="@drawable/no_data"
+            app:infoText="没有相关数据" />
+    </RelativeLayout>
 
-        </android.support.v7.widget.RecyclerView>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

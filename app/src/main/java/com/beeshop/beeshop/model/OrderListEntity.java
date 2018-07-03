@@ -107,7 +107,7 @@ public class OrderListEntity implements Serializable {
         private String money;
         private String real_payment;
         private int payment;
-        private int create_time;
+        private long create_time;
         private int status;
         private int confirm_time;
         private int delivery_time;
@@ -220,11 +220,11 @@ public class OrderListEntity implements Serializable {
             this.payment = payment;
         }
 
-        public int getCreate_time() {
+        public long getCreate_time() {
             return create_time;
         }
 
-        public void setCreate_time(int create_time) {
+        public void setCreate_time(long create_time) {
             this.create_time = create_time;
         }
 

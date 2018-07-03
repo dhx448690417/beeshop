@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_tool"
     android:layout_width="match_parent"
     android:background="@color/white"
     android:layout_height="150dp">
@@ -13,15 +14,16 @@
         android:layout_marginTop="10dp"
         android:text="产品名称"
         android:textColor="@color/text_color_black"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:visibility="gone"
         android:layout_marginTop="3dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_below="@+id/tv_record_title"
-        android:background="@color/background_color"></View>
+        android:background="@color/colorPrimary"></View>
 
     <TextView
         android:id="@+id/jiaoyi_money"
@@ -29,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_record_title"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="12dp"
         android:text="交易金额："
         android:textColor="@color/text_color_black"
         android:textSize="15sp" />
@@ -41,7 +43,7 @@
         android:layout_below="@+id/tv_record_title"
         android:layout_toRightOf="@+id/jiaoyi_money"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:text="250元"
         android:maxLines="1"
         android:lines="1"
@@ -70,8 +72,8 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
         android:text=""
-        android:maxLines="2"
-        android:lines="2"
+        android:maxLines="1"
+        android:lines="1"
         android:ellipsize="end"
         android:textColor="@color/grey_969696"
         android:textSize="15sp" />
@@ -80,9 +82,9 @@
         android:id="@+id/jiaoyi_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/jiaoyi_describe"
         android:layout_marginLeft="15dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
         android:text="时        间："
         android:textColor="@color/text_color_black"
         android:textSize="15sp" />
@@ -91,12 +93,23 @@
         android:id="@+id/tv_jiaoyi_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/jiaoyi_describe"
         android:layout_toRightOf="@+id/jiaoyi_time"
-        android:layout_marginLeft="15dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:text="2018-5-25 12:34"
         android:textColor="@color/grey_969696"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/tv_confirm"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        android:text="订单状态"
+        android:textColor="@color/text_color_black"
         android:textSize="15sp" />
 
     <TextView
@@ -106,7 +119,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="7dp"
         android:background="@drawable/shape_red_radius_bt_bg"
         android:text="确认"
         android:textColor="@color/white"

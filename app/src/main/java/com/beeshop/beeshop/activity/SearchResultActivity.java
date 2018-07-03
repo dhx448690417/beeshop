@@ -1,5 +1,6 @@
 package com.beeshop.beeshop.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.adapter.HomeShopAdapter;
+import com.beeshop.beeshop.adapter.OnRecycleItemClickListener;
 import com.beeshop.beeshop.model.SearchShopEntity;
 import com.beeshop.beeshop.model.Shop;
 import com.beeshop.beeshop.model.ShopCategoryEntity;
@@ -44,6 +46,14 @@ public class SearchResultActivity extends BaseListActivity<Shop.ListBean> {
     @Override
     protected RecyclerView.Adapter getAdapter() {
         mSearchShops = new HomeShopAdapter(this,mList);
+        mSearchShops.setOnRecycleItemClickListener(new OnRecycleItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(SearchResultActivity.this, ShopDetailActivity.class);
+                intent.putExtra(ShopDetailActivity.PARAM_SHOP_ID, mList.get(position).getId());
+                startActivity(intent);
+            }
+        });
         return mSearchShops;
     }
 

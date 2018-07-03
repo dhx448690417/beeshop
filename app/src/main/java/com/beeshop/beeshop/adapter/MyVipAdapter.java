@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.JoinedVipEntity;
 
 import java.util.List;
 
@@ -20,14 +21,14 @@ import java.util.List;
 public class MyVipAdapter extends RecyclerView.Adapter<MyVipAdapter.MyVipViewHolder>{
 
     private Context mContext;
-    private List<String> mMyVipList;
+    private List<JoinedVipEntity.ListBean> mMyVipList;
     private ItemOnClickListener mItemOnClickListener;
 
     public void setmItemOnClickListener(ItemOnClickListener mItemOnClickListener) {
         this.mItemOnClickListener = mItemOnClickListener;
     }
 
-    public MyVipAdapter(Context mContext, List<String> mMyVipList) {
+    public MyVipAdapter(Context mContext, List<JoinedVipEntity.ListBean> mMyVipList) {
         this.mContext = mContext;
         this.mMyVipList = mMyVipList;
     }
@@ -40,8 +41,9 @@ public class MyVipAdapter extends RecyclerView.Adapter<MyVipAdapter.MyVipViewHol
 
     @Override
     public void onBindViewHolder(MyVipViewHolder holder, final int position) {
-        holder.tv_shop_name.setText("蜂店好店铺");
-        holder.tv_vip_name.setText("一个特殊的会员");
+        JoinedVipEntity.ListBean listBean = mMyVipList.get(position);
+        holder.tv_shop_name.setText(listBean.getShop_title());
+        holder.tv_vip_name.setText(listBean.getMember_title());
         holder.rl_vip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
