@@ -98,9 +98,14 @@ public class MyOrderListActivity extends BaseListActivity<OrderListEntity.ListBe
             @Override
             protected void onSuccess(OrderListEntity response) {
                 super.onSuccess(response);
-                mList.clear();
-                mList.addAll(response.getList());
-                mMyOrderListAdapter.notifyDataSetChanged();
+                if (response.getList().size() > 0) {
+                    mList.clear();
+                    mList.addAll(response.getList());
+                    mMyOrderListAdapter.notifyDataSetChanged();
+                    hideNoContentView();
+                } else {
+                    showNoContentView();
+                }
             }
 
             @Override

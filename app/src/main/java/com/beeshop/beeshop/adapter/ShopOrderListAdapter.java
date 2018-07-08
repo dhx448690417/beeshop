@@ -2,6 +2,7 @@ package com.beeshop.beeshop.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,9 +44,9 @@ public class ShopOrderListAdapter extends RvBaseAdapter<OrderListEntity.ListBean
 
     @Override
     public void onBindViewHolder(ShopOrderListViewHolder holder, final int position) {
-        OrderListEntity.ListBean listBean = mList.get(position);
+        final OrderListEntity.ListBean listBean = mList.get(position);
         holder.tv_record_title.setText(listBean.getTitle());
-        holder.tv_jiaoyi_money.setText(listBean.getMoney()+"元");
+        holder.tv_jiaoyi_money.setText(listBean.getReal_payment()+"元");
         holder.tv_jiaoyi_describe.setText(listBean.getOrder_no());
         if (listBean.getCreate_time() != 0) {
             Date d = new Date(listBean.getCreate_time()*1000);
@@ -58,18 +59,22 @@ public class ShopOrderListAdapter extends RvBaseAdapter<OrderListEntity.ListBean
             case 1:
                 status = "修改价格";
                 holder.tv_confirm.setBackgroundResource(R.drawable.shape_red_radius_bt_bg);
+                holder.tv_confirm.setTextColor(ContextCompat.getColor(mContext,R.color.white));
                 break;
             case 2:
                 status = "确认发货";
                 holder.tv_confirm.setBackgroundResource(R.drawable.shape_red_radius_bt_bg);
+                holder.tv_confirm.setTextColor(ContextCompat.getColor(mContext,R.color.white));
                 break;
             case 3:
                 status = "已发货";
                 holder.tv_confirm.setBackgroundColor(Color.WHITE);
+                holder.tv_confirm.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_black));
                 break;
             case 4:
                 status = "订单完成";
                 holder.tv_confirm.setBackgroundColor(Color.WHITE);
+                holder.tv_confirm.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_black));
                 break;
         }
         holder.tv_confirm.setText(status);
@@ -78,7 +83,7 @@ public class ShopOrderListAdapter extends RvBaseAdapter<OrderListEntity.ListBean
                 @Override
                 public void onClick(View v) {
                     if (mConfirmCallBack != null) {
-                        mConfirmCallBack.clickConfirm(position);
+                        mConfirmCallBack.clickConfirm(listBean.getStatus(),position);
                     }
                 }
             });
@@ -108,6 +113,6 @@ public class ShopOrderListAdapter extends RvBaseAdapter<OrderListEntity.ListBean
      * 确认回调
      */
     public interface ConfirmCallBack{
-        void clickConfirm(int position);
+        void clickConfirm(int type,int position);
     }
 }

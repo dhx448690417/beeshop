@@ -6,6 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.adapter.ItemOnClickListener;
 import com.beeshop.beeshop.adapter.MyOrderListAdapter;
@@ -15,7 +20,9 @@ import com.beeshop.beeshop.model.SearchShopEntity;
 import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.ResponseEntity;
 import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 import com.beeshop.beeshop.utils.ToastUtils;
+import com.beeshop.beeshop.views.MaterialDialog;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -31,11 +38,18 @@ public class ShopOrderListActivity extends BaseListActivity<OrderListEntity.List
 
     private ShopOrderListAdapter mShopOrderListAdapter;
     private int mCurrentPage = 1;
+    private MaterialDialog modifyPriceDialog;
+    private EditText etPrice;
+
+    private OrderListEntity.ListBean mOrderBean;
+    private String mMoney;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitleAndBackPressListener("产品订单");
+
+
     }
 
     @Override
@@ -46,6 +60,18 @@ public class ShopOrderListActivity extends BaseListActivity<OrderListEntity.List
     @Override
     protected RecyclerView.Adapter getAdapter() {
         mShopOrderListAdapter = new ShopOrderListAdapter(this,mList);
+        mShopOrderListAdapter.setConfirmCallBack(new ShopOrderListAdapter.ConfirmCallBack() {
+            @Override
+            public void clickConfirm(int type, int position) {
+                mOrderBean = mList.get(position);
+                if (type == 1) {
+                    modifyPriceDialog.show();
+                } else if (type == 2) {
+                    setOrderState();
+                }
+
+            }
+        });
         return mShopOrderListAdapter;
     }
 
@@ -70,6 +96,33 @@ public class ShopOrderListActivity extends BaseListActivity<OrderListEntity.List
                 getShopOrderList();
             }
         });
+
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_price_modify_content, new LinearLayout(this), false);
+        etPrice = view.findViewById(R.id.et_modify_price);
+        modifyPriceDialog = new MaterialDialog(this)
+                .setTitle("修改订单价格")
+                .setPositiveButton("确认", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mMoney = etPrice.getText().toString();
+                        if (TextUtils.isEmpty(mMoney)) {
+                            ToastUtils.showToast("请填写价格");
+                            return;
+                        }
+                        modifyPrice();
+                        modifyPriceDialog.dismiss();
+
+                    }
+                })
+                .setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        modifyPriceDialog.dismiss();
+
+                    }
+                })
+                .setContentView(view);
+
     }
 
     @Override
@@ -92,10 +145,15 @@ public class ShopOrderListActivity extends BaseListActivity<OrderListEntity.List
             protected void onSuccess(OrderListEntity response) {
                 super.onSuccess(response);
 
-                if (response.getList().size() > 0) {
-                    mCurrentPage++;
-                    mList.addAll(response.getList());
-                    mShopOrderListAdapter.notifyDataSetChanged();
+                if (mCurrentPage == 1) {
+                    mList.clear();
+                }
+
+                mCurrentPage++;
+                mList.addAll(response.getList());
+                mShopOrderListAdapter.notifyDataSetChanged();
+
+                if (mList.size() > 0) {
                     hideNoContentView();
                 } else {
                     showNoContentView();
@@ -121,6 +179,59 @@ public class ShopOrderListActivity extends BaseListActivity<OrderListEntity.List
                 showNoNetWork();
             }
 
+        });
+    }
+
+
+    /**
+     * 修改价格
+     *
+     */
+    private void modifyPrice() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        params.put("order_id", mOrderBean.getId());
+        params.put("money", mMoney);
+        HttpLoader.getInstance().modifyPrice(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
+
+            @Override
+            protected void onSuccess(ResponseEntity response) {
+                super.onSuccess(response);
+                mOrderBean.setReal_payment(mMoney);
+                etPrice.setText("");
+                mShopOrderListAdapter.notifyDataSetChanged();
+                ToastUtils.showToast("修改价格成功");
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+        });
+    }
+
+    /**
+     * 设置订单为发货状态
+     *
+     */
+    private void setOrderState() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        params.put("order_id", mOrderBean.getId());
+        HttpLoader.getInstance().setOrderState(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
+
+            @Override
+            protected void onSuccess(ResponseEntity response) {
+                super.onSuccess(response);
+                mOrderBean.setStatus(3);
+                mShopOrderListAdapter.notifyDataSetChanged();
+                ToastUtils.showToast("设置成功");
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
         });
     }
 }
