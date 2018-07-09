@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 
+import com.beeshop.beeshop.activity.LoginActivity;
 import com.beeshop.beeshop.application.BeeShopApplication;
 import com.beeshop.beeshop.utils.LogUtil;
 import com.beeshop.beeshop.utils.NetworkUtils;
@@ -24,6 +25,7 @@ import rx.Subscriber;
 public abstract class SubscriberCallBack<T> extends Subscriber<ResponseEntity<T>> {
 
     private final int ERROR_CODE_NO_LOGIN = 210; //用户未登录
+    private final int ERROR_CODE_TOKEN_PAST_DUE = 204; //token过期
     private final int ERROR_CODE_OTHER_LOGIN = 1510; //其他设备登录下线处理
     private final int ERROR_CODE_OTHER_EXCEPTION = 1000; //其他异常
     private final int ERROR_CODE_NO_NET = 1001; //网络未连接
@@ -117,11 +119,19 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResponseEntity<T>
      */
     private void handleParticularErrorMessage(ResponseEntity errorBean) {
         // 用户登录过期与被挤下线单独处理 无需回调error信息
-        if (errorBean.getCode() == ERROR_CODE_NO_LOGIN || errorBean.getCode() == ERROR_CODE_OTHER_LOGIN) {
+        if (errorBean.getCode() == ERROR_CODE_NO_LOGIN
+                || errorBean.getCode() == ERROR_CODE_OTHER_LOGIN
+                || errorBean.getCode() == ERROR_CODE_TOKEN_PAST_DUE
+                ) {
             String message = errorBean.getMsg();
-            Activity activity = mActivityWeakReference.get();
             ToastUtils.showToast(message);
-//            activity.startActivity(new Intent(activity, LoginActivity.class));
+
+            if (mActivityWeakReference != null) {
+                Activity activity = mActivityWeakReference.get();
+                if (activity != null) {
+                    activity.startActivity(new Intent(activity, LoginActivity.class));
+                }
+            }
 
         }
         onFailure(errorBean);

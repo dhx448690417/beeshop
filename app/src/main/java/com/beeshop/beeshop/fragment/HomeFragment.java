@@ -113,7 +113,7 @@ public class HomeFragment extends BaseFragment {
     private void getShops() {
         HashMap<String, Object> params1 = new HashMap<>();
         params1.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN,""));
-        HttpLoader.getInstance().getShops(params1, mCompositeSubscription, new SubscriberCallBack<Shop>(){
+        HttpLoader.getInstance().getShops(params1, mCompositeSubscription, new SubscriberCallBack<Shop>(getActivity(),this){
 
             @Override
             protected void onSuccess(Shop response) {
