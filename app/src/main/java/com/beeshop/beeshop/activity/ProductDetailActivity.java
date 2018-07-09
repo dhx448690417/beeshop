@@ -26,6 +26,7 @@ import com.beeshop.beeshop.utils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
