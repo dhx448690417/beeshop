@@ -122,6 +122,7 @@ public class ProductDetailActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_contect_shop:
+                CrashReport.testJavaCrash();
                 break;
             case R.id.tv_buy:
                 if (TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
