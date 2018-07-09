@@ -222,6 +222,16 @@ public interface ApiManager {
     @POST("/trade/pay")
     Observable<String> postConfirmPay(@FieldMap HashMap<String, Object> map);
 
+    // 修改价格
+    @FormUrlEncoded
+    @POST("/trade/setprice")
+    Observable<String> postModifyPrice(@FieldMap HashMap<String, Object> map);
+
+    // 设置订单为发货状态
+    @FormUrlEncoded
+    @POST("/trade/delivery")
+    Observable<String> postSetOrderState(@FieldMap HashMap<String, Object> map);
+
     // ===============================  电台接口  =====================================
 
     // 获取商铺排序

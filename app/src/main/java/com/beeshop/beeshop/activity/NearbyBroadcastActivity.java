@@ -90,15 +90,19 @@ public class NearbyBroadcastActivity extends BaseListActivity<BroadcastListEntit
             @Override
             protected void onSuccess(BroadcastListEntity response) {
                 super.onSuccess(response);
-//                if (response.getList().size() > 0) {
-//                    hideNoContentView();
-//                }
+
                 if (mPage == 1) {
                     mList.clear();
                 }
                 mPage++;
                 mList.addAll(response.getList());
                 mBroadcastAdapter.notifyDataSetChanged();
+
+                if (mList.size() > 0) {
+                    hideNoContentView();
+                } else {
+                    showNoContentView();
+                }
             }
 
             @Override
