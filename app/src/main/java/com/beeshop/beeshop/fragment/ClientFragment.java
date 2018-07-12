@@ -15,11 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.beeshop.beeshop.R;
-import com.beeshop.beeshop.activity.ShopManagerActivity;
-import com.beeshop.beeshop.activity.VipMyMemberActivity;
-import com.beeshop.beeshop.activity.ProductManagerActivity;
-import com.beeshop.beeshop.activity.VipTypeActivity;
+import com.beeshop.beeshop.activity.*;
 import com.beeshop.beeshop.adapter.ClientChatAdapter;
+import com.beeshop.beeshop.adapter.OnRecycleItemClickListener;
 import com.beeshop.beeshop.model.ClientChatEntity;
 import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.ResponseEntity;
@@ -100,6 +98,15 @@ public class ClientFragment extends BaseFragment {
         mClientChatAdapter = new ClientChatAdapter(getActivity(), mChatList);
         rvHome.setLayoutManager(linearLayoutManager);
         rvHome.setAdapter(mClientChatAdapter);
+        mClientChatAdapter.setOnRecycleItemClickListener(new OnRecycleItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                ClientChatEntity.ListBean listBean = mChatList.get(position);
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra(ChatActivity.PARAM_CHAT_USER_ID, listBean.getId()+"");
+                startActivity(intent);
+            }
+        });
 
         srlHome.setRefreshHeader(new DeliveryHeader(getActivity()));
         srlHome.setEnableLoadMore(false);
@@ -110,9 +117,13 @@ public class ClientFragment extends BaseFragment {
                 getChat();
             }
         });
-        srlHome.autoRefresh();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        srlHome.autoRefresh();
+    }
 
     @Override
     protected void reFrensh() {

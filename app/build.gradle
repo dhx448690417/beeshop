@@ -36,6 +36,10 @@ android {
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {

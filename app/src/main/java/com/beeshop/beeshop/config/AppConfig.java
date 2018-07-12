@@ -31,6 +31,7 @@ public class AppConfig {
 //    public static final String URL_TEST = "http://polaris.bi-testing.guazi-corp.com"; //测试环境
 //    public static final String URL_PREPARE = "http://api.bi.guazi-corp.com"; //预发布环境
     public static final String URL_ONLINE = "http://bee.fdwl1688.com"; //正式环境
+    public static final String H5_URL_ONLINE = "http://bee.fdwl1688.com/chat/index"; //聊天
 
     public static final String BASE_URL = URL_ONLINE;
 //    public static final String BASE_URL = URL_TEST;

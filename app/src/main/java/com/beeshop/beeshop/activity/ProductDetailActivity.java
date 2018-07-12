@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.ClientChatEntity;
 import com.beeshop.beeshop.model.ProductDetailEntity;
 import com.beeshop.beeshop.model.ShopDetailEntity;
 import com.beeshop.beeshop.net.ApiManager;
@@ -120,15 +121,17 @@ public class ProductDetailActivity extends BaseActivity {
 
     @OnClick({R.id.tv_contect_shop, R.id.tv_buy})
     public void onViewClicked(View view) {
+        if (TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
+            startActivity(new Intent(ProductDetailActivity.this, LoginActivity.class));
+            return;
+        }
         switch (view.getId()) {
             case R.id.tv_contect_shop:
-                CrashReport.testJavaCrash();
+                Intent intent1 = new Intent(this, ChatActivity.class);
+                intent1.putExtra(ChatActivity.PARAM_CHAT_USER_ID, mProductDetailEntity.getUser_id()+"");
+                startActivity(intent1);
                 break;
             case R.id.tv_buy:
-                if (TextUtils.isEmpty(SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""))) {
-                    startActivity(new Intent(ProductDetailActivity.this, LoginActivity.class));
-                    return;
-                }
                 Intent intent = new Intent(this,OrderActivity.class);
                 intent.putExtra(OrderActivity.PARAM_PRODUCT_KEY, mProductDetailEntity);
                 startActivity(intent);
