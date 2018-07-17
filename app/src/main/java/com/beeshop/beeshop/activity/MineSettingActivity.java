@@ -88,7 +88,11 @@ public class MineSettingActivity extends BaseActivity  {
 //                break;
             case R.id.tv_submit:
                 if (verify()) {
-                    uploadPicToQiNiu();
+                    if (!TextUtils.isEmpty(ivPic.getPicPath())) {
+                        uploadPicToQiNiu();
+                    } else {
+                        submitMyInfo("");
+                    }
                 }
                 break;
         }
@@ -96,11 +100,8 @@ public class MineSettingActivity extends BaseActivity  {
 
     private boolean verify() {
         mNewPassword = etPassword.getText().toString();
-        if (TextUtils.isEmpty(mNewPassword)) {
-            ToastUtils.showToast("请输入新密码");
-            return false;
-        }else if (TextUtils.isEmpty(ivPic.getPicPath())) {
-            ToastUtils.showToast("请选择上传图片");
+        if (TextUtils.isEmpty(mNewPassword) && TextUtils.isEmpty(ivPic.getPicPath())) {
+            ToastUtils.showToast("请输入新密码或者上传图片");
             return false;
         }
         return true;
@@ -154,8 +155,12 @@ public class MineSettingActivity extends BaseActivity  {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
-        params.put("password", mNewPassword);
-        params.put("headimg", picKey);
+        if (!TextUtils.isEmpty(mNewPassword)) {
+            params.put("password", mNewPassword);
+        }
+        if (!TextUtils.isEmpty(picKey)) {
+            params.put("headimg", picKey);
+        }
         HttpLoader.getInstance().submitMyInfo(params, mCompositeSubscription, new SubscriberCallBack(this, this) {
 
             @Override

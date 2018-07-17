@@ -82,17 +82,12 @@ public class HomeFragment extends BaseFragment {
         });
 
         srlHome.setRefreshHeader(new DeliveryHeader(getActivity()));
-        srlHome.setRefreshFooter(new ClassicsFooter(getActivity()));
+        srlHome.setEnableLoadMore(false);
         srlHome.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                isShowProgressDialog(false);
                 getShops();
-            }
-        });
-        srlHome.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                srlHome.finishLoadMore(2000);
             }
         });
 

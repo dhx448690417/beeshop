@@ -7,6 +7,7 @@
         android:id="@+id/launch_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/launch_image_new"
+        android:background="@drawable/splash_bg"
+        android:alpha="0"
         />
 </RelativeLayout>

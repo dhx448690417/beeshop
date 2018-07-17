@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.QiNiuTokenEntity;
 import com.beeshop.beeshop.model.UserEntity;
 import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.ResponseEntity;
@@ -37,6 +38,8 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 public class LoginActivity extends BaseActivity {
 
+    public static final String PARAM_NEED_JUMP_TO_MAINACTIVITY = "param_need_Jump_to_mainactivity";
+
     @BindView(R.id.et_phone_number)
     EditText etPhoneNumber;
     @BindView(R.id.et_identify_code)
@@ -56,6 +59,8 @@ public class LoginActivity extends BaseActivity {
     private String mPassword;
     private String mImageCode;
 
+    private int mNeedJump = -1; //大于0则跳转到MainActivity，用于退出登录使用
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +68,8 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitleAndBackPressListener("登录蜂店");
         initView();
+
+        mNeedJump = getIntent().getIntExtra(PARAM_NEED_JUMP_TO_MAINACTIVITY, -1);
     }
 
 
@@ -114,12 +121,13 @@ public class LoginActivity extends BaseActivity {
 
 
     private void login() {
+        showProgress();
         HashMap<String, Object> params1 = new HashMap<>();
         params1.put("phone", mPhoneNumber);
         params1.put("password", mPassword);
         params1.put("pic_token", "123");
         params1.put("pic_code", "123");
-        HttpLoader.getInstance().login(params1, mCompositeSubscription, new SubscriberCallBack<UserEntity>(){
+        HttpLoader.getInstance().login(params1, mCompositeSubscription, new SubscriberCallBack<UserEntity>(this,this){
 
             @Override
             protected void onSuccess(UserEntity response) {
@@ -129,12 +137,50 @@ public class LoginActivity extends BaseActivity {
                 SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_ICON,response.getHeadimg());
                 SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_USER_NAME,response.getUsername());
                 SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_PHONE,response.getPhone());
+
+                getQiNiuToken();
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                hideProgress();
+            }
+        });
+    }
+
+    /**
+     * 开店申请
+     */
+    private void getQiNiuToken() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("token", SharedPreferenceUtil.getUserPreferences(SharedPreferenceUtil.KEY_TOKEN, ""));
+        HttpLoader.getInstance().getQiNiuToken(params, mCompositeSubscription, new SubscriberCallBack<QiNiuTokenEntity>(this,this) {
+
+            @Override
+            protected void onSuccess(QiNiuTokenEntity response) {
+                super.onSuccess(response);
+                hideProgress();
+                SharedPreferenceUtil.putUserPreferences(SharedPreferenceUtil.KEY_QI_NIU_TOKEN,response.getToken());
+                if (mNeedJump > 0) {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                }
                 LoginActivity.this.finish();
             }
 
             @Override
             protected void onFailure(ResponseEntity errorBean) {
                 ToastUtils.showToast(errorBean.getMsg());
+            }
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                hideProgress();
             }
         });
     }

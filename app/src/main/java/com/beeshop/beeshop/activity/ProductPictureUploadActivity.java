@@ -20,14 +20,14 @@ import java.util.HashMap;
 public class ProductPictureUploadActivity extends PictureUploadActivity {
 
     public static final String PARAM_PRODUCT_ID = "param_product_id";
-    private int mProductId;
+    private String mProductId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitleAndBackPressListener("产品图片管理");
 
-        mProductId = getIntent().getIntExtra(PARAM_PRODUCT_ID,-1);
+        mProductId = getIntent().getStringExtra(PARAM_PRODUCT_ID);
     }
 
     @Override

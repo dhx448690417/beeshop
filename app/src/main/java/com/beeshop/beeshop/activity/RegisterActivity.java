@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.net.HttpLoader;
@@ -64,6 +62,9 @@ public class RegisterActivity extends BaseActivity {
     private String mImageCode;
     private String mMessageCode;
 
+    private SmsCountDownTimer mSmsCountDownTimer;
+    private boolean mIsAgreementChecked;
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,8 +73,15 @@ public class RegisterActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         setTitleAndBackPressListener("注册蜂店");
-
+        mSmsCountDownTimer = new SmsCountDownTimer(60000, 1000);
         ivIdentityCode.setBackground(new BitmapDrawable(CodeUtils.getInstance().createBitmap()));
+
+        cbAgreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mIsAgreementChecked = isChecked;
+            }
+        });
     }
 
     private boolean verify() {
@@ -103,11 +111,14 @@ public class RegisterActivity extends BaseActivity {
         } else if (!TextUtils.equals(mImageCode.toLowerCase(),CodeUtils.getInstance().getImageCode().toLowerCase())) {
             ToastUtils.showToast("请输入正确图片验证码");
             return false;
+        } else if (!mIsAgreementChecked) {
+            ToastUtils.showToast("请阅读协议并同意");
+            return false;
         }
         return true;
     }
 
-    @OnClick({R.id.iv_identity_code, R.id.tv_get_code, R.id.tv_register, R.id.tv_forget_password, R.id.tv_goto_login})
+    @OnClick({R.id.iv_identity_code, R.id.tv_get_code, R.id.tv_register, R.id.tv_forget_password, R.id.tv_goto_login,R.id.tv_agreement})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_identity_code:
@@ -134,6 +145,9 @@ public class RegisterActivity extends BaseActivity {
             case R.id.tv_goto_login:
                 this.finish();
                 break;
+            case R.id.tv_agreement:
+                startActivity(new Intent(this,AgreementActivity.class));
+                break;
         }
     }
 
@@ -146,6 +160,7 @@ public class RegisterActivity extends BaseActivity {
             @Override
             protected void onSuccess() {
                 super.onSuccess();
+                mSmsCountDownTimer.start();
                 ToastUtils.showToast("已发送验证码，请注意查收。");
             }
 
@@ -155,6 +170,34 @@ public class RegisterActivity extends BaseActivity {
             }
 
         });
+    }
+
+    /**
+     * 验证码倒计时
+     */
+    class SmsCountDownTimer extends CountDownTimer {
+
+        public boolean isRuning; // 是否正在倒数计时
+
+        public SmsCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            long second = millisUntilFinished / 1000 + 1;
+            tvGetCode.setText(second + "s");
+            isRuning = true;
+            tvGetCode.setClickable(false);
+        }
+
+        @Override
+        public void onFinish() {
+            isRuning = false;
+            tvGetCode.setText("获取验证码");
+            tvGetCode.setClickable(true);
+            this.cancel();
+        }
     }
 
     private void register() {
@@ -176,6 +219,7 @@ public class RegisterActivity extends BaseActivity {
             @Override
             protected void onFailure(ResponseEntity errorBean) {
                 ToastUtils.showToast(errorBean.getMsg());
+                RegisterActivity.this.finish();
             }
 
         });

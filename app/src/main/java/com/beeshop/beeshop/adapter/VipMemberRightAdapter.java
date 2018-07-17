@@ -34,7 +34,7 @@ public class VipMemberRightAdapter extends RvBaseAdapter<VipEntity.ListBean,VipM
     public void onBindViewHolder(MyToolsViewHolder holder, final int position) {
         VipEntity.ListBean listBean = mList.get(position);
         holder.tv_vip_member_name.setText(listBean.getPhone());
-        holder.tv_money.setText("剩余："+listBean.getMoney()+"元");
+        holder.tv_money.setText(listBean.getMoney()+"元");
         holder.rl_vip_member_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

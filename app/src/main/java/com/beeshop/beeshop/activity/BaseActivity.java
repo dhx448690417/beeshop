@@ -47,6 +47,8 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import rx.subscriptions.CompositeSubscription;
 
 
@@ -144,6 +146,13 @@ public class BaseActivity extends AppCompatActivity implements ProgressControlIn
         if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
             mCompositeSubscription.unsubscribe();
         }
+    }
+
+    protected void initBuglly() {
+        Beta.largeIconId = R.drawable.app_icon; //通知栏大图标
+        Beta.smallIconId = R.drawable.app_icon; //通知栏小图标
+
+        Bugly.init(getApplicationContext(), "383c85e78e", true);
     }
 
     protected void openPicSelecter(int max, int min, List<LocalMedia> localMediaList) {

@@ -88,6 +88,6 @@ dependencies {
     //微信支付
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.0.2'
     //buglly
-    compile 'com.tencent.bugly:crashreport:latest.release'
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
 }

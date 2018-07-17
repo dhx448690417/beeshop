@@ -107,6 +107,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="10dp"
+        android:visibility="gone"
         android:background="@drawable/shape_red_radius_bt_bg"
         android:text="确认"
         android:textColor="@color/white"

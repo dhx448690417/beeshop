@@ -121,7 +121,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@drawable/shape_green_radius_bg"
         android:gravity="center"
-        android:text="更  新"
+        android:text="提   交"
         android:textColor="@color/white"
         android:textSize="18sp"
         />

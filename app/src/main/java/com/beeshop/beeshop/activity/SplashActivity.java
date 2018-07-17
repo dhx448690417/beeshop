@@ -1,5 +1,7 @@
 package com.beeshop.beeshop.activity;
 
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import com.beeshop.beeshop.R;
@@ -49,6 +52,18 @@ public class SplashActivity extends BaseActivity {
             finish();
             return;
         }
+
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float alpha = (float) animation.getAnimatedValue();
+                launchIv.setAlpha(alpha);
+            }
+        });
+        valueAnimator.setDuration(2700);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.start();
     }
 
     @Override

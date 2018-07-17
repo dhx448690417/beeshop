@@ -152,6 +152,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="忘记密码"
+            android:visibility="gone"
             android:textColor="@color/text_color_black"
             android:textSize="15sp" />
 
@@ -160,7 +161,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="注册"
+            android:text="注册账号"
             android:textColor="@color/text_color_black"
             android:textSize="15sp" />
     </RelativeLayout>

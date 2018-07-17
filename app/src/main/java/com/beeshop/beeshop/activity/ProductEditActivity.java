@@ -12,11 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.model.ProductDetailEntity;
 import com.beeshop.beeshop.model.ProductInfo;
 import com.beeshop.beeshop.model.ProductListEntity;
 import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.ResponseEntity;
 import com.beeshop.beeshop.net.SubscriberCallBack;
+import com.beeshop.beeshop.utils.LogUtil;
 import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 import com.beeshop.beeshop.utils.ToastUtils;
 
@@ -100,11 +102,11 @@ public class ProductEditActivity extends BaseActivity {
 //            etProductDescribe.setText(mListBean.get);
             llBottom.setVisibility(View.VISIBLE);
             tvSubmit.setVisibility(View.GONE);
+            getProductInfo();
         } else {
             llBottom.setVisibility(View.GONE);
             tvSubmit.setVisibility(View.VISIBLE);
         }
-
     }
 
     @OnClick({R.id.tv_submit,R.id.tv_update, R.id.tv_manager_pic})
@@ -122,7 +124,7 @@ public class ProductEditActivity extends BaseActivity {
                 break;
             case R.id.tv_manager_pic:
                 Intent intent = new Intent(ProductEditActivity.this, ProductPictureUploadActivity.class);
-                intent.putExtra(ProductPictureUploadActivity.PARAM_PRODUCT_ID, mListBean.getId());
+                intent.putExtra(ProductPictureUploadActivity.PARAM_PRODUCT_ID, mListBean.getId()+"");
                 startActivity(intent);
                 break;
         }
@@ -201,6 +203,27 @@ public class ProductEditActivity extends BaseActivity {
             protected void onFailure(ResponseEntity errorBean) {
                 ToastUtils.showToast(errorBean.getMsg());
             }
+        });
+    }
+
+    private void getProductInfo() {
+        HashMap<String, Object> params1 = new HashMap<>();
+        params1.put("id", mListBean.getId());
+
+        HttpLoader.getInstance().getProductInfo(params1, mCompositeSubscription, new SubscriberCallBack<ProductDetailEntity>(this,this) {
+
+            @Override
+            protected void onSuccess(ProductDetailEntity response) {
+                super.onSuccess(response);
+                etProductDescribe.setText(response.getDetails());
+            }
+
+            @Override
+            protected void onFailure(ResponseEntity errorBean) {
+                ToastUtils.showToast(errorBean.getMsg());
+                LogUtil.e(errorBean.getMsg());
+            }
+
         });
     }
 

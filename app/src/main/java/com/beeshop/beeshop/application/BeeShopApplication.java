@@ -3,8 +3,14 @@ package com.beeshop.beeshop.application;
 import android.app.Application;
 import android.content.Context;
 
+import com.beeshop.beeshop.R;
+import com.beeshop.beeshop.activity.MainActivity;
 import com.beeshop.beeshop.config.AppConfig;
 import com.beeshop.beeshop.utils.DeviceUtil;
+import com.beeshop.beeshop.utils.ToastUtils;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
+import com.tencent.bugly.beta.upgrade.UpgradeStateListener;
 import com.tencent.bugly.crashreport.CrashReport;
 
 /**
@@ -32,12 +38,6 @@ public class BeeShopApplication extends Application {
         super.onCreate();
         mInstance = this;
         mContext = this.getApplicationContext();
-        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(getApplicationContext());
-        strategy.setAppPackageName(getPackageName());
-        strategy.setAppVersion(DeviceUtil.getVersion(getApplicationContext()));
-        strategy.setAppReportDelay(10000);
-        CrashReport.initCrashReport(getApplicationContext(), "383c85e78e", AppConfig.DEBUG);
-        CrashReport.setIsDevelopmentDevice(getApplicationContext(), AppConfig.DEBUG);
     }
 
 

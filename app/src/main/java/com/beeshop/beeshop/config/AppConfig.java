@@ -20,6 +20,9 @@ public class AppConfig {
      * debug 签名：9b7405a5f08659f5e7d9d6acdd110c15
      * <p>
      * 微信 appid wx234f5277333171ba
+     *
+     * 蜂店后台
+     * http://admin.fdwl1688.com  [用户名：admin   密码：password]
      */
 
     public static final String WEIXIN_APP_ID = "wx234f5277333171ba";

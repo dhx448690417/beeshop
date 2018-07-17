@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -23,16 +24,14 @@ import com.beeshop.beeshop.model.QiNiuTokenEntity;
 import com.beeshop.beeshop.net.HttpLoader;
 import com.beeshop.beeshop.net.ResponseEntity;
 import com.beeshop.beeshop.net.SubscriberCallBack;
-import com.beeshop.beeshop.utils.LogUtil;
-import com.beeshop.beeshop.utils.SharedPreferenceUtil;
-import com.beeshop.beeshop.utils.StatusBarUtil;
-import com.beeshop.beeshop.utils.ToastUtils;
+import com.beeshop.beeshop.utils.*;
 import com.beeshop.beeshop.views.BottomTabView;
 
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.tencent.bugly.beta.Beta;
 
 public class MainActivity extends BaseActivity {
 
@@ -74,6 +73,7 @@ public class MainActivity extends BaseActivity {
             getQiNiuToken();
         }
 
+        initBuglly();
     }
 
     private void initView() {
@@ -240,5 +240,18 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private long exitTime = 0; // 按返回键的间隔
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                ToastUtils.showToast("请再按一次退出蜂店");
+                exitTime = System.currentTimeMillis();
+                return true;
+            } else {
+                AppManager.getAppManager().AppExit(this);
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 }

@@ -103,7 +103,7 @@ public class ClientFragment extends BaseFragment {
             public void onItemClick(int position) {
                 ClientChatEntity.ListBean listBean = mChatList.get(position);
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra(ChatActivity.PARAM_CHAT_USER_ID, listBean.getId()+"");
+                intent.putExtra(ChatActivity.PARAM_CHAT_USER_ID, listBean.getCustomer()+"");
                 startActivity(intent);
             }
         });

@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.model.ClientChatEntity;
 import com.beeshop.beeshop.model.Shop;
+import com.beeshop.beeshop.utils.SharedPreferenceUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -45,9 +47,10 @@ public class ClientChatAdapter extends RecyclerView.Adapter<ClientChatAdapter.Ho
     @Override
     public void onBindViewHolder(HomeShopViewHolder holder, final int position) {
         ClientChatEntity.ListBean listBean = mChatList.get(position);
-        Glide.with(mContext).load("http://img0.imgtn.bdimg.com/it/u=2941993316,3751651394&fm=27&gp=0.jpg").into(holder.iv_head);
-
-        holder.tv_client_name.setText("名字");
+        Glide.with(mContext).load(listBean.getHeadimg())
+                .apply(new RequestOptions().placeholder(R.drawable.default_head).error(R.drawable.default_head).dontAnimate().centerCrop())
+                .into(holder.iv_head);
+        holder.tv_client_name.setText(listBean.getPhone());
         holder.tv_chat_conent.setText(listBean.getLast_content());
         holder.rl_chat.setOnClickListener(new View.OnClickListener() {
             @Override

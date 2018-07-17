@@ -118,7 +118,7 @@ public class VipDetailActivity extends BaseActivity {
         setTitleAndBackPressListener("编辑会员");
         mVipEntity = (VipEntity.ListBean) getIntent().getSerializableExtra(PARAM_KEY_VIP_MEMBER);
         if (mVipEntity != null) {
-            mMemberClassId = mVipEntity.getId();
+            mMemberClassId = mVipEntity.getMember_class_id();
             initView();
         }
     }
