@@ -315,7 +315,7 @@ public class ShopInfoEditActivity extends BaseActivity {
         if (shopMineInfoEntity.getType() == 2) {
             llLicenseImgUpload.setVisibility(View.GONE);
             ivImage.setVisibility(View.VISIBLE);
-            Glide.with(this).load(shopMineInfoEntity.getCover()).into(ivImage);
+            Glide.with(this).load(shopMineInfoEntity.getLicense_img()).into(ivImage);
         } else {
             ivImage.setVisibility(View.GONE);
         }

@@ -2,6 +2,7 @@ package com.beeshop.beeshop.application;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.beeshop.beeshop.R;
 import com.beeshop.beeshop.activity.MainActivity;
@@ -40,5 +41,10 @@ public class BeeShopApplication extends Application {
         mContext = this.getApplicationContext();
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
 }
