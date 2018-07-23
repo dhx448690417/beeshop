@@ -50,6 +50,12 @@ public class ClientChatAdapter extends RecyclerView.Adapter<ClientChatAdapter.Ho
         Glide.with(mContext).load(listBean.getHeadimg())
                 .apply(new RequestOptions().placeholder(R.drawable.default_head).error(R.drawable.default_head).dontAnimate().centerCrop())
                 .into(holder.iv_head);
+        if (listBean.getUnread() > 0) {
+            holder.tv_new_count.setVisibility(View.VISIBLE);
+            holder.tv_new_count.setText(listBean.getUnread() + "");
+        } else {
+            holder.tv_new_count.setVisibility(View.GONE);
+        }
         holder.tv_client_name.setText(listBean.getPhone());
         holder.tv_chat_conent.setText(listBean.getLast_content());
         holder.rl_chat.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +77,7 @@ public class ClientChatAdapter extends RecyclerView.Adapter<ClientChatAdapter.Ho
     class HomeShopViewHolder extends RecyclerView.ViewHolder {
         TextView tv_client_name;
         TextView tv_chat_conent;
+        TextView tv_new_count;
         RelativeLayout rl_chat;
         ImageView iv_head;
         public HomeShopViewHolder(View itemView) {
@@ -78,6 +85,7 @@ public class ClientChatAdapter extends RecyclerView.Adapter<ClientChatAdapter.Ho
             tv_client_name = itemView.findViewById(R.id.tv_client_name);
             tv_chat_conent = itemView.findViewById(R.id.tv_chat_conent);
             iv_head = itemView.findViewById(R.id.iv_head);
+            tv_new_count = itemView.findViewById(R.id.tv_new_count);
             rl_chat = itemView.findViewById(R.id.rl_chat);
         }
     }

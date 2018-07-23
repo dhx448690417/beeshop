@@ -189,7 +189,6 @@ public class OrderConfirmBuyActivity extends BaseActivity {
                             String orderInfo = response.getString("pay");
                             if (!TextUtils.isEmpty(orderInfo)) {
                                 useZFB(orderInfo);
-                                ToastUtils.showToast("支付包成功");
                             }
                             break;
                         case PAY_STYLE_VIP:
@@ -242,8 +241,16 @@ public class OrderConfirmBuyActivity extends BaseActivity {
             super.handleMessage(msg);
             Map<String, String> result = (Map<String, String>) msg.obj;
             LogUtil.e("ah  mHandler result ====  "+result.toString());
-            startActivity(new Intent(OrderConfirmBuyActivity.this,OrderPaySuccessActivity.class));
-            OrderConfirmBuyActivity.this.finish();
+
+            String resultStatus = result.get("resultStatus");
+
+            if (TextUtils.equals(resultStatus, "9000")) {
+                startActivity(new Intent(OrderConfirmBuyActivity.this,OrderPaySuccessActivity.class));
+                OrderConfirmBuyActivity.this.finish();
+            } else {
+                String memo = TextUtils.isEmpty(result.get("memo")) ? "支付失败" : result.get("memo");
+                ToastUtils.showToast(memo);
+            }
         }
     };
 

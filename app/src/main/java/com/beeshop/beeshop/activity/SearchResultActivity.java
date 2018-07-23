@@ -29,13 +29,18 @@ import java.util.HashMap;
  */
 public class SearchResultActivity extends BaseListActivity<Shop.ListBean> {
 
+    public static final String PARAM_SEARCH_CATEGORY = "param_search_category";
+    public static final String PARAM_SEARCH_TITLE = "param_search_title";
+
     private HomeShopAdapter mSearchShops;
     private String mCategory;
+    private String mTitle;
     private int mCurrentPage = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitleAndBackPressListener("店铺搜索结果");
+
     }
 
     @Override
@@ -60,6 +65,9 @@ public class SearchResultActivity extends BaseListActivity<Shop.ListBean> {
     @Override
     protected void initView() {
         super.initView();
+        mCategory = getIntent().getStringExtra(PARAM_SEARCH_CATEGORY);
+        mTitle = getIntent().getStringExtra(PARAM_SEARCH_TITLE);
+
         isShowProgressDialog(true);
         searchShops();
 
@@ -93,6 +101,7 @@ public class SearchResultActivity extends BaseListActivity<Shop.ListBean> {
 //        params1.put("token", "");
         params1.put("page", mCurrentPage);
         params1.put("category", mCategory);
+        params1.put("title", mTitle);
         HttpLoader.getInstance().getSearchShops(params1, mCompositeSubscription, new SubscriberCallBack<SearchShopEntity>(this,this){
 
             @Override

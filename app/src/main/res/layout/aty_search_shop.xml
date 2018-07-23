@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:zhy="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -54,18 +55,28 @@
             />
     </RelativeLayout>
 
-    <me.next.tagview.TagCloudView
-        android:id="@+id/tag_shop_type"
+    <!--<me.next.tagview.TagCloudView-->
+        <!--android:id="@+id/tag_shop_type"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:background="@color/white"-->
+        <!--app:tcvItemBorderHorizontal="15dp"-->
+        <!--app:tcvItemBorderVertical="15dp"-->
+        <!--app:tcvBorder="8dp"-->
+        <!--app:tcvTextColor="@color/white"-->
+        <!--app:tcvCanTagClick="true"-->
+        <!--app:tcvTextSize="7sp"-->
+        <!--app:tcvBackground="@drawable/shape_yellow_radius_tag_bg"-->
+        <!--/>-->
+
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:id="@+id/fl_tag_shop_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@color/white"
-        app:tcvItemBorderHorizontal="15dp"
-        app:tcvItemBorderVertical="15dp"
-        app:tcvBorder="8dp"
-        app:tcvTextColor="@color/white"
-        app:tcvCanTagClick="true"
-        app:tcvTextSize="7sp"
-        app:tcvBackground="@drawable/shape_yellow_radius_tag_bg"
+        android:padding="20dp"
+        zhy:max_select="1"
         />
 </LinearLayout>

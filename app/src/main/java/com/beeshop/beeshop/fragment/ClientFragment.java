@@ -113,16 +113,16 @@ public class ClientFragment extends BaseFragment {
         srlHome.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                mChatList.clear();
                 getChat();
             }
         });
+        srlHome.autoRefresh();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        srlHome.autoRefresh();
+        getChat();
     }
 
     @Override
@@ -140,6 +140,7 @@ public class ClientFragment extends BaseFragment {
             protected void onSuccess(ClientChatEntity response) {
                 super.onSuccess(response);
                 if (response.getList().size() > 0) {
+                    mChatList.clear();
                     mChatList.addAll(response.getList());
                     mClientChatAdapter.notifyDataSetChanged();
                     hideNoContentView();

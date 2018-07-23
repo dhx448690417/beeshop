@@ -48,7 +48,7 @@
                     android:layout_marginTop="8dp"
                     android:ellipsize="end"
                     android:maxLines="4"
-                    android:text="店铺介绍绍介绍不错店铺介绍介绍不不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错店铺介绍不错"
+                    android:text=""
                     android:textColor="@color/text_color_black"
                     android:textSize="14sp" />
 

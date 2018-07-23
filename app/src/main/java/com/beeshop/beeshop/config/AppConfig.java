@@ -11,6 +11,7 @@ import android.Manifest;
 public class AppConfig {
 
     // 18233608179
+    // 15810792280：password
 
     /**
      * keystore
