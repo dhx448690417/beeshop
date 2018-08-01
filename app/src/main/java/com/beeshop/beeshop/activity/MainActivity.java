@@ -97,7 +97,7 @@ public class MainActivity extends BaseActivity {
         });
         tabBottom.addTab(tabBottom.newTab().setCustomView(new BottomTabView(this,R.drawable.icon_home_normal,R.drawable.icon_home_selected,"蜂店")));
         tabBottom.addTab(tabBottom.newTab().setCustomView(new BottomTabView(this,R.drawable.icon_news_normal,R.drawable.icon_news_selected,"客户")));
-        tabBottom.addTab(tabBottom.newTab().setCustomView(new BottomTabView(this,R.drawable.icon_station_normal,R.drawable.icon_station_selected,"电台")));
+        tabBottom.addTab(tabBottom.newTab().setCustomView(new BottomTabView(this,R.drawable.icon_laba_normal,R.drawable.icon_laba_selected,"喇叭")));
         tabBottom.addTab(tabBottom.newTab().setCustomView(new BottomTabView(this,R.drawable.icon_account_normal,R.drawable.icon_account_selected,"我的")));
 
         for (int i = 0; i < tabBottom.getTabCount(); i++) {  // 判断是否登录，没有登录则跳转到登录页面
